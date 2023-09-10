@@ -76,16 +76,21 @@ function WeatherInfo({ data,timeUpdate1, setClasses, cloudsData, rainData, snowD
     const convertToKmh = (ms) => {
         return ms * 3.6;
     }
+    const [currentWeather, setCurrentWeather] = useState(null);
+    useEffect(() => {
+        const apiKey = '7273310237e2d7aafdbb11f14ddd01f9'; 
+        axios
+          .get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`)
+          .then((response) => {
+            setCurrentWeather(response.data);
+          })
+          .catch((error) => {
+            console.error('Erro ao obter dados do OpenWeatherMap:', error);
+          });
+      }, [valorCorrente]);
   
 
-    const [forecastData, setForecastData] = useState(null);
-    useEffect(() => {
-      axios.get('https://api.hgbrasil.com/weather?key=aee155cc&city_name=Campinas,SP')
-      .then(response => {
-          setForecastData(response.data.results.forecast);
-      });
-  }, []);
-
+   
         return(
             <div className="complementos">
          <div className="div_parag">
@@ -148,19 +153,17 @@ function WeatherInfo({ data,timeUpdate1, setClasses, cloudsData, rainData, snowD
       <p>{name !== undefined ? name + '' : 'Indisponível nessa região'}</p>
       <p>{weather[0].description !== undefined ? weather[0].description + '' : 'Indisponível nessa região'}</p>
       <p>{formattedTime !== undefined ? formattedTime + '' : 'Indisponível nessa região'}</p>
-      <div>
-        <h2>Previsão de 7 dias!</h2>
-            {forecastData && forecastData.map((day, index) => (
-                <div key={index}>
-                    <p>Data: {day.date}</p>
-                    <p>Temperatura Mínima: {day.min}</p>
-                    <p>Temperatura Máxima: {day.max}</p>
-                </div>
-            ))}
+      {currentWeather && (
+        <div className="div_parag">
+          <button onClick={myFunction}>{Celsius ? 'F' : 'C'}</button>
+          <p>
+            {temperaturaDisplay.toFixed(0)} {Celsius ? '°C' : '°F'}
+          </p>
+          {/* Restante do código para exibir as informações de temperatura */}
         </div>
+      )}
     </div>
   ); 
- 
 }
 
 export default WeatherInfo;
