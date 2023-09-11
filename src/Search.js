@@ -5,6 +5,9 @@ import WeahterInfo from './WeatherInfo';
 import WeahterIcon from './WeatherIcon';
 
 function Search({props}) {
+const [Celsius, setCelsius] = useState()
+const [myFunction, setMyFunction] = useState();
+
 const [weatherData, setWeatherData] = useState(null);
 const [timeUpdate1, setTimeUpdate1] = useState(null);
 const [backgroundClass, setBackGroundClass] = useState('');
@@ -31,7 +34,6 @@ const [lon, setLon] = useState();
     axios.all([axios.get(url), axios.get(coords)])
       .then(axios.spread((weatherResponse, coordsResponse) => {
         const {sys} = weatherResponse.data;
-       
         if(sys.country != undefined){
           const { lat, lon } = coordsResponse.data[0];
           setLat(lat);
@@ -46,7 +48,7 @@ const [lon, setLon] = useState();
             const unixSunriseValue = weatherData.sys.sunrise;
             const unixSunsetValue = weatherData.sys.sunset;
             const convertedDateTimeValue = new Date().getTime() / 1000;
-
+            
             setTimeUpdate1(formatted);
             setCurrentTimeUpdate(formatted);
 
@@ -81,7 +83,7 @@ const [lon, setLon] = useState();
 
       {weatherData ? (
         <div className={`objects ${backgroundClass}`}>
-           <WeahterIcon weather={weatherData.weather[0]} timeUpdate1={timeUpdate1} setClasses={setBackGroundClass} cloudsData={cloudsData} rainData={rainData} snowData={snowData} unixSunrise={unixSunrise} unixSunset={unixSunset} convertedDateTime={convertedDateTime} currentTimeUpdate={currentTimeUpdate} />
+           <WeahterIcon weather={weatherData.weather[0]} timeUpdate1={timeUpdate1} setClasses={setBackGroundClass} cloudsData={cloudsData} rainData={rainData} snowData={snowData} unixSunrise={unixSunrise} unixSunset={unixSunset} convertedDateTime={convertedDateTime} currentTimeUpdate={currentTimeUpdate}  myFunction={myFunction} Celsius={Celsius}/>
           <WeahterInfo data={weatherData} timeUpdate1={timeUpdate1} setClasses={setClasses} cloudsData={cloudsData} rainData={rainData} snowData={snowData} unixSunrise={unixSunrise} unixSunset={unixSunset} convertedDateTime={convertedDateTime} currentTimeUpdate={currentTimeUpdate} valorCorrente={valorCorrente} lat={lat} lon={lon}/>
         </div>
       ) : (

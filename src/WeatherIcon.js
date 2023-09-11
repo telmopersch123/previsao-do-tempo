@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Search from './Search';
-
+import WeatherInfo from './WeatherInfo';
 import solLimpo from './icones/sol.gif';
 import luaLimpa from './icones/lua.gif';
 import chuva from './icones/chuva.gif';
@@ -9,7 +9,7 @@ import chuvaForte from './icones/trovoada.gif';
 import nublado from './icones/nublado.gif';
 import neve from './icones/neve-unscreen.gif'
 
-function WeatherIcon({ weather,timeUpdate1,setClasses, cloudsData, rainData, snowData, unixSunrise, unixSunset, convertedDateTime}) {
+function WeatherIcon({ weather,timeUpdate1,setClasses, cloudsData, rainData, snowData, unixSunrise, unixSunset, convertedDateTime, myFunction, Celsius}) {
 
     const sunriseTime = unixSunrise  * 1000;
     const sunsetTime = unixSunset * 1000;
@@ -136,6 +136,7 @@ function WeatherIcon({ weather,timeUpdate1,setClasses, cloudsData, rainData, sno
 
          return (
           <div className="icon_temp">
+             <button className='far_cel_button' onClick={myFunction}>{Celsius ? 'F' : 'C'}</button>
             {iconSrc && (
               <div className={`icon-wrapper icon2 ${iconSrc.includes(solLimpo) && currentTime >= sunriseTime && currentTime < sunsetTime ? 'day' : 'night'}`}>
               <img className={`icones ${iconSrc.includes(solLimpo) ? '' : 'zoom-animate'}`} src={iconSrc} alt={weather.description} />
