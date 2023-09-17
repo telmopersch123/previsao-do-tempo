@@ -9,7 +9,7 @@ form{
   display: flex;
   flex-direction: column;
 }
- 
+
 .Search{
   display: flex;
   flex-direction: column;
@@ -42,6 +42,21 @@ form{
   flex-direction: column;
   flex: 1;
 }
+
+.align-items {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: flex-start;
+  gap: 2rem;
+}
+
+.align-text-icon {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .searchWr {
   display: flex;
   flex-direction: column;
@@ -69,8 +84,6 @@ form{
   background-repeat: no-repeat;
   background-position: center center;
 }
-
-
 
 .complementos{
   display: flex;
@@ -103,11 +116,13 @@ form{
 }
 .div_parag{
   display: flex;
- align-self: center;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-self: center;
+  justify-content: center;
   background-color: #5d8fce;
 
-  padding: 20px;
+  padding: 10px;
   width: 100%;
 
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.531);
@@ -123,10 +138,10 @@ form{
   background-color:  rgba(255, 255, 255, 0.484);
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0);
 
-  padding: 3px;
-  margin: 3px 0 0 0;
+  padding: 20px;
+  margin: 0px 0px 0px 0px;
   width: auto;
-  text-align: justify;
+  text-align: center;
 }
 .icones{
   width: 3em;
@@ -187,10 +202,17 @@ flex-direction: row;
 .itens_prim{
   display: flex;
   justify-content: center;
+  width: 75%;
+  height: auto;
+  padding: 10px;
+  align-self: center;
+  border-radius: 10px;
+  background-color: aliceblue;
+
 }
 .itens_prim > p{
   color: rgb(255, 255, 255);
-  text-shadow: 0 0 5px black;
+  text-shadow: 0 0 5px rgb(0, 0, 0);
   background-color: rgba(255, 255, 255, 0.672);
   padding: 10px;
   margin: 10px;
@@ -202,7 +224,7 @@ flex-direction: row;
   display: flex;
   justify-content: center;
   align-items: center;
-  align-self: flex-end;
+  align-self: flex-start;
   margin: 10px 0 0 10px;
 
   width: 70px;

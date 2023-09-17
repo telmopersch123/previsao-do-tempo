@@ -1,12 +1,8 @@
-import './App.css';
-import Search from './Search';
+import "./App.css";
+import Search from "./components/Search";
 
-function App(props) {
-  return (
-    <div className="App">
-      <Search place="Cidade..." />
-    </div>
-  );
+function App() {
+  return <Search />;
 }
 
 export default App;
