@@ -85,12 +85,20 @@ function Search({ props }) {
           error.message,
         );
       });
+    console.log(weatherData.main.temp);
   };
 
-  const convertorFahrenheit = (celsius) => {
-    setIsCelsius((prevCelsius) => !prevCelsius);
-    return (celsius * 9) / 5 + 32;
-  };
+  // const convertorFahrenheit = (celsius) => {
+  //  setIsCelsius((prevCelsius) => !prevCelsius);
+  // return (celsius * 9) / 5 + 32;
+  //};
+
+  //};
+
+  // Restante do seu código...
+
+  // Função para lidar com a mudança na unidade de temperatura
+
   return (
     <div className="searchWr">
       <div className="Search">
@@ -116,7 +124,28 @@ function Search({ props }) {
       {weatherData ? (
         <div className={`objects ${backgroundClass}`}>
           <div className="align-items">
-            <Button />
+            <Button
+              temp={
+                Celsius
+                  ? weatherData.main.temp
+                  : convertorFahrenheit(weatherData.main.temp)
+              }
+              feels_like={
+                Celsius
+                  ? weatherData.main.feels_like
+                  : convertorFahrenheit(weatherData.main.feels_like)
+              }
+              temp_max={
+                Celsius
+                  ? weatherData.main.temp_max
+                  : convertorFahrenheit(weatherData.main.temp_max)
+              }
+              temp_min={
+                Celsius
+                  ? weatherData.main.temp_min
+                  : convertorFahrenheit(weatherData.main.temp_min)
+              }
+            />
             <WeahterIcon
               weather={weatherData.weather[0]}
               timeUpdate1={timeUpdate1}
@@ -146,6 +175,7 @@ function Search({ props }) {
             /> */}
           </div>
           <Timeline
+            Celsius={Celsius}
             timeUpdate1={timeUpdate1}
             sys={
               weatherData.sys.country
@@ -160,8 +190,16 @@ function Search({ props }) {
                 ? weatherData.weather[0].description
                 : "Indisponível nessa região"
             }
+            temp={
+              Celsius
+                ? weatherData.main.temp
+                : convertorFahrenheit(weatherData.main.temp)
+                ? "Indisponível nomomento"
+                : ""
+            }
           />
           <DetailsWeather
+            Celsius={Celsius}
             temp={
               Celsius
                 ? weatherData.main.temp
