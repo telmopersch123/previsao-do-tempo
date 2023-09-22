@@ -1,16 +1,8 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
 import Button from "../Button";
-
-const Timeline = ({
-  timeUpdate1,
-  sys,
-  weather,
-  name,
-  temp,
-  Celsius,
-  convertorFahrenheit,
-}) => {
+import { convertorFahrenheit } from "../conv";
+const Timeline = ({ timeUpdate1, sys, weather, name, temp, Celsius }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [formattedTime, setFormattedTime] = useState(
     moment(timeUpdate1, "DD-MM-YYYY HH:mm:ss").format("HH:mm:ss"),
@@ -34,14 +26,29 @@ const Timeline = ({
       clearInterval(interval);
     };
   }, [formattedTime]);
+  const handleTemperatureConversion = (newTemperature) => {
+    setTemperature(newTemperature);
+  };
 
-  const temperaturaDisplay = Celsius ? temp : convertorFahrenheit(temp);
+  // const [temperatureDisplay, setTemperatureDisplay] = useState(
+  //   temp !== undefined
+  //     ? Celsius
+  //       ? temp
+  //       : convertorFahrenheit(temp)
+  //     : undefined,
+  // );
+  // // Atualize o valor da temperatura local quando a função onTemperatureConversion for chamada
+  // useEffect(() => {
+  //   if (temp !== undefined) {
+  //     setTemperatureDisplay(Celsius ? temp : convertorFahrenheit(temp));
+  //   }
+  // }, [Celsius, temp]);
 
   return (
     <div className="itens_prim">
       {temp !== undefined ? (
         <p className={temp !== undefined ? "" : "dados_ind"}>
-          {`Temperatura de ${temperaturaDisplay.toFixed(0)}`}{" "}
+          {`Temperatura de ${temperatureDisplay.toFixed(0)}`}{" "}
           {Celsius ? "°C" : "°F"}
         </p>
       ) : (

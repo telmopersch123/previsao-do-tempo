@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../Button";
 import FeatherIcon from "feather-icons-react";
+import { convertorFahrenheit } from "../conv";
 
 const DetailsWeather = ({
   wind,

@@ -6,10 +6,11 @@ import WeahterIcon from "../WeatherIcon";
 import Button from "../Button";
 import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
+import { convertorFahrenheit } from "../conv";
 
 function Search({ props }) {
   const [Celsius, setIsCelsius] = useState(true);
-  const [temperature, setTemperature] = useState(0);
+  const [temperature, setTemperature] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
   const [timeUpdate1, setTimeUpdate1] = useState(null);
   const [backgroundClass, setBackGroundClass] = useState("");
@@ -26,6 +27,10 @@ function Search({ props }) {
   const [valorCorrente, setValorCorrente] = useState();
   const [lat, setLat] = useState();
   const [lon, setLon] = useState();
+
+  const handleTemperatureConversion = (newTemperature) => {
+    setTemperature(newTemperature);
+  };
 
   const searchInput = (e) => {
     const valorCorrente = document.querySelector(".inputCidade").value;
@@ -60,8 +65,7 @@ function Search({ props }) {
                 const unixSunsetValue = weatherData.sys.sunset;
                 const convertedDateTimeValue = new Date().getTime() / 1000;
 
-                console.log(weatherData);
-
+                setTemperature(weatherData.main.temp);
                 setTimeUpdate1(formatted);
                 setCurrentTimeUpdate(formatted);
 
@@ -85,7 +89,6 @@ function Search({ props }) {
           error.message,
         );
       });
-    console.log(weatherData.main.temp);
   };
 
   // const convertorFahrenheit = (celsius) => {
@@ -125,6 +128,8 @@ function Search({ props }) {
         <div className={`objects ${backgroundClass}`}>
           <div className="align-items">
             <Button
+              Celsius={Celsius}
+              setIsCelsius={setIsCelsius}
               temp={
                 Celsius
                   ? weatherData.main.temp
@@ -145,6 +150,8 @@ function Search({ props }) {
                   ? weatherData.main.temp_min
                   : convertorFahrenheit(weatherData.main.temp_min)
               }
+              convertorFahrenheit={convertorFahrenheit}
+              onTemperatureConversion={handleTemperatureConversion}
             />
             <WeahterIcon
               weather={weatherData.weather[0]}
@@ -190,23 +197,10 @@ function Search({ props }) {
                 ? weatherData.weather[0].description
                 : "Indisponível nessa região"
             }
-            temp={
-              Celsius
-                ? weatherData.main.temp
-                : convertorFahrenheit(weatherData.main.temp)
-                ? "Indisponível nomomento"
-                : ""
-            }
+            temp={temperature}
           />
           <DetailsWeather
             Celsius={Celsius}
-            temp={
-              Celsius
-                ? weatherData.main.temp
-                : convertorFahrenheit(weatherData.main.temp)
-                ? "Indisponível nomomento"
-                : ""
-            }
             feels_like={
               Celsius
                 ? weatherData.main.feels_like
