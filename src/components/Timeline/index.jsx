@@ -26,23 +26,24 @@ const Timeline = ({ timeUpdate1, sys, weather, name, temp, Celsius }) => {
       clearInterval(interval);
     };
   }, [formattedTime]);
-  const handleTemperatureConversion = (newTemperature) => {
-    setTemperature(newTemperature);
-  };
 
-  // const [temperatureDisplay, setTemperatureDisplay] = useState(
-  //   temp !== undefined
-  //     ? Celsius
-  //       ? temp
-  //       : convertorFahrenheit(temp)
-  //     : undefined,
-  // );
+ // const handleTemperatureConversion = (newTemperature) => {
+  //  setTemperature(newTemperature);
+  // };
+
+  const [temperatureDisplay, setTemperatureDisplay] = useState(
+    temp !== undefined
+      ? Celsius
+        ? temp
+        : convertorFahrenheit(temp)
+      : undefined,
+  );
   // // Atualize o valor da temperatura local quando a função onTemperatureConversion for chamada
-  // useEffect(() => {
-  //   if (temp !== undefined) {
-  //     setTemperatureDisplay(Celsius ? temp : convertorFahrenheit(temp));
-  //   }
-  // }, [Celsius, temp]);
+  useEffect(() => {
+    if (temp !== undefined) {
+      setTemperatureDisplay(Celsius ? temp : convertorFahrenheit(temp));
+    }
+  }, [Celsius, temp]);
 
   return (
     <div className="itens_prim">

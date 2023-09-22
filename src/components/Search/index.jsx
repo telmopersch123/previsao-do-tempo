@@ -28,8 +28,9 @@ function Search({ props }) {
   const [lat, setLat] = useState();
   const [lon, setLon] = useState();
 
-  const handleTemperatureConversion = (newTemperature) => {
+  const handleTemperatureConversion = (newTemperature, newCelsius) => {
     setTemperature(newTemperature);
+    setIsCelsius(newCelsius);
   };
 
   const searchInput = (e) => {
@@ -129,7 +130,6 @@ function Search({ props }) {
           <div className="align-items">
             <Button
               Celsius={Celsius}
-              setIsCelsius={setIsCelsius}
               temp={
                 Celsius
                   ? weatherData.main.temp
@@ -150,7 +150,6 @@ function Search({ props }) {
                   ? weatherData.main.temp_min
                   : convertorFahrenheit(weatherData.main.temp_min)
               }
-              convertorFahrenheit={convertorFahrenheit}
               onTemperatureConversion={handleTemperatureConversion}
             />
             <WeahterIcon
