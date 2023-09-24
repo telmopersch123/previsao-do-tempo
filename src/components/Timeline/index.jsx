@@ -1,49 +1,41 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
 import Button from "../Button";
-import { convertorFahrenheit } from "../conv";
+import { convertorFahrenheit } from "../Conv";
+
 const Timeline = ({ timeUpdate1, sys, weather, name, temp, Celsius }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const updateFormattedTime = (time) =>
+    moment(time, "DD-MM-YYYY HH:mm:ss").format("HH:mm:ss");
   const [formattedTime, setFormattedTime] = useState(
-    moment(timeUpdate1, "DD-MM-YYYY HH:mm:ss").format("HH:mm:ss"),
+    updateFormattedTime(timeUpdate1),
   );
+  useEffect(() => {
+    if (timeUpdate1) {
+      setFormattedTime(updateFormattedTime(timeUpdate1));
+    }
+  }, [timeUpdate1]);
 
   useEffect(() => {
-    setFormattedTime(
-      moment(timeUpdate1, "DD-MM-YYYY HH:mm:ss").format("HH:mm:ss"),
-    );
+    if (timeUpdate1) {
+      setFormattedTime(updateFormattedTime(timeUpdate1));
+    }
   }, [timeUpdate1]);
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-
-      const newFormattedTime = moment(formattedTime, "HH:mm:ss")
-        .add(1, "seconds")
-        .format("HH:mm:ss");
-      setFormattedTime(newFormattedTime);
+    const intervalId = setInterval(() => {
+      setFormattedTime((prevTime) =>
+        moment(prevTime, "HH:mm:ss").add(1, "seconds").format("HH:mm:ss"),
+      );
     }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [formattedTime]);
+    return () => clearInterval(intervalId);
+  }, []);
 
- // const handleTemperatureConversion = (newTemperature) => {
-  //  setTemperature(newTemperature);
-  // };
-
-  const [temperatureDisplay, setTemperatureDisplay] = useState(
-    temp !== undefined
-      ? Celsius
-        ? temp
-        : convertorFahrenheit(temp)
-      : undefined,
-  );
-  // // Atualize o valor da temperatura local quando a função onTemperatureConversion for chamada
   useEffect(() => {
     if (temp !== undefined) {
       setTemperatureDisplay(Celsius ? temp : convertorFahrenheit(temp));
     }
   }, [Celsius, temp]);
+  const [temperatureDisplay, setTemperatureDisplay] = useState(temp);
 
   return (
     <div className="itens_prim">

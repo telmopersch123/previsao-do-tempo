@@ -55,36 +55,39 @@ const WeatherInfo = ({
       });
   }, [lat, lon]);
 
-  // useEffect(() => {
-  //   setFormattedTime(
-  //     moment(timeUpdate1, "DD-MM-YYYY HH:mm:ss").format("HH:mm:ss")
-  //   );
-  //   // axios.get(`https://nominatim.openstreetmap.org/search?q=${valorCorrente}&format=xml`)
-  //   // .then(response => {
-  //   //     const xmlText = response.data;
+   useEffect(() => {
+     setFormattedTime(
+       moment(timeUpdate1, "DD-MM-YYYY HH:mm:ss").format("HH:mm:ss")
+     );
+
+      axios.get(`https://nominatim.openstreetmap.org/search?q=${valorCorrente}&format=xml`)
+  .then(response => {
+      const xmlText = response.data;
   //   //   // Parse the XML string to an XML DOM object
-  //   // const parser = new DOMParser();
-  //   // const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+   const parser = new DOMParser();
+   const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
 
   //   // // Find the element containing the temp_min value
-  //   // const tempMinElement = xmlDoc.getElementsByTagName('temperature')[0].getAttribute('min');
+  const tempMinElement = xmlDoc.getElementsByTagName('temperature')[0].getAttribute('min');
 
-  //   // console.log('Minimum Temperature:', tempMinElement);
-  //   // });
-  // }, [timeUpdate1]);
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCurrentTime(new Date());
+      console.log('Minimum Temperature:', tempMinElement);
+      });
+   }, [timeUpdate1]);
 
-  //     const newFormattedTime = moment(formattedTime, "HH:mm:ss")
-  //       .add(1, "seconds")
-  //       .format("HH:mm:ss");
-  //     setFormattedTime(newFormattedTime);
-  //   }, 1000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [formattedTime]);
+   
+   useEffect(() => {
+     const interval = setInterval(() => {
+       setCurrentTime(new Date());
+
+       const newFormattedTime = moment(formattedTime, "HH:mm:ss")
+         .add(1, "seconds")
+         .format("HH:mm:ss");
+       setFormattedTime(newFormattedTime);
+     }, 1000);
+     return () => {
+       clearInterval(interval);
+     };
+   }, [formattedTime]);
 
 
   const kelvinToCelsius = (kelvin) => {
@@ -286,6 +289,8 @@ const WeatherInfo = ({
           </p>
         )}
       </div> */}
+
+
       {/* <div className="forecast">
         <h2>Previsão do tempo:</h2>
         {forecastData.map((forecast, index) => (

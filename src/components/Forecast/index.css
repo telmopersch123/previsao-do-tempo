@@ -1,0 +1,86 @@
+.separator-day{
+display: flex;
+gap: 30px;
+flex-wrap: wrap;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+font-weight: 300;
+}
+.forecast-day{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-self: center;
+  align-self: center;
+  justify-content: space-around;
+  width: auto;
+  height: 7.5em;
+  border-radius: 10em;
+  width: 20em;
+  background-color: #3a89c9;
+  position: relative;
+}
+
+.data_forecast{
+  font-size: 16px;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  text-align: center;
+  padding: 3px 0px 3px 0px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.676);
+  height: 3.5em;
+  border-radius: 10em 10em 0 0;
+  background-color: #1b325f;
+}
+.forecast-day > div > div > p{
+  font-size: 12px;
+}
+ .title_morning{
+  position: absolute;
+  margin-bottom: 5px;
+  top: 30px;
+  color: white;
+}
+.title_afternoon {
+  position: absolute;
+    margin-bottom: 5px;
+    top: 30px;
+    color: white;
+}
+.title_night {
+  position: absolute;
+    margin-bottom: 5px;
+    top: 30px;
+    color: white;
+}
+.Morning_forecast {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+}
+.Afternoon_forecast{
+    display: flex;
+    justify-content: center;
+  padding: 10px;
+  text-align: center;
+}
+.Night_forecast{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+}
+.temp_forecast_max{
+  background-color: rgba(202, 202, 202, 0.451);
+  margin-top: 43px;
+  padding: 2.5px;
+  border-radius: 20px;
+}
+.temp_forecast_min{
+  background-color: rgba(202, 202, 202, 0.451);
+  margin-top: 5px;
+  padding: 2.5px;
+  border-radius: 20px;
+}

@@ -57,7 +57,7 @@ function WeatherIcon({
         break;
       case "broken clouds":
         descriptionTextPrim = <p>Limpo com nuvens quebradas!</p>;
-        backgroundClass = "nuvensquebradas_dia";
+        //backgroundClass = "nuvensquebradas_dia";
         break;
       case "scattered clouds":
         descriptionTextPrim = <p>Limpo com nuvens dispersas!</p>;
@@ -83,11 +83,11 @@ function WeatherIcon({
         break;
       case "broken clouds":
         descriptionTextPrim = <p>Limpo com nuvens quebradas!</p>;
-        backgroundClass = "nuvensquebradas_noite";
+        //backgroundClass = "nuvensquebradas_noite";
         break;
       case "scattered clouds":
         descriptionTextPrim = <p>Limpo com nuvens dispersas!</p>;
-        backgroundClass = "nuvendispersas_noite";
+       // backgroundClass = "nuvendispersas_noite";
         break;
       case "clear sky":
         descriptionTextPrim = <p>Céu Limpo!</p>;

@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { convertorFahrenheit } from "../conv";
-const Button = ({ temp, onTemperatureConversion,Celsius }) => {
+import { convertorFahrenheit } from "../Conv";
+const Button = ({ temp, onTemperatureConversion, Celsius }) => {
   const myFunction = () => {
     const newCelsius = !Celsius;
-  //  setIsCelsius((prevCelsius) => !prevCelsius);
-
-    // Chama a função para converter a temperatura e atualizar o estado no componente pai
-    Celsius ? convertorFahrenheit(temp) : temp;
-       const newTemperature = Celsius ? convertorFahrenheit(temp) : temp;
-       onTemperatureConversion(newTemperature, newCelsius);
+    const newTemperature = Celsius ? convertorFahrenheit(temp) : temp;
+    onTemperatureConversion(newTemperature, newCelsius);
   };
 
   return (

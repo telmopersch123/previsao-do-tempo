@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Button from "../Button";
 import FeatherIcon from "feather-icons-react";
-import { convertorFahrenheit } from "../conv";
-
+import { convertorFahrenheit } from "../Conv";
+import "../../App.css";
 const DetailsWeather = ({
   wind,
   feels_like,
@@ -15,6 +15,7 @@ const DetailsWeather = ({
   const convertToKmh = (ms) => {
     return ms * 3.6;
   };
+
   const feelsLikeDisplay = Celsius
     ? feels_like
     : convertorFahrenheit(feels_like);

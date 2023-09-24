@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import moment from "moment";
-import WeahterInfo from "../WeatherInfo";
+
 import WeahterIcon from "../WeatherIcon";
 import Button from "../Button";
 import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
-import { convertorFahrenheit } from "../conv";
+import Forecast from "../Forecast";
 
 function Search({ props }) {
   const [Celsius, setIsCelsius] = useState(true);
@@ -128,30 +128,6 @@ function Search({ props }) {
       {weatherData ? (
         <div className={`objects ${backgroundClass}`}>
           <div className="align-items">
-            <Button
-              Celsius={Celsius}
-              temp={
-                Celsius
-                  ? weatherData.main.temp
-                  : convertorFahrenheit(weatherData.main.temp)
-              }
-              feels_like={
-                Celsius
-                  ? weatherData.main.feels_like
-                  : convertorFahrenheit(weatherData.main.feels_like)
-              }
-              temp_max={
-                Celsius
-                  ? weatherData.main.temp_max
-                  : convertorFahrenheit(weatherData.main.temp_max)
-              }
-              temp_min={
-                Celsius
-                  ? weatherData.main.temp_min
-                  : convertorFahrenheit(weatherData.main.temp_min)
-              }
-              onTemperatureConversion={handleTemperatureConversion}
-            />
             <WeahterIcon
               weather={weatherData.weather[0]}
               timeUpdate1={timeUpdate1}
@@ -163,6 +139,10 @@ function Search({ props }) {
               unixSunset={unixSunset}
               convertedDateTime={convertedDateTime}
               currentTimeUpdate={currentTimeUpdate}
+            />
+            <Button
+              Celsius={Celsius}
+              onTemperatureConversion={handleTemperatureConversion}
             />
             {/* <WeahterInfo
               data={weatherData}
@@ -183,48 +163,21 @@ function Search({ props }) {
           <Timeline
             Celsius={Celsius}
             timeUpdate1={timeUpdate1}
-            sys={
-              weatherData.sys.country
-                ? weatherData.sys.country
-                : "Indisponível nessa região"
-            }
-            name={
-              weatherData.name ? weatherData.name : "Indisponível nessa região"
-            }
-            weather={
-              weatherData.weather[0].description
-                ? weatherData.weather[0].description
-                : "Indisponível nessa região"
-            }
-            temp={temperature}
+            sys={weatherData.sys.country}
+            name={weatherData.name}
+            weather={weatherData.weather[0].description}
+            temp={weatherData.main.temp}
           />
           <DetailsWeather
             Celsius={Celsius}
-            feels_like={
-              Celsius
-                ? weatherData.main.feels_like
-                : convertorFahrenheit(weatherData.main.temp)
-                ? "Indisponível nomomento"
-                : ""
-            }
-            temp_max={
-              Celsius
-                ? weatherData.main.temp_max
-                : convertorFahrenheit(weatherData.main.temp_max)
-                ? "Indisponível nomomento"
-                : ""
-            }
-            temp_min={
-              Celsius
-                ? weatherData.main.temp_min
-                : convertorFahrenheit(weatherData.main.temp_min)
-                ? "Indisponível nomomento"
-                : ""
-            }
+            feels_like={weatherData.main.feels_like}
+            temp_max={weatherData.main.temp_max}
+            temp_min={weatherData.main.temp_min}
             wind={weatherData.wind.speed}
             gust={weatherData.wind.gust}
             directionWind={weatherData.wind.deg}
           />
+          <Forecast lat={lat} lon={lon} Celsius={Celsius} />
         </div>
       ) : (
         <div>Pesquise por algo acima...</div>
