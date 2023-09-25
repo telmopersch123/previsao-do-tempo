@@ -32,7 +32,8 @@ function WeatherIcon({
   let descriptionTextSnow = null;
   let backgroundClass = "";
 
-  if (weather.icon === "01d" ||
+  if (
+    weather.icon === "01d" ||
     (weather.icon === "01n" &&
       currentTime >= sunriseTime &&
       currentTime < sunsetTime) ||
@@ -87,7 +88,7 @@ function WeatherIcon({
         break;
       case "scattered clouds":
         descriptionTextPrim = <p>Limpo com nuvens dispersas!</p>;
-       // backgroundClass = "nuvendispersas_noite";
+        // backgroundClass = "nuvendispersas_noite";
         break;
       case "clear sky":
         descriptionTextPrim = <p>Céu Limpo!</p>;
@@ -324,13 +325,7 @@ function WeatherIcon({
               : "night"
           }`}
         >
-          <img
-            className={`icones ${
-              iconSrc.includes(solLimpo) ? "" : "zoom-animate"
-            }`}
-            src={iconSrc}
-            alt={weather.description}
-          />
+          <img className={`icones`} src={iconSrc} alt={weather.description} />
           {descriptionTextPrim && (
             <div className="description-textPrim">{descriptionTextPrim}</div>
           )}

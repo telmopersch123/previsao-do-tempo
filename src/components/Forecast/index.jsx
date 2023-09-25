@@ -3,6 +3,8 @@ import axios from "axios";
 import moment from "moment";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
+import temperAlta from "../../icones/temperatura-alta.png";
+import temperBaixa from "../../icones/temperatura-baixa.png";
 const Forecast = ({ lat, lon, Celsius }) => {
   const apiKey = "7273310237e2d7aafdbb11f14ddd01f9";
   const [dailyForecast, setDailyForecast] = useState([]);
@@ -49,20 +51,32 @@ const Forecast = ({ lat, lon, Celsius }) => {
 
   return (
     <div className="forecast">
-      <h2>Previsão do tempo:</h2>
+      <div className="cont_title_prev">
+        <h2 className="title_prev">Previsão para cinco dias</h2>
+      </div>
       <div className="separator-day">
         {dailyForecast.slice(0, 5).map((day, index) => (
           <div key={index} className="forecast-day">
-            <p className="data_forecast">
-              {moment(day.date).format("DD/MM/YYYY")}
-            </p>
-
+            <div className="data_div_forecast zoom-animate">
+              {moment(day.date)
+                .format("DD/MM/YY")
+                .split("/")
+                .map((segment, i) => (
+                  <p key={i} className="data_forecast">
+                    {segment}
+                  </p>
+                ))}
+            </div>
             <div className="Morning_forecast">
               <p className="title_morning">Manhã</p>
               {day.morning.map((item, i) => (
                 <div key={i} className="temp_forecast">
                   <p className="temp_forecast_max">
-                    Máx:{" "}
+                    <img
+                      className="icone_temp"
+                      src={temperAlta}
+                      alt="Temperatura Alta"
+                    />
                     {(Celsius
                       ? item.main.temp_max - 273.15
                       : convertorFahrenheit(item.main.temp_max - 273.15)
@@ -70,7 +84,11 @@ const Forecast = ({ lat, lon, Celsius }) => {
                     °{Celsius ? "C" : "F"}
                   </p>
                   <p className="temp_forecast_min">
-                    Mín:{" "}
+                    <img
+                      className="icone_temp"
+                      src={temperBaixa}
+                      alt="Temperatura Baixa"
+                    />
                     {(Celsius
                       ? item.main.temp_min - 273.15
                       : convertorFahrenheit(item.main.temp_min - 273.15)
@@ -86,7 +104,11 @@ const Forecast = ({ lat, lon, Celsius }) => {
               {day.afternoon.map((item, i) => (
                 <div key={i} className="temp_forecast">
                   <p className="temp_forecast_max">
-                    Máx:{" "}
+                    <img
+                      className="icone_temp"
+                      src={temperAlta}
+                      alt="Temperatura Alta"
+                    />
                     {(Celsius
                       ? item.main.temp_max - 273.15
                       : convertorFahrenheit(item.main.temp_max - 273.15)
@@ -94,7 +116,11 @@ const Forecast = ({ lat, lon, Celsius }) => {
                     °{Celsius ? "C" : "F"}
                   </p>
                   <p className="temp_forecast_min">
-                    Mín:{" "}
+                    <img
+                      className="icone_temp"
+                      src={temperBaixa}
+                      alt="Temperatura Baixa"
+                    />
                     {(Celsius
                       ? item.main.temp_min - 273.15
                       : convertorFahrenheit(item.main.temp_min - 273.15)
@@ -110,7 +136,11 @@ const Forecast = ({ lat, lon, Celsius }) => {
               {day.night.map((item, i) => (
                 <div key={i} className="temp_forecast">
                   <p className="temp_forecast_max">
-                    Máx:{" "}
+                    <img
+                      className="icone_temp"
+                      src={temperAlta}
+                      alt="Temperatura Alta"
+                    />
                     {(Celsius
                       ? item.main.temp_max - 273.15
                       : convertorFahrenheit(item.main.temp_max - 273.15)
@@ -118,7 +148,11 @@ const Forecast = ({ lat, lon, Celsius }) => {
                     °{Celsius ? "C" : "F"}
                   </p>
                   <p className="temp_forecast_min">
-                    Mín:{" "}
+                    <img
+                      className="icone_temp"
+                      src={temperBaixa}
+                      alt="Temperatura Baixa"
+                    />
                     {(Celsius
                       ? item.main.temp_min - 273.15
                       : convertorFahrenheit(item.main.temp_min - 273.15)
