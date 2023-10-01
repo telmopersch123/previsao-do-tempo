@@ -78,12 +78,10 @@ font-weight: 300;
   border-radius: 10em;
   width: auto;
   padding: 10px;
-  background: rgb(67, 90, 167);
-    background: radial-gradient(circle, rgb(59, 91, 155) 0%, rgba(99, 120, 196, 1) 54%, rgba(57, 116, 187, 1) 100%);
-    background-size: 300% 300%;
-      animation: gradient-animation 25s ease infinite;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.293);
 
+  background-size: 200% 200%;
+  animation: gradient-animation  25s ease infinite;
 }
 @keyframes gradient-animation {
   0% {
@@ -99,7 +97,7 @@ font-weight: 300;
   }
 }
 .data_div_forecast{
-  background-color: rgba(0, 0, 0, 0.22);
+  background-color: rgba(0, 0, 0, 0.517);
   border-radius: 100px;
   padding: 10px 25px 10px 25px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.235);
@@ -116,7 +114,7 @@ font-weight: 300;
   color: rgb(255, 255, 255);
   font-weight: 00;
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.657);
 }
 .forecast-day > div > div > p{
   font-size: 14px;
@@ -151,6 +149,7 @@ font-weight: 300;
     border-radius: 100px;
     float: left;
     margin: 0px 10px 0 0;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.365);
 }
 .temp_forecast_min{
     display: flex;
@@ -160,6 +159,7 @@ font-weight: 300;
     padding: 15px 15px 15px 15px;
     border-radius: 100px;
     float: right;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.365);
 }
 .icone_temp{
   width: 20px;

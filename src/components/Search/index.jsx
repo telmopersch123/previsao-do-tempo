@@ -6,7 +6,7 @@ import WeahterIcon from "../WeatherIcon";
 import Button from "../Button";
 import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
-import Forecast from "../Forecast";
+import Forecast from "../forecast";
 
 function Search({ props }) {
   const [Celsius, setIsCelsius] = useState(true);
@@ -22,7 +22,7 @@ function Search({ props }) {
   const [unixSunset, setUnixSunset] = useState(null);
   const [convertedDateTime, setConvertedDateTime] = useState(null);
   const [currentTimeUpdate, setCurrentTimeUpdate] = useState(null);
-  const apiKey = "X23G21TAIZTX";
+  const apiKey = "H6TZ60LH2XNH";
 
   const [valorCorrente, setValorCorrente] = useState();
   const [lat, setLat] = useState();
@@ -54,7 +54,7 @@ function Search({ props }) {
             setLon(lon);
             axios
               .get(
-                `http://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=position&lat=${lat}&lng=${lon}`,
+                `https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=position&lat=${lat}&lng=${lon}`,
               )
               .then((response) => {
                 const weatherData = weatherResponse.data;
@@ -91,17 +91,6 @@ function Search({ props }) {
         );
       });
   };
-
-  // const convertorFahrenheit = (celsius) => {
-  //  setIsCelsius((prevCelsius) => !prevCelsius);
-  // return (celsius * 9) / 5 + 32;
-  //};
-
-  //};
-
-  // Restante do seu código...
-
-  // Função para lidar com a mudança na unidade de temperatura
 
   return (
     <div className="searchWr">
@@ -177,7 +166,12 @@ function Search({ props }) {
             gust={weatherData.wind.gust}
             directionWind={weatherData.wind.deg}
           />
-          <Forecast lat={lat} lon={lon} Celsius={Celsius} />
+          <Forecast
+            valorCorrente={valorCorrente}
+            lat={lat}
+            lon={lon}
+            Celsius={Celsius}
+          />
         </div>
       ) : (
         <div>Pesquise por algo acima...</div>

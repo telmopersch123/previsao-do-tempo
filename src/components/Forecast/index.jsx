@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
+import { convertorFahrenheit } from "../Conv";
 import "./index.css";
 import temperAlta from "../../icones/temperatura-alta.png";
 import temperBaixa from "../../icones/temperatura-baixa.png";
@@ -9,25 +10,19 @@ import iconeTarde from "../../icones/sol_tarde.gif";
 import iconeLua from "../../icones/lua_noite.gif";
 
 const Forecast = ({ lat, lon, Celsius }) => {
-  const [morningData, setMorningData] = useState(null);
-  const [afternoonData, setAfternoonData] = useState(null);
-  const [nightData, setNightData] = useState(null);
-  const [dailyData, setDailyForecast] = useState([]);
+  const [dailyForecast, setDailyForecast] = useState([]);
 
   useEffect(() => {
-    const apiUrl = `https://api.tomorrow.io/v4/weather/forecast?location=${lat},${lon}&apikey=DkVHKM1ZxZiYcXd2P1F7xG5WTIh2m3ZK`;
     axios
-      .get(apiUrl)
+      .get(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=944362047ea30b04b99466aff4f5887e`,
+      )
       .then((response) => {
-        console.log(response.data);
-        const dailyData = response.data;
-        if (dailyData && Array.isArray(dailyData)) {
-          if (dailyData) {
-            setDailyForecast(dailyData);
-          }
-          const filteredForecast = dailyData.data.reduce((result, item) => {
+        if (Array.isArray(response.data.list)) {
+          const dailyData = response.data.list;
+          console.log(dailyData);
+          const filteredForecast = dailyData.reduce((result, item) => {
             const date = moment(item.dt_txt).format("YYYY-MM-DD");
-            const dailyData = response.data;
 
             if (!result[date]) {
               result[date] = {
@@ -46,55 +41,79 @@ const Forecast = ({ lat, lon, Celsius }) => {
             }
             return result;
           }, {});
+
+          const dailyForecastArray = Object.values(filteredForecast);
+
+          setDailyForecast(dailyForecastArray);
+        } else {
+          alert("Ops!, algo deu errado!");
         }
       })
       .catch((error) => {
         console.error("Erro ao buscar dados de previsão:", error);
       });
   }, [lat, lon]);
-
   const textos = ["Manhã", "Tarde", "Noite"];
   const [cliques, setCliques] = useState(0);
-  let dados_manha = { display: "block" };
-  let dados_tarde = { display: "none" };
-  let dados_noite = { display: "none" };
-
+  let dados_manha = null;
+  let dados_tarde = null;
+  let dados_noite = null;
+  let fundoManha = null;
+  let fundoTarde = null;
+  let fundoNoite = null;
   const trocarTexto = () => {
     setCliques((cliques + 1) % textos.length);
   };
 
-  const obterIconeAtual = () => {
+  const mudarFundo = () => {
     switch (textos[cliques]) {
       case "Manhã":
-        dados_manha = { display: "block" };
+        dados_manha = { display: "flex" };
         dados_tarde = { display: "none" };
         dados_noite = { display: "none" };
+        fundoManha = {
+          display: "flex",
+          backgroundImage:
+            "radial-gradient(circle, #ffff7d 0%, #ffffe0 54%, #ffff9f 100%)",
+          backgroundSize: "200% 200%",
+        };
         return iconeManha;
       case "Tarde":
         dados_manha = { display: "none" };
-        dados_tarde = { display: "block" };
+        dados_tarde = { display: "flex" };
         dados_noite = { display: "none" };
+        fundoTarde = {
+          display: "flex",
+          backgroundImage:
+            "radial-gradient(circle, #e89763 0%, #ffae79 54%, #ba6837 100%)",
+          backgroundSize: "200% 200%",
+        };
         return iconeTarde;
+
       case "Noite":
         dados_manha = { display: "none" };
         dados_tarde = { display: "none" };
-        dados_noite = { display: "block" };
+        dados_noite = { display: "flex" };
+        fundoNoite = {
+          display: "flex",
+          backgroundImage:
+            "radial-gradient(circle, #47487a 0%, #5d5c90 54%, #17487a 100%)",
+          backgroundSize: "200% 200%",
+        };
         return iconeLua;
       default:
-        dados_manha = { display: "block" };
-        dados_tarde = { display: "none" };
-        dados_noite = { display: "none" };
-        return iconeManha;
+        return;
     }
   };
-
   const botaoStyle = {
-    background: `url(${obterIconeAtual()}) center/cover no-repeat`,
+    background: `url(${mudarFundo()}) center/cover no-repeat`,
   };
 
   function getTemperature(temperature, isCelsius) {
     return (
-      isCelsius ? temperature - 273.15 : (temperature - 273.15) * (9 / 5) + 32
+      isCelsius
+        ? temperature - 273.15
+        : convertorFahrenheit(temperature - 273.15)
     ).toFixed(0);
   }
 
@@ -115,96 +134,99 @@ const Forecast = ({ lat, lon, Celsius }) => {
         <h2 className="title_prev">Previsão para cinco dias</h2>
       </div>
       <div className="separator-day">
-        <div key={1} className="forecast-day">
-          <div className="data_div_forecast zoom-animate">
-            {moment(new Date())
-              .format("DD/MM/YY")
-              .split("/")
-              .map((segment, i) => (
-                <p key={i} className="data_forecast">
-                  {segment}
-                </p>
+        {dailyForecast.slice(0, 5).map((day, index) => (
+          <div
+            key={index}
+            className="forecast-day"
+            style={Object.assign({}, fundoManha, fundoNoite, fundoTarde)}
+          >
+            <div className="data_div_forecast zoom-animate">
+              {moment(day.date)
+                .format("DD/MM/YY")
+                .split("/")
+                .map((segment, i) => (
+                  <p key={i} className="data_forecast">
+                    {segment}
+                  </p>
+                ))}
+            </div>
+
+            <div className="Morning_forecast" style={dados_manha}>
+              {day.morning.map((item, i) => (
+                <div key={i} className="temp_forecast">
+                  <p className="temp_forecast_max">
+                    <img
+                      className="icone_temp"
+                      src={temperAlta}
+                      alt="Temperatura Alta"
+                    />
+                    {getTemperature(item.main.temp_max, Celsius)}°
+                    {Celsius ? "C" : "F"}
+                  </p>
+                  <p className="temp_forecast_min">
+                    <img
+                      className="icone_temp"
+                      src={temperBaixa}
+                      alt="Temperatura Baixa"
+                    />
+                    {getTemperature(item.main.temp_min - 3, Celsius)}°
+                    {Celsius ? "C" : "F"}
+                  </p>
+                </div>
               ))}
+            </div>
+
+            <div className="Afternoon_forecast" style={dados_tarde}>
+              {day.afternoon.map((item, i) => (
+                <div key={i} className="temp_forecast">
+                  <p className="temp_forecast_max">
+                    <img
+                      className="icone_temp"
+                      src={temperAlta}
+                      alt="Temperatura Alta"
+                    />
+                    {getTemperature(item.main.temp_max, Celsius)}°
+                    {Celsius ? "C" : "F"}
+                  </p>
+                  <p className="temp_forecast_min">
+                    <img
+                      className="icone_temp"
+                      src={temperBaixa}
+                      alt="Temperatura Baixa"
+                    />
+                    {getTemperature(item.main.temp_min - 10, Celsius)}°
+                    {Celsius ? "C" : "F"}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="Night_forecast" style={dados_noite}>
+              {day.night.map((item, i) => (
+                <div key={i} className="temp_forecast">
+                  <p className="temp_forecast_max">
+                    <img
+                      className="icone_temp"
+                      src={temperAlta}
+                      alt="Temperatura Alta"
+                    />
+                    {getTemperature(item.main.temp_max, Celsius)}°
+                    {Celsius ? "C" : "F"}
+                  </p>
+                  <p className="temp_forecast_min">
+                    <img
+                      className="icone_temp"
+                      src={temperBaixa}
+                      alt="Temperatura Baixa"
+                    />
+                    {getTemperature(item.main.temp_min - 5, Celsius)}°
+                    {Celsius ? "C" : "F"}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="Morning_forecast" style={dados_manha}>
-            {morningData && (
-              <div className="temp_forecast">
-                <p className="temp_forecast_max">
-                  <img
-                    className="icone_temp"
-                    src={temperAlta}
-                    alt="Temperatura Alta"
-                  />
-                  {`${getTemperature(morningData.max, Celsius)}°${
-                    Celsius ? "C" : "F"
-                  }`}
-                </p>
-                <p className="temp_forecast_min">
-                  <img
-                    className="icone_temp"
-                    src={temperBaixa}
-                    alt="Temperatura Baixa"
-                  />
-                  {`${getTemperature(morningData.min, Celsius)}°${
-                    Celsius ? "C" : "F"
-                  }`}
-                </p>
-              </div>
-            )}
-          </div>
-          <div className="Afternoon_forecast" style={dados_tarde}>
-            {afternoonData && (
-              <div className="temp_forecast">
-                <p className="temp_forecast_max">
-                  <img
-                    className="icone_temp"
-                    src={temperAlta}
-                    alt="Temperatura Alta"
-                  />
-                  {`${getTemperature(afternoonData.max, Celsius)}°${
-                    Celsius ? "C" : "F"
-                  }`}
-                </p>
-                <p className="temp_forecast_min">
-                  <img
-                    className="icone_temp"
-                    src={temperBaixa}
-                    alt="Temperatura Baixa"
-                  />
-                  {`${getTemperature(afternoonData.min, Celsius)}°${
-                    Celsius ? "C" : "F"
-                  }`}
-                </p>
-              </div>
-            )}
-          </div>
-          <div className="Night_forecast" style={dados_noite}>
-            {nightData && (
-              <div className="temp_forecast">
-                <p className="temp_forecast_max">
-                  <img
-                    className="icone_temp"
-                    src={temperAlta}
-                    alt="Temperatura Alta"
-                  />
-                  {`${getTemperature(nightData.max, Celsius)}°${
-                    Celsius ? "C" : "F"
-                  }`}
-                </p>
-                <p className="temp_forecast_min">
-                  <img
-                    className="icone_temp"
-                    src={temperBaixa}
-                    alt="Temperatura Baixa"
-                  />
-                  {`${getTemperature(nightData.min, Celsius)}°${
-                    Celsius ? "C" : "F"
-                  }`}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

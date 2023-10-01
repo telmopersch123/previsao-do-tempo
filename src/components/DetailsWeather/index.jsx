@@ -47,9 +47,9 @@ const DetailsWeather = ({
             temp_max !== undefined || temp_min !== undefined ? "" : "dados_ind"
           }
         >
-          {`Temperatura máxima de ${temperaturaMax.toFixed(0)}`}{" "}
+          {`Temperatura máxima de ${(temperaturaMax + 2).toFixed(0)}`}{" "}
           {Celsius ? "°C" : "°F"} |{" "}
-          {`Temperatura minima de ${temperaturaMin.toFixed(0)}`}{" "}
+          {`Temperatura minima de ${temperaturaMin.toFixed(0) - 2}`}{" "}
           {Celsius ? "°C" : "°F"}
         </p>
       ) : (
