@@ -3,6 +3,7 @@ import Button from "../Button";
 import FeatherIcon from "feather-icons-react";
 import { convertorFahrenheit } from "../Conv";
 import "../../App.css";
+
 const DetailsWeather = ({
   wind,
   feels_like,
@@ -95,7 +96,7 @@ const DetailsWeather = ({
         </p>
       )}
 
-      <p className={directionWind !== undefined ? "" : "dados_ind"}>
+      <div className={directionWind !== undefined ? "" : "dados_ind"}>
         {(directionWind >= 0 && directionWind <= 20) ||
         (directionWind >= 340 && directionWind <= 360) ? (
           <div className="align-text-icon">
@@ -140,7 +141,7 @@ const DetailsWeather = ({
         ) : (
           `Error:404`
         )}
-      </p>
+      </div>
     </div>
   );
 };

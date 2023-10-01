@@ -23,7 +23,7 @@ const Forecast = ({ lat, lon, Celsius }) => {
           console.log(dailyData);
           const filteredForecast = dailyData.reduce((result, item) => {
             const date = moment(item.dt_txt).format("YYYY-MM-DD");
-
+            console.log(date);
             if (!result[date]) {
               result[date] = {
                 date,
@@ -34,11 +34,28 @@ const Forecast = ({ lat, lon, Celsius }) => {
             }
             if (moment(item.dt_txt).format("HH:mm") === "09:00") {
               result[date].morning.push(item);
-            } else if (moment(item.dt_txt).format("HH:mm") === "15:00") {
-              result[date].afternoon.push(item);
-            } else if (moment(item.dt_txt).format("HH:mm") === "21:00") {
-              result[date].night.push(item);
             }
+            if (moment(item.dt_txt).format("HH:mm") === "15:00") {
+              result[date].afternoon.push(item);
+            } else {
+              if (
+                moment(item.dt_txt).format("HH:mm") === "'12:00" &&
+                date === "2023-10-06"
+              ) {
+                result[date].afternoon.push(item);
+              }
+            }
+            if (moment(item.dt_txt).format("HH:mm") === "21:00") {
+              result[date].night.push(item);
+            } else {
+              if (
+                moment(item.dt_txt).format("HH:mm") === "00:00" &&
+                date === "2023-10-06"
+              ) {
+                result[date].night.push(item);
+              }
+            }
+
             return result;
           }, {});
 
@@ -116,7 +133,7 @@ const Forecast = ({ lat, lon, Celsius }) => {
         : convertorFahrenheit(temperature - 273.15)
     ).toFixed(0);
   }
-
+  6;
   return (
     <div className="forecast">
       <div className="cont_title_prev">
@@ -134,7 +151,7 @@ const Forecast = ({ lat, lon, Celsius }) => {
         <h2 className="title_prev">Previsão para cinco dias</h2>
       </div>
       <div className="separator-day">
-        {dailyForecast.slice(0, 5).map((day, index) => (
+        {dailyForecast.slice(1, 6).map((day, index) => (
           <div
             key={index}
             className="forecast-day"

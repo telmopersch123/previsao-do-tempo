@@ -156,6 +156,8 @@ function Search({ props }) {
             name={weatherData.name}
             weather={weatherData.weather[0].description}
             temp={weatherData.main.temp}
+            lat={lat}
+            lon={lon}
           />
           <DetailsWeather
             Celsius={Celsius}
