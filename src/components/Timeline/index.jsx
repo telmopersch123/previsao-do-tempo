@@ -1,15 +1,25 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import {
+  interaction,
+  layer,
+  custom,
+  control, //name spaces
+  Interactions,
+  Overlays,
+  Controls, //group
+  Map,
+  Layers,
+  Overlay,
+  Util, //objects
+} from "react-openlayers";
+import { fromLonLat } from "ol/proj";
+
 import moment from "moment";
 import Button from "../Button";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
 //Mapas//
-import "ol/ol.css";
-import Map from "ol/Map";
-import View from "ol/View";
-import TileLayer from "ol/layer/Tile";
-import OSM from "ol/source/OSM";
-import XYZ from "ol/source/XYZ";
+
 const Timeline = ({
   timeUpdate1,
   sys,
@@ -37,48 +47,50 @@ const Timeline = ({
       setFormattedTime(updateFormattedTime(timeUpdate1));
     }
   }, [timeUpdate1]);
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setFormattedTime((prevTime) =>
-        moment(prevTime, "HH:mm:ss").add(1, "seconds").format("HH:mm:ss"),
-      );
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setFormattedTime((prevTime) =>
+  //       moment(prevTime, "HH:mm:ss").add(1, "seconds").format("HH:mm:ss"),
+  //     );
+  //   }, 1000);
+
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   useEffect(() => {
     if (temp !== undefined) {
       setTemperatureDisplay(Celsius ? temp : convertorFahrenheit(temp));
     }
   }, [Celsius, temp]);
+
   const [temperatureDisplay, setTemperatureDisplay] = useState(temp);
-  const z = 10;
-  const x = 40.71286;
-  const y = -74.006;
-  const mapContainer = useRef(null);
-  const apiKey = `944362047ea30b04b99466aff4f5887e`;
-  let map = useRef(null);
+
+  const [mapCenter, setMapCenter] = useState(fromLonLat([lon, lat]));
+  const [zoomCenter, setZoomCenter] = useState();
+  const [mapKey, setMapKey] = useState(Math.random());
   useEffect(() => {
-    if (mapContainer.current) {
-      map.current = new Map({
-        target: mapContainer.current,
-        layers: [
-          new TileLayer({
-            source: new XYZ({
-              url: `https://tile.openweathermap.org/map/temp_new/${z}/${x}/${y}.png?appid=${apiKey}`,
-            }),
-          }),
-        ],
-        view: new View({
-          center: [x, y],
-          zoom: z,
-        }),
-      });
-    }
-  }, [apiKey]);
+    setMapCenter(fromLonLat([lon, lat]));
+    setZoomCenter(10);
+    setMapKey(Math.random());
+  }, [lon, lat]);
+
   return (
     <div className="itens_prim">
-      <div ref={mapContainer} className="map-container"></div>
+      <div className="Map">
+        <Map
+          key={mapKey}
+          view={{
+            center: mapCenter, // Verifique se lon e lat estão corretos
+            zoom: zoomCenter, // Ajuste o nível de zoom conforme necessário
+          }}
+        >
+          <interaction.DragPan />
+          <Layers>
+            <layer.Tile />
+          </Layers>
+        </Map>
+      </div>
 
       <p className={temp !== undefined ? "" : "dados_ind"}>
         {temp !== undefined ? (

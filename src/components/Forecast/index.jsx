@@ -151,7 +151,7 @@ const Forecast = ({ lat, lon, Celsius }) => {
         <h2 className="title_prev">Previsão para cinco dias</h2>
       </div>
       <div className="separator-day">
-        {dailyForecast.slice(1, 6).map((day, index) => (
+        {dailyForecast.slice(0, 5).map((day, index) => (
           <div
             key={index}
             className="forecast-day"
