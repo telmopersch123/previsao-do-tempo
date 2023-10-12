@@ -129,26 +129,13 @@ function Search({ props }) {
               convertedDateTime={convertedDateTime}
               currentTimeUpdate={currentTimeUpdate}
             />
+
             <Button
               Celsius={Celsius}
               onTemperatureConversion={handleTemperatureConversion}
             />
-            {/* <WeahterInfo
-              data={weatherData}
-              timeUpdate1={timeUpdate1}
-              setClasses={setClasses}
-              cloudsData={cloudsData}
-              rainData={rainData}
-              snowData={snowData}
-              unixSunrise={unixSunrise}
-              unixSunset={unixSunset}
-              convertedDateTime={convertedDateTime}
-              currentTimeUpdate={currentTimeUpdate}
-              valorCorrente={valorCorrente}
-              lat={lat}
-              lon={lon}
-            /> */}
           </div>
+
           <Timeline
             Celsius={Celsius}
             timeUpdate1={timeUpdate1}
@@ -159,6 +146,7 @@ function Search({ props }) {
             lat={lat}
             lon={lon}
           />
+
           <DetailsWeather
             Celsius={Celsius}
             feels_like={weatherData.main.feels_like}
@@ -168,6 +156,7 @@ function Search({ props }) {
             gust={weatherData.wind.gust}
             directionWind={weatherData.wind.deg}
           />
+
           <Forecast
             valorCorrente={valorCorrente}
             lat={lat}
