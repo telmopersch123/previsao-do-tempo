@@ -27,7 +27,6 @@ function Search({ props }) {
   const [valorCorrente, setValorCorrente] = useState();
   const [lat, setLat] = useState();
   const [lon, setLon] = useState();
-
   const handleTemperatureConversion = (newTemperature, newCelsius) => {
     setTemperature(newTemperature);
     setIsCelsius(newCelsius);

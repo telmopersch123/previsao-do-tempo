@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-  interaction,
-  layer,
-  custom,
-  control, //name spaces
-  Interactions,
-  Overlays,
-  Controls, //group
-  Map,
-  Layers,
-  Overlay,
-  Util, //objects
-} from "react-openlayers";
-import { fromLonLat } from "ol/proj";
-
+import React, { useState, useEffect, useRef } from "react";
 import moment from "moment";
-import Button from "../Button";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
+
 //Mapas//
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 const Timeline = ({
   timeUpdate1,
@@ -58,33 +45,51 @@ const Timeline = ({
   }, [Celsius, temp]);
 
   const [temperatureDisplay, setTemperatureDisplay] = useState(temp);
+  const mapRef = useRef(null);
+  const mapInstance = useRef(null);
 
-  const [mapCenter, setMapCenter] = useState(fromLonLat([lon, lat]));
-  const [zoomCenter, setZoomCenter] = useState();
-  const [mapKey, setMapKey] = useState(Math.random());
   useEffect(() => {
-    setMapCenter(fromLonLat([lon, lat]));
-    setZoomCenter(10);
-    setMapKey(Math.random());
-  }, [lon, lat]);
+    // Verifica se o mapa já foi inicializado
+    if (mapRef.current) {
+      // Destrói a instância do mapa existente
+      if (mapInstance.current) {
+        mapInstance.current.remove();
+      }
+
+      // Cria e inicializa um novo mapa na div
+      const map = L.map(mapRef.current).setView([lat, lon], 10);
+
+      const temperatureLayer = L.tileLayer(
+        "https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=4d8fb5b93d4af21d66a2948710284366",
+        {
+          attribution: "OpenWeatherMap",
+          zIndex: 1,
+        },
+      );
+
+      const openStreetMapLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        },
+      );
+
+      openStreetMapLayer.addTo(map);
+      temperatureLayer.addTo(map);
+
+      mapInstance.current = map;
+    }
+  }, [lat, lon]);
 
   return (
     <div className="itens_prim">
-      <div className="Map">
-        <Map
-          key={mapKey}
-          view={{
-            center: mapCenter, // Verifique se lon e lat estão corretos
-            zoom: zoomCenter, // Ajuste o nível de zoom conforme necessário
-          }}
-        >
-          <interaction.DragPan />
-          <Layers>
-            <layer.Tile />
-          </Layers>
-        </Map>
-      </div>
-
+      <div
+        ref={mapRef}
+        id="map"
+        style={{ width: "800px", height: "600px" }}
+      ></div>
       <p className={temp !== undefined ? "" : "dados_ind"}>
         {temp !== undefined ? (
           `Temperatura de ${temperatureDisplay.toFixed(0)} ${

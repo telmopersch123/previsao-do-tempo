@@ -14,8 +14,10 @@
     "leaflet": "^1.9.4",
     "moment": "^2.29.4",
     "ol": "^8.1.0",
+    "ol-ext": "^4.0.11",
     "prop-types": "^15.8.1",
     "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
     "react-refresh": "^0.14.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
