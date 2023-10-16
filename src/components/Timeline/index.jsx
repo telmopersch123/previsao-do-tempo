@@ -55,13 +55,20 @@ const Timeline = ({
       if (mapInstance.current) {
         mapInstance.current.remove();
       }
-
+      const maxBounds = [
+        [-90, -180], // Limites máximos do mundo
+        [90, 180],
+      ];
       // Cria e inicializa um novo mapa na div
-      const map = L.map(mapRef.current).setView([lat, lon], 10);
-
+      const map = L.map(mapRef.current, {
+        maxBounds: maxBounds, // Defina os limites máximos
+        maxBoundsViscosity: 1.0, // Isso ajuda a manter o mapa dentro dos limites
+      }).setView([lat, lon], 10); // Defina o zoom inicial
       const temperatureLayer = L.tileLayer(
         "https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=4d8fb5b93d4af21d66a2948710284366",
         {
+          maxZoom: 10,
+          minZoom: 3,
           attribution: "OpenWeatherMap",
           zIndex: 1,
         },
@@ -70,15 +77,39 @@ const Timeline = ({
       const openStreetMapLayer = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
-          maxZoom: 19,
+          maxZoom: 10,
+          minZoom: 3,
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         },
       );
 
       openStreetMapLayer.addTo(map);
       temperatureLayer.addTo(map);
-
+      const temperatureControl = L.control({ position: "bottomleft" });
+      temperatureControl.onAdd = function (map) {
+        const div = L.DomUtil.create("div", "info legend");
+        div.innerHTML = `
+        <div class="scale-details">
+          <div class="scale-label">Temperatura °C </div>
+          <div class="organized-bar">
+            <div class="numbers-bar">
+              <p>-40</p>
+              <p>-20</p>
+              <p>0</p>
+              <p>20</p>
+              <p>40</p>
+            </div>
+            <div class="scale-bar">
+              <div class="scale-gradient"></div>
+            </div>
+          </div>
+        </div>
+      `;
+        return div;
+      };
+      openStreetMapLayer.addTo(map);
+      temperatureControl.addTo(map);
       mapInstance.current = map;
     }
   }, [lat, lon]);

@@ -1,4 +1,74 @@
-/* .map-container{
+
+.scale-details {
+color: #48484a;
+  height: 20pt;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12pt 4pt;
+  background-color: #fff;
+  -webkit-border-radius: 4pt;
+  border-radius: 4pt;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+  -webkit-transition: -webkit-box-shadow .1s ease-out;
+  -o-transition: box-shadow .1s ease-out;
+  transition: box-shadow .1s ease-out;
+  transition: box-shadow .1s ease-out, -webkit-box-shadow .1s ease-out;
+  margin-bottom: 10px;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  font-size: 10px;
+  float: right;
+}
+.scale-label {
+  font-size: 12px;
+  margin-right: 10px;
+  width: 85px;
+}
+.organized-bar{
+  margin-left: 10px;
+}
+.scale-bar {
+  width: 200px;
+  height: 7px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.numbers-bar {
+  display: flex;
+  gap: 35px;
+}
+.scale-gradient {
   width: 100%;
-  height: 400px;
-} */
+  height: 100%;
+  background: linear-gradient(to right,
+      #6500d1 10%,
+
+      #774eff 20%,
+
+      #1269f6 30%,
+
+      #00d0ff97 40%,
+
+      #68fcf378 50%,
+
+      #c9f563a3 60%,
+
+      #ffd21c 70%,
+
+      #f69f12 80%,
+
+      #ff6a00 90%,
+
+      #ae0000 100%
+    );
+}
