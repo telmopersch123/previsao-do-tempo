@@ -1,4 +1,14 @@
-
+.map-container {
+  width: 800px;
+  min-width: 337.5px;
+  height: 500px;
+  min-height: 250px;
+  /* Defina a altura máxima desejada */
+}
+.numbers-bar {
+  display: flex;
+  gap: 36px;
+}
 .scale-details {
 color: #48484a;
   height: 20pt;
@@ -38,14 +48,10 @@ color: #48484a;
 }
 .scale-bar {
   width: 200px;
-  height: 7px;
+  height: 5.5px;
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: hidden;
-}
-.numbers-bar {
-  display: flex;
-  gap: 35px;
 }
 .scale-gradient {
   width: 100%;
@@ -71,4 +77,145 @@ color: #48484a;
 
       #ae0000 100%
     );
+}
+.scale-gradient-pressure {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right,
+      #006aff 10%,
+
+      #0095ff 20%,
+
+      #00f7ff 30%,
+
+      #00ffaa97 40%,
+
+      #84ff0078 50%,
+
+      #d0ff00a3 60%,
+
+      #ffcc00 70%,
+
+      #ff7300 80%,
+
+      #ff6a00 90%,
+
+      #ff0000 100%);
+}
+.scale-gradient-wind {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right,
+      #ffffff 10%,
+
+      rgba(249, 188, 255, 0.276) 15%,
+
+      #f9b2ff44 20%,
+
+      #e089f459 30%,
+
+      #e379fd4a 40%,
+
+      #dc5ffe30 50%,
+
+      #cd46f64a 60%,
+
+      #ba39fb85 70%,
+
+      #be24fb6c 80%,
+
+      #aa1ffa88 90%,
+
+      #4f0174a7 100%);
+}
+.scale-gradient-clouds {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right,
+      #ffffff 10%,
+
+      #ffffff 20%,
+
+      #ffffff 30%,
+
+      #ffffff 40%,
+
+      rgba(173, 173, 173, 0.106) 50%,
+
+      #a9a9a91c 60%,
+
+      #9a9a9a58 70%,
+
+      rgba(164, 164, 164, 0.43) 80%,
+
+      #9e9e9e9c 90%,
+
+      #989898 100%);
+}
+.scale-gradient-precipitation {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right,
+      white 1%,
+
+      #88ffac 10%,
+
+      #59fa91 20%,
+
+      #02b165 30%,
+
+      #00341b 40%,
+
+      rgb(250, 252, 114) 50%,
+
+      rgb(253, 219, 51) 60%,
+
+      #ffb300 70%,
+
+      rgb(255, 0, 0) 80%,
+
+      #ff0000 90%,
+
+      #a600ff 100%);
+}
+/* Adicione estilos CSS adequados para destacar o botão ativo */
+.map-layer-buttons button.active {
+  background-color: #007bff;
+  /* Cor de destaque do botão ativo */
+  color: #fff;
+  /* Cor do texto do botão ativo */
+}
+.map-container.precipitation {
+  min-width: 400px;
+}
+
+    .precipitation-numbers {
+      display: flex;
+      gap: 10.75px;
+    }
+
+    .precipitation-bars {
+      width: 264px;
+    }
+
+.map-container.clouds {
+  min-width: 337.5px;
+}
+
+.map-container.wind {
+  min-width: 337.5px;
+}
+
+    .wind-speed-numbers {
+      display: flex;
+      gap: 18px;
+    }
+
+.map-container.pressure {
+  min-width: 337.5px;
+}
+
+.pressao-numbers {
+  display: flex;
+  gap: 25px;
 }

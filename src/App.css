@@ -218,7 +218,7 @@ flex-direction: row;
 .itens_prim{
   display: flex;
   justify-content: center;
-  width: 75%;
+  width: auto;
   height: auto;
   padding: 10px;
   align-self: center;
