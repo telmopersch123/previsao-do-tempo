@@ -36,7 +36,7 @@ const Forecast = ({ lat, lon, Celsius }) => {
             if (moment(item.dt_txt).format("HH:mm") === "12:00") {
               result[date].afternoon.push(item);
             }
-            if (moment(item.dt_txt).format("HH:mm") === "00:00") {
+            if (moment(item.dt_txt).format("HH:mm") === "21:00") {
               result[date].night.push(item);
             }
 
@@ -135,7 +135,7 @@ const Forecast = ({ lat, lon, Celsius }) => {
         <h2 className="title_prev">Previsão para cinco dias</h2>
       </div>
       <div className="separator-day">
-        {dailyForecast.slice(1, 6).map((day, index) => (
+        {dailyForecast.slice(0, 5).map((day, index) => (
           <div
             key={index}
             className="forecast-day"

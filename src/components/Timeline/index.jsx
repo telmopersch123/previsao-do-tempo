@@ -157,7 +157,10 @@ const Timeline = ({
     scaleDetailsMap["temp"],
   );
   const [currentSituation, setCurrentSituation] = useState("temp"); // Comece com "temp" como padrão
-
+  const [showLayerButtons, setShowLayerButtons] = useState(false);
+  const toggleLayerButtons = () => {
+    setShowLayerButtons(!showLayerButtons);
+  };
   const changeMapLayer = (newLayer) => {
     setMapLayer(newLayer);
     setScaleDetailsContent(scaleDetailsMap[newLayer]);
@@ -216,43 +219,63 @@ const Timeline = ({
 
   return (
     <div className="itens_prim">
-      <div className="map-layer-buttons">
-        <button
-          onClick={() => changeMapLayer("temp")}
-          className={mapLayer === "temp" ? "active" : ""}
-        >
-          Temperature
-        </button>
-        <button
-          onClick={() => changeMapLayer("pressure")}
-          className={mapLayer === "pressure" ? "active" : ""}
-        >
-          Pressure
-        </button>
-        <button
-          onClick={() => changeMapLayer("wind")}
-          className={mapLayer === "wind" ? "active" : ""}
-        >
-          Wind Speed
-        </button>
-        <button
-          onClick={() => changeMapLayer("clouds")}
-          className={mapLayer === "clouds" ? "active" : ""}
-        >
-          Clouds
-        </button>
-        <button
-          onClick={() => changeMapLayer("precipitation")}
-          className={mapLayer === "precipitation" ? "active" : ""}
-        >
-          Precipitation
-        </button>
-      </div>
       <div
         ref={mapRef}
         id="map"
         className={`map-container ${currentSituation}`}
-      ></div>
+      >
+        <div className="map-layer-buttons">
+          <button
+            className="layer-escolher"
+            style={{
+              backgroundColor: "white",
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0px 0px 5px #00000080",
+              borderRadius: showLayerButtons ? "10px 10px 0 0" : "10px",
+            }}
+            onClick={toggleLayerButtons}
+          >
+            Escolher Camada
+          </button>
+          {showLayerButtons && ( // Renderizar os botões de layer se showLayerButtons for verdadeiro
+            <>
+              <div className="layers-escolha">
+                <button
+                  onClick={() => changeMapLayer("temp")}
+                  className={mapLayer === "temp" ? "active" : ""}
+                >
+                  Temperature
+                </button>
+                <button
+                  onClick={() => changeMapLayer("pressure")}
+                  className={mapLayer === "pressure" ? "active" : ""}
+                >
+                  Pressure
+                </button>
+                <button
+                  onClick={() => changeMapLayer("wind")}
+                  className={mapLayer === "wind" ? "active" : ""}
+                >
+                  Wind Speed
+                </button>
+                <button
+                  onClick={() => changeMapLayer("clouds")}
+                  className={mapLayer === "clouds" ? "active" : ""}
+                >
+                  Clouds
+                </button>
+                <button
+                  onClick={() => changeMapLayer("precipitation")}
+                  className={mapLayer === "precipitation" ? "active" : ""}
+                >
+                  Precipitation
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
 
       <p className={temp !== undefined ? "" : "dados_ind"}>
         {temp !== undefined ? (
