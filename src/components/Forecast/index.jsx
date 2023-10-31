@@ -39,7 +39,6 @@ const Forecast = ({ lat, lon, Celsius }) => {
             if (moment(item.dt_txt).format("HH:mm") === "21:00") {
               result[date].night.push(item);
             }
-
             return result;
           }, {});
 
@@ -150,81 +149,99 @@ const Forecast = ({ lat, lon, Celsius }) => {
                     {segment}
                   </p>
                 ))}
+              {""}
             </div>
-
             <div className="Morning_forecast" style={dados_manha}>
-              {day.morning.map((item, i) => (
-                <div key={i} className="temp_forecast">
-                  <p className="temp_forecast_max">
-                    <img
-                      className="icone_temp"
-                      src={temperAlta}
-                      alt="Temperatura Alta"
-                    />
-                    {getTemperature(item.main.temp_max, Celsius)}°
-                    {Celsius ? "C" : "F"}
-                  </p>
-                  <p className="temp_forecast_min">
-                    <img
-                      className="icone_temp"
-                      src={temperBaixa}
-                      alt="Temperatura Baixa"
-                    />
-                    {getTemperature(item.main.temp_min - 3, Celsius)}°
-                    {Celsius ? "C" : "F"}
-                  </p>
-                </div>
-              ))}
+              {Array.isArray(day.morning) && day.morning.length > 0 ? (
+                day.morning.map((item, i) => (
+                  <div key={i} className="temp_forecast">
+                    <p className="temp_forecast_max">
+                      <img
+                        className="icone_temp"
+                        src={temperAlta}
+                        alt="Temperatura Alta"
+                      />
+                      {getTemperature(item.main.temp_max, Celsius)}°
+                      {Celsius ? "C" : "F"}
+                    </p>
+                    <p className="temp_forecast_min">
+                      <img
+                        className="icone_temp"
+                        src={temperBaixa}
+                        alt="Temperatura Baixa"
+                      />
+                      {getTemperature(item.main.temp_min - 3, Celsius)}°
+                      {Celsius ? "C" : "F"}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p style={{ color: "#8B0000" }} className="temp_forecast_max">
+                  Valores Indisponíveis
+                </p>
+              )}
             </div>
 
             <div className="Afternoon_forecast" style={dados_tarde}>
-              {day.afternoon.map((item, i) => (
-                <div key={i} className="temp_forecast">
-                  <p className="temp_forecast_max">
-                    <img
-                      className="icone_temp"
-                      src={temperAlta}
-                      alt="Temperatura Alta"
-                    />
-                    {getTemperature(item.main.temp_max, Celsius)}°
-                    {Celsius ? "C" : "F"}
-                  </p>
-                  <p className="temp_forecast_min">
-                    <img
-                      className="icone_temp"
-                      src={temperBaixa}
-                      alt="Temperatura Baixa"
-                    />
-                    {getTemperature(item.main.temp_min - 10, Celsius)}°
-                    {Celsius ? "C" : "F"}
-                  </p>
-                </div>
-              ))}
+              {Array.isArray(day.afternoon) && day.afternoon.length > 0 ? (
+                day.afternoon.map((item, i) => (
+                  <div key={i} className="temp_forecast">
+                    <p className="temp_forecast_max">
+                      <img
+                        className="icone_temp"
+                        src={temperAlta}
+                        alt="Temperatura Alta"
+                      />
+                      {getTemperature(item.main.temp_max, Celsius)}°
+                      {Celsius ? "C" : "F"}
+                    </p>
+                    <p className="temp_forecast_min">
+                      <img
+                        className="icone_temp"
+                        src={temperBaixa}
+                        alt="Temperatura Baixa"
+                      />
+                      {getTemperature(item.main.temp_min - 10, Celsius)}°
+                      {Celsius ? "C" : "F"}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p style={{ color: "#8B0000" }} className="temp_forecast_max">
+                  Valores Indisponíveis
+                </p>
+              )}
             </div>
 
             <div className="Night_forecast" style={dados_noite}>
-              {day.night.map((item, i) => (
-                <div key={i} className="temp_forecast">
-                  <p className="temp_forecast_max">
-                    <img
-                      className="icone_temp"
-                      src={temperAlta}
-                      alt="Temperatura Alta"
-                    />
-                    {getTemperature(item.main.temp_max, Celsius)}°
-                    {Celsius ? "C" : "F"}
-                  </p>
-                  <p className="temp_forecast_min">
-                    <img
-                      className="icone_temp"
-                      src={temperBaixa}
-                      alt="Temperatura Baixa"
-                    />
-                    {getTemperature(item.main.temp_min - 5, Celsius)}°
-                    {Celsius ? "C" : "F"}
-                  </p>
-                </div>
-              ))}
+              {Array.isArray(day.night) && day.night.length > 0 ? (
+                day.night.map((item, i) => (
+                  <div key={i} className="temp_forecast">
+                    <p className="temp_forecast_max">
+                      <img
+                        className="icone_temp"
+                        src={temperAlta}
+                        alt="Temperatura Alta"
+                      />
+                      {getTemperature(item.main.temp_max, Celsius)}°
+                      {Celsius ? "C" : "F"}
+                    </p>
+                    <p className="temp_forecast_min">
+                      <img
+                        className="icone_temp"
+                        src={temperBaixa}
+                        alt="Temperatura Baixa"
+                      />
+                      {getTemperature(item.main.temp_min - 5, Celsius)}°
+                      {Celsius ? "C" : "F"}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p style={{ color: "#8B0000" }} className="temp_forecast_max">
+                  Valores Indisponíveis
+                </p>
+              )}
             </div>
           </div>
         ))}
