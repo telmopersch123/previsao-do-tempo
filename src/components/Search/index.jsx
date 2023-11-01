@@ -23,7 +23,6 @@ function Search({ props }) {
   const [convertedDateTime, setConvertedDateTime] = useState(null);
   const [currentTimeUpdate, setCurrentTimeUpdate] = useState(null);
   const apiKey = "H6TZ60LH2XNH";
-
   const [valorCorrente, setValorCorrente] = useState();
   const [lat, setLat] = useState();
   const [lon, setLon] = useState();
