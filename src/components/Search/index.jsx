@@ -7,6 +7,7 @@ import Button from "../Button";
 import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
 import Forecast from "../forecast";
+import ButtonExample from "../ButtonExample";
 
 function Search({ props }) {
   const [Celsius, setIsCelsius] = useState(true);
@@ -161,9 +162,12 @@ function Search({ props }) {
             lon={lon}
             Celsius={Celsius}
           />
+          <ButtonExample variant="filled">teste</ButtonExample>
         </div>
       ) : (
-        <div>Pesquise por algo acima...</div>
+        <>
+          <div>Pesquise por algo acima...</div>
+        </>
       )}
     </div>
   );
