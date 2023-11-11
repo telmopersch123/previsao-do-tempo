@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 
@@ -7,7 +7,7 @@ import Button from "../Button";
 import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
 import Forecast from "../forecast";
-import ButtonExample from "../ButtonExample";
+import Graphic from "../Graphic";
 
 function Search({ props }) {
   const [Celsius, setIsCelsius] = useState(true);
@@ -27,9 +27,13 @@ function Search({ props }) {
   const [valorCorrente, setValorCorrente] = useState();
   const [lat, setLat] = useState();
   const [lon, setLon] = useState();
+  const [dailyData, setDailyData] = useState([]);
   const handleTemperatureConversion = (newTemperature, newCelsius) => {
     setTemperature(newTemperature);
     setIsCelsius(newCelsius);
+  };
+  const handleDailyDataChange = (newDailyData) => {
+    setDailyData(newDailyData);
   };
 
   const searchInput = (e) => {
@@ -134,7 +138,6 @@ function Search({ props }) {
               onTemperatureConversion={handleTemperatureConversion}
             />
           </div>
-
           <Timeline
             Celsius={Celsius}
             timeUpdate1={timeUpdate1}
@@ -145,7 +148,6 @@ function Search({ props }) {
             lat={lat}
             lon={lon}
           />
-
           <DetailsWeather
             Celsius={Celsius}
             feels_like={weatherData.main.feels_like}
@@ -155,14 +157,15 @@ function Search({ props }) {
             gust={weatherData.wind.gust}
             directionWind={weatherData.wind.deg}
           />
-
           <Forecast
             valorCorrente={valorCorrente}
             lat={lat}
             lon={lon}
             Celsius={Celsius}
+            dailyData={dailyData}
+            onDailyDataChange={handleDailyDataChange}
           />
-          <ButtonExample variant="filled">teste</ButtonExample>
+          <Graphic dailyData={dailyData} />
         </div>
       ) : (
         <>

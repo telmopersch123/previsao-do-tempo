@@ -4,6 +4,7 @@ import * as S from './styles'
 export type ButtonExampleProps = {
   children: string | ReactNode;
   variant?: 'filled' | 'outlined';
+  size?: "small" | "medium" | "large";
 }
 
 const ButtonExample = ({children,variant}: ButtonExampleProps) => {

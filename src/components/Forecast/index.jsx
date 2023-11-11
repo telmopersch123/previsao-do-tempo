@@ -8,10 +8,9 @@ import temperBaixa from "../../icones/temperatura-baixa.png";
 import iconeManha from "../../icones/sol_manha.gif";
 import iconeTarde from "../../icones/sol_tarde.gif";
 import iconeLua from "../../icones/lua_noite.gif";
-import Graphic from "../Graphic";
-const Forecast = ({ lat, lon, Celsius }) => {
+const Forecast = ({ lat, lon, Celsius, onDailyDataChange }) => {
   const [dailyForecast, setDailyForecast] = useState([]);
-  const [dailyData01, setDailyData] = useState([]);
+  const [dailyData00, setDailyData] = useState([]);
   useEffect(() => {
     axios
       .get(
@@ -46,6 +45,8 @@ const Forecast = ({ lat, lon, Celsius }) => {
           const dailyForecastArray = Object.values(filteredForecast);
 
           setDailyForecast(dailyForecastArray);
+          onDailyDataChange(dailyForecastArray);
+          setDailyData(dailyData);
         } else {
           alert("Ops!, algo deu errado!");
         }
@@ -120,7 +121,6 @@ const Forecast = ({ lat, lon, Celsius }) => {
   6;
   return (
     <div className="forecast">
-      <Graphic dailyData={dailyData01} />;
       <div className="cont_title_prev">
         <div className="div_fore_title_weather">
           <div className="div_botao_fore_troc">
