@@ -8,9 +8,16 @@ import temperBaixa from "../../icones/temperatura-baixa.png";
 import iconeManha from "../../icones/sol_manha.gif";
 import iconeTarde from "../../icones/sol_tarde.gif";
 import iconeLua from "../../icones/lua_noite.gif";
-const Forecast = ({ lat, lon, Celsius, onDailyDataChange }) => {
+const Forecast = ({
+  lat,
+  lon,
+  Celsius,
+  onDailyDataChange,
+  onNewMomentDayChange,
+}) => {
   const [dailyForecast, setDailyForecast] = useState([]);
   const [dailyData00, setDailyData] = useState([]);
+  const [newMomentDay, setNewMomentDay] = useState([]);
   useEffect(() => {
     axios
       .get(
@@ -63,9 +70,26 @@ const Forecast = ({ lat, lon, Celsius, onDailyDataChange }) => {
   let fundoManha = null;
   let fundoTarde = null;
   let fundoNoite = null;
+
   const trocarTexto = () => {
     setCliques((cliques + 1) % textos.length);
   };
+  useEffect(() => {
+    switch (textos[cliques]) {
+      case "Manhã":
+        setNewMomentDay("manha");
+        break;
+      case "Tarde":
+        setNewMomentDay("tarde");
+        break;
+      case "Noite":
+        setNewMomentDay("noite");
+        break;
+      default:
+        break;
+    }
+    onNewMomentDayChange(newMomentDay);
+  }, [cliques, textos]);
 
   const mudarFundo = () => {
     switch (textos[cliques]) {
@@ -107,6 +131,7 @@ const Forecast = ({ lat, lon, Celsius, onDailyDataChange }) => {
         return;
     }
   };
+
   const botaoStyle = {
     background: `url(${mudarFundo()}) center/cover no-repeat`,
   };
@@ -118,7 +143,6 @@ const Forecast = ({ lat, lon, Celsius, onDailyDataChange }) => {
         : convertorFahrenheit(temperature - 273.15)
     ).toFixed(0);
   }
-  6;
   return (
     <div className="forecast">
       <div className="cont_title_prev">

@@ -28,14 +28,16 @@ function Search({ props }) {
   const [lat, setLat] = useState();
   const [lon, setLon] = useState();
   const [dailyData, setDailyData] = useState([]);
+  const [newMomentDay, setNewMomentDay] = useState([]);
   const handleTemperatureConversion = (newTemperature, newCelsius) => {
     setTemperature(newTemperature);
     setIsCelsius(newCelsius);
   };
-  const handleDailyDataChange = (newDailyData) => {
-    setDailyData(newDailyData);
-  };
 
+  const handleDailyDataChange = (newDailyData, newMoment_day) => {
+    setDailyData(newDailyData);
+    setNewMomentDay(newMoment_day);
+  };
   const searchInput = (e) => {
     const valorCorrente = document.querySelector(".inputCidade").value;
 
@@ -163,9 +165,13 @@ function Search({ props }) {
             lon={lon}
             Celsius={Celsius}
             dailyData={dailyData}
+            newMomentDay={newMomentDay}
             onDailyDataChange={handleDailyDataChange}
+            onNewMomentDayChange={(newMomentDay) =>
+              setNewMomentDay(newMomentDay)
+            }
           />
-          <Graphic dailyData={dailyData} />
+          <Graphic dailyData={dailyData} newMomentDay={newMomentDay} />
         </div>
       ) : (
         <>
