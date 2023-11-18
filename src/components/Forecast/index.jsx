@@ -196,7 +196,7 @@ const Forecast = ({
                         src={temperBaixa}
                         alt="Temperatura Baixa"
                       />
-                      {getTemperature(item.main.temp_min - 3, Celsius)}°
+                      {getTemperature(item.main.temp_min - 2, Celsius)}°
                       {Celsius ? "C" : "F"}
                     </p>
                   </div>
