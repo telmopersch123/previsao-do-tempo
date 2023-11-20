@@ -1,19 +1,27 @@
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
+
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
+
+import { convertorFahrenheit } from "../Conv";
+
 import "./index.css";
 
-const Graphic = ({ dailyData, newMomentDay }) => {
+const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
+  const [morningData, setMorningData] = useState([]);
   const temperature_manha = dailyData;
-
   const mapDayPeriod = (period) => {
     period = newMomentDay;
+
     switch (period) {
       case "manha":
         return "morning";
+
       case "tarde":
         return "afternoon";
+
       case "noite":
         return "night";
+
       default:
         return period;
     }
@@ -21,55 +29,66 @@ const Graphic = ({ dailyData, newMomentDay }) => {
 
   const getTemperature = (data, period) => {
     const day = mapDayPeriod(period);
+
     return (
       data?.[day]?.[0]?.main || { temp_max: undefined, temp_min: undefined }
     );
   };
-  const generateMorningData = (temperatureData, period) => {
+  function getTemperature01(temperature) {
+    return Celsius
+      ? temperature - 273.15
+      : convertorFahrenheit(temperature - 273.15);
+  }
+
+  const generateTemperatureData = (temperatureData, period, offset) => {
     return Array.from({ length: 5 }, (_, i) => {
       const day = i + 1;
       const { temp_max, temp_min } = getTemperature(
         temperatureData[day - 1],
+
         period,
       );
 
       return {
         day,
-        temp_max: temp_max ? (temp_max - 273.15).toFixed(0) : undefined,
-        temp_min:
-          period === "manha"
-            ? temp_min
-              ? (temp_min - 273.15 - 2).toFixed(0)
-              : undefined
-            : period === "tarde"
-              ? temp_min
-                ? (temp_min - 273.15 - 10).toFixed(0)
-                : undefined
-              : period === "noite"
-                ? temp_min
-                  ? (temp_min - 273.15 - 5).toFixed(0)
-                  : undefined
-                : undefined,
+        temp_max: temp_max ? getTemperature01(temp_max).toFixed(0) : undefined,
+        temp_min: temp_min
+          ? getTemperature01(temp_min - offset).toFixed(0)
+          : undefined,
       };
     });
   };
+  const generateMorningData = () => {
+    return generateTemperatureData(
+      dailyData,
+      newMomentDay,
+      newMomentDay === "manha" ? 2 : newMomentDay === "tarde" ? 10 : 5,
+    );
+  };
 
-  const morningData = generateMorningData(temperature_manha, newMomentDay);
+  useEffect(() => {
+    setMorningData(generateMorningData());
+  }, [dailyData, newMomentDay, Celsius]);
 
   const CustomTooltipContent = ({ payload, label }) => {
     return (
       <div
         style={{
           background: "#141a1f",
+
           color: "#fff",
+
           borderRadius: "13px",
+
           textAlign: "center",
+
           padding: "10px",
-          transition: "opacity 0.01s",
         }}
       >
         {label}
+
         <hr style={{ borderTop: "1px solid", opacity: 0.5 }} />
+
         <div style={{ display: "flex", flexDirection: "column" }}>
           {payload &&
             payload.map((entry, index) => (
@@ -77,24 +96,32 @@ const Graphic = ({ dailyData, newMomentDay }) => {
                 key={index}
                 style={{
                   display: "flex",
+
                   alignItems: "center",
+
                   marginRight: "10px",
                 }}
               >
                 <div
                   style={{
                     width: "10px",
+
                     height: "10px",
+
                     borderRadius: "50%",
-                    backgroundColor:
+
+                    background: `linear-gradient(to right, ${
                       entry.name === "Temperatura Máxima"
-                        ? "#9e2a2a"
-                        : "#00aaff",
+                        ? "#9e2a2a, #ff7a7a"
+                        : "#00aaff, #7ad4ff"
+                    })`,
+
                     marginRight: "5px",
                   }}
                 ></div>
+
                 <span>
-                  {entry.name} : {entry.value}
+                  {entry.name} : {entry.value} °{Celsius ? "C" : "F"}
                 </span>
               </div>
             ))}
@@ -102,9 +129,42 @@ const Graphic = ({ dailyData, newMomentDay }) => {
       </div>
     );
   };
+  const [showItems, setShowitems] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const Button = () => {
+    const handleClick = () => {
+      setShowitems(!showItems);
+      setIsOpen(!isOpen);
+    };
+    const Item = () => {
+      return (
+        <div className={`div_tipo_grapchis ${isOpen ? "open" : ""}`}>
+          <p>Item</p>
+          <p>Item</p>
+          <p>Item</p>
+        </div>
+      );
+    };
+    return (
+      <div className="div_button_grapchis">
+        <button
+          style={{
+            borderRadius: showItems ? "50px 0px 0px 50px" : "50px",
+          }}
+          className={`button_grapchis`}
+          onClick={handleClick}
+        >
+          Gráficos
+        </button>
+        {showItems && <Item />}
+      </div>
+    );
+  };
 
   return (
     <div className="graphics">
+      <Button />
       <BarChart
         width={1500}
         height={400}
@@ -112,6 +172,7 @@ const Graphic = ({ dailyData, newMomentDay }) => {
         style={{
           textShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
           fontWeight: "300",
+          marginTop: "30px",
         }}
       >
         <XAxis
@@ -119,19 +180,26 @@ const Graphic = ({ dailyData, newMomentDay }) => {
           tick={{ fill: "#fff" }}
           axisLine={{ stroke: "#fff" }}
         />
+
         <YAxis tick={{ fill: "#fff" }} axisLine={{ stroke: "#fff" }} />
+
         <Tooltip
           labelFormatter={(day) => (
             <div>
               {day}
+
               <hr style={{ borderTop: "1px solid", opacity: 0.5 }} />
             </div>
           )}
           contentStyle={{
             background: "#141a1f",
+
             color: "#fff",
+
             border: "none",
+
             borderRadius: "13px",
+
             textAlign: "center",
           }}
           itemStyle={{
@@ -141,6 +209,7 @@ const Graphic = ({ dailyData, newMomentDay }) => {
         >
           {/* outros conteúdos do Tooltip */}
         </Tooltip>
+
         <Legend
           verticalAlign="top"
           align="center"
@@ -149,22 +218,38 @@ const Graphic = ({ dailyData, newMomentDay }) => {
           iconSize={10}
           formatter={(value) => <span style={{ color: "#fff" }}>{value}</span>}
         />
+
         <Bar
           dataKey="temp_max"
-          fill="#9e2a2a"
+          fill="url(#max-temp-gradient)"
           stackId="A"
           name="Temperatura Máxima"
           barSize={70}
           className="bar-with-shadow"
         />
+
         <Bar
           dataKey="temp_min"
-          fill="#00aaff"
+          fill="url(#min-temp-gradient)"
           stackId="B"
           name="Temperatura Mínima"
           barSize={70}
           className="bar-with-shadow"
         />
+
+        <defs>
+          <linearGradient id="max-temp-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#ff7a7a" />
+
+            <stop offset="100%" stopColor="#9e2a2a" />
+          </linearGradient>
+
+          <linearGradient id="min-temp-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#7a9eff" />
+
+            <stop offset="100%" stopColor="#2a459e" />
+          </linearGradient>
+        </defs>
       </BarChart>
     </div>
   );

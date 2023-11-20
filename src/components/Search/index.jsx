@@ -171,7 +171,11 @@ function Search({ props }) {
               setNewMomentDay(newMomentDay)
             }
           />
-          <Graphic dailyData={dailyData} newMomentDay={newMomentDay} />
+          <Graphic
+            dailyData={dailyData}
+            newMomentDay={newMomentDay}
+            Celsius={Celsius}
+          />
         </div>
       ) : (
         <>
