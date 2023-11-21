@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
-
 import { convertorFahrenheit } from "../Conv";
-
 import "./index.css";
+import { none } from "ol/centerconstraint";
+import grapchis_icon from "../../icones/grafico-preditivo.png";
 
 const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
   const [morningData, setMorningData] = useState([]);
@@ -70,7 +69,17 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     setMorningData(generateMorningData());
   }, [dailyData, newMomentDay, Celsius]);
 
+  const formatCustomDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day} - ${month} - ${year}`;
+  };
+
   const CustomTooltipContent = ({ payload, label }) => {
+    const dayIndex = parseInt(label) - 1; // dayIndex começa em 1
+    const selectedData = dailyData[dayIndex];
+    const formattedDate = selectedData
+      ? formatCustomDate(selectedData.date)
+      : "";
     return (
       <div
         style={{
@@ -85,7 +94,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           padding: "10px",
         }}
       >
-        {label}
+        {formattedDate}
 
         <hr style={{ borderTop: "1px solid", opacity: 0.5 }} />
 
@@ -129,25 +138,14 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
       </div>
     );
   };
-  const [showItems, setShowitems] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
 
+  const [showItems, setShowItems] = useState(false);
   const Button = () => {
     const handleClick = () => {
-      setShowitems(!showItems);
-      setIsOpen(!isOpen);
-    };
-    const Item = () => {
-      return (
-        <div className={`div_tipo_grapchis ${isOpen ? "open" : ""}`}>
-          <p>Item</p>
-          <p>Item</p>
-          <p>Item</p>
-        </div>
-      );
+      setShowItems(!showItems);
     };
     return (
-      <div className="div_button_grapchis">
+      <div className={`div_button_grapchis`}>
         <button
           style={{
             borderRadius: showItems ? "50px 0px 0px 50px" : "50px",
@@ -155,10 +153,34 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           className={`button_grapchis`}
           onClick={handleClick}
         >
-          Gráficos
+          <img
+            style={{ width: "25px", height: "25px", objectFit: "cover" }}
+            src={grapchis_icon}
+            alt="Gráficos"
+          />
         </button>
-        {showItems && <Item />}
+        <div
+          style={{
+            display: showItems ? "flex" : "none",
+          }}
+          className={`div_tipo_grapchis ${showItems ? "div_animada" : ""}`}
+          onClick={handleClick}
+        >
+          <p>Item</p>
+          <p>Item</p>
+          <p>Item</p>
+        </div>
       </div>
+    );
+  };
+  const CustomYAxisTick = ({ x, y, payload }) => {
+    const unitSymbol = Celsius ? "°C" : "°F";
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={0} y={0} dy={-4} textAnchor="end" fill="#fff" fontSize={14}>
+          {`${payload.value} ${unitSymbol}`}
+        </text>
+      </g>
     );
   };
 
@@ -166,13 +188,11 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     <div className="graphics">
       <Button />
       <BarChart
-        width={1500}
+        width={1000}
         height={400}
         data={morningData}
         style={{
           textShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
-          fontWeight: "300",
-          marginTop: "30px",
         }}
       >
         <XAxis
@@ -180,8 +200,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           tick={{ fill: "#fff" }}
           axisLine={{ stroke: "#fff" }}
         />
-
-        <YAxis tick={{ fill: "#fff" }} axisLine={{ stroke: "#fff" }} />
+        <YAxis axisLine={{ stroke: "#fff" }} tick={<CustomYAxisTick />} />
 
         <Tooltip
           labelFormatter={(day) => (
@@ -209,7 +228,6 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
         >
           {/* outros conteúdos do Tooltip */}
         </Tooltip>
-
         <Legend
           verticalAlign="top"
           align="center"
@@ -218,7 +236,6 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           iconSize={10}
           formatter={(value) => <span style={{ color: "#fff" }}>{value}</span>}
         />
-
         <Bar
           dataKey="temp_max"
           fill="url(#max-temp-gradient)"
@@ -227,7 +244,6 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           barSize={70}
           className="bar-with-shadow"
         />
-
         <Bar
           dataKey="temp_min"
           fill="url(#min-temp-gradient)"
@@ -236,7 +252,6 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           barSize={70}
           className="bar-with-shadow"
         />
-
         <defs>
           <linearGradient id="max-temp-gradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#ff7a7a" />

@@ -1,5 +1,7 @@
+
 .graphics{
-  height: 45vh;
+  min-height: 45vh;
+  height: 100%;
   margin-top: 30px;
   background-color: #002d53;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.419);
@@ -11,7 +13,6 @@
 .bar-with-shadow {
   filter: drop-shadow(0px -5px 8px rgba(0, 0, 0, 0.2));
 }
-
 .button_grapchis{
   background-color: #3a3a3a;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
@@ -20,7 +21,6 @@
   color: rgba(255, 255, 255, 0.257);
   border: NONE;
 }
-
 .div_tipo_grapchis{
   background-color: #3a3a3a;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
@@ -30,6 +30,7 @@
   border: NONE;
   display: flex;
   gap: 20px;
+  display: block;
 }
 .div_button_grapchis{
   display: flex;
@@ -38,5 +39,19 @@
   left: 0;
   margin-top: 10px;
   margin-left: 10px;
+}
+.div_animada {
+animation: slideIn 0.1s ease-in-out;
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
