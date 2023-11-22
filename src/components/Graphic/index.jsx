@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import { PieChart } from "@mui/x-charts/PieChart";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
-import { none } from "ol/centerconstraint";
 import grapchis_icon from "../../icones/grafico-preditivo.png";
-
+import grapchis_icon_weather from "../../icones/grafico_chuva.png";
+import grapchis_icon_cloudy from "../../icones/nublado_grafico.png";
+import grapchis_icon_estatistics from "../../icones/estatisticas_grafico.png";
 const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
   const [morningData, setMorningData] = useState([]);
   const temperature_manha = dailyData;
@@ -138,9 +140,19 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
       </div>
     );
   };
-
+  const [selectedChart, setSelectedChart] = useState("barChart");
+  const handleCloudyIconClick = () => {
+    setSelectedChart((prevChart) =>
+      prevChart === "barChart" ? "pieChart" : "barChart",
+    );
+  };
   const [showItems, setShowItems] = useState(false);
-  const Button = () => {
+  const data = [
+    { id: 0, value: 10, label: "series A" },
+    { id: 1, value: 15, label: "series B" },
+    { id: 2, value: 20, label: "series C" },
+  ];
+  const Button = (props) => {
     const handleClick = () => {
       setShowItems(!showItems);
     };
@@ -154,7 +166,13 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           onClick={handleClick}
         >
           <img
-            style={{ width: "25px", height: "25px", objectFit: "cover" }}
+            style={{
+              width: "35px",
+              height: "30px",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.419)",
+              borderRadius: "10px",
+              padding: "5px",
+            }}
             src={grapchis_icon}
             alt="Gráficos"
           />
@@ -164,11 +182,21 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
             display: showItems ? "flex" : "none",
           }}
           className={`div_tipo_grapchis ${showItems ? "div_animada" : ""}`}
-          onClick={handleClick}
         >
-          <p>Item</p>
-          <p>Item</p>
-          <p>Item</p>
+          <img
+            title="Pressão atmosférica"
+            src={grapchis_icon_estatistics}
+            alt="Gráficos"
+          />
+          <p>|</p>
+          <img
+            onClick={props.onCloudyIconClick}
+            title="Condições sinóticas"
+            src={grapchis_icon_cloudy}
+            alt="Gráficos"
+          />
+          <p>|</p>
+          <img title="Chuvas" src={grapchis_icon_weather} alt="Gráficos" />
         </div>
       </div>
     );
@@ -183,89 +211,103 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
       </g>
     );
   };
-
   return (
     <div className="graphics">
-      <Button />
-      <BarChart
-        width={1000}
-        height={400}
-        data={morningData}
-        style={{
-          textShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
-        }}
-      >
-        <XAxis
-          dataKey="day"
-          tick={{ fill: "#fff" }}
-          axisLine={{ stroke: "#fff" }}
-        />
-        <YAxis axisLine={{ stroke: "#fff" }} tick={<CustomYAxisTick />} />
-
-        <Tooltip
-          labelFormatter={(day) => (
-            <div>
-              {day}
-
-              <hr style={{ borderTop: "1px solid", opacity: 0.5 }} />
-            </div>
-          )}
-          contentStyle={{
-            background: "#141a1f",
-
-            color: "#fff",
-
-            border: "none",
-
-            borderRadius: "13px",
-
-            textAlign: "center",
+      <Button onCloudyIconClick={handleCloudyIconClick} />
+      {selectedChart === "barChart" ? (
+        <BarChart
+          width={1000}
+          height={400}
+          data={morningData}
+          style={{
+            textShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
           }}
-          itemStyle={{
-            color: "#fff",
-          }}
-          content={<CustomTooltipContent />}
         >
-          {/* outros conteúdos do Tooltip */}
-        </Tooltip>
-        <Legend
-          verticalAlign="top"
-          align="center"
-          wrapperStyle={{ color: "#fff", marginTop: "-15px" }}
-          iconType="square"
-          iconSize={10}
-          formatter={(value) => <span style={{ color: "#fff" }}>{value}</span>}
-        />
-        <Bar
-          dataKey="temp_max"
-          fill="url(#max-temp-gradient)"
-          stackId="A"
-          name="Temperatura Máxima"
-          barSize={70}
-          className="bar-with-shadow"
-        />
-        <Bar
-          dataKey="temp_min"
-          fill="url(#min-temp-gradient)"
-          stackId="B"
-          name="Temperatura Mínima"
-          barSize={70}
-          className="bar-with-shadow"
-        />
-        <defs>
-          <linearGradient id="max-temp-gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ff7a7a" />
+          <XAxis
+            dataKey="day"
+            tick={{ fill: "#fff" }}
+            axisLine={{ stroke: "#fff" }}
+          />
+          <YAxis axisLine={{ stroke: "#fff" }} tick={<CustomYAxisTick />} />
 
-            <stop offset="100%" stopColor="#9e2a2a" />
-          </linearGradient>
+          <Tooltip
+            labelFormatter={(day) => (
+              <div>
+                {day}
 
-          <linearGradient id="min-temp-gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#7a9eff" />
+                <hr style={{ borderTop: "1px solid", opacity: 0.5 }} />
+              </div>
+            )}
+            contentStyle={{
+              background: "#141a1f",
 
-            <stop offset="100%" stopColor="#2a459e" />
-          </linearGradient>
-        </defs>
-      </BarChart>
+              color: "#fff",
+
+              border: "none",
+
+              borderRadius: "13px",
+
+              textAlign: "center",
+            }}
+            itemStyle={{
+              color: "#fff",
+            }}
+            content={<CustomTooltipContent />}
+          >
+            {/* outros conteúdos do Tooltip */}
+          </Tooltip>
+          <Legend
+            verticalAlign="top"
+            align="center"
+            wrapperStyle={{ color: "#fff", marginTop: "-15px" }}
+            iconType="square"
+            iconSize={10}
+            formatter={(value) => (
+              <span style={{ color: "#fff" }}>{value}</span>
+            )}
+          />
+          <Bar
+            dataKey="temp_max"
+            fill="url(#max-temp-gradient)"
+            stackId="A"
+            name="Temperatura Máxima"
+            barSize={70}
+            className="bar-with-shadow"
+          />
+          <Bar
+            dataKey="temp_min"
+            fill="url(#min-temp-gradient)"
+            stackId="B"
+            name="Temperatura Mínima"
+            barSize={70}
+            className="bar-with-shadow"
+          />
+          <defs>
+            <linearGradient id="max-temp-gradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#ff7a7a" />
+
+              <stop offset="100%" stopColor="#9e2a2a" />
+            </linearGradient>
+
+            <linearGradient id="min-temp-gradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#7a9eff" />
+
+              <stop offset="100%" stopColor="#2a459e" />
+            </linearGradient>
+          </defs>
+        </BarChart>
+      ) : (
+        <PieChart
+          series={[
+            {
+              data,
+              highlightScope: { faded: "global", highlighted: "item" },
+              faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+            },
+          ]}
+          height={200}
+        />
+      )}
     </div>
   );
 };
