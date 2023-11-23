@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import moment from "moment";
 import * as React from "react";
 import {
   BarChart,
@@ -10,10 +11,8 @@ import {
   LineChart,
   Line,
   ResponsiveContainer,
-  Area,
   ReferenceArea,
 } from "recharts";
-
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
 
@@ -23,10 +22,9 @@ import grapchis_icon_cloudy from "../../icones/nublado_grafico.png";
 import grapchis_icon_estatistics from "../../icones/estatisticas_grafico.png";
 const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
   const [morningData, setMorningData] = useState([]);
-  const temperature_manha = dailyData;
+
   const mapDayPeriod = (period) => {
     period = newMomentDay;
-
     switch (period) {
       case "manha":
         return "morning";
@@ -42,11 +40,14 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     }
   };
 
-  const getTemperature = (data, period) => {
+  const getTemperature = (dailyData, period) => {
     const day = mapDayPeriod(period);
 
     return (
-      data?.[day]?.[0]?.main || { temp_max: undefined, temp_min: undefined }
+      dailyData?.[day]?.[0]?.main || {
+        temp_max: undefined,
+        temp_min: undefined,
+      }
     );
   };
   function getTemperature01(temperature) {
@@ -56,16 +57,17 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
   }
 
   const generateTemperatureData = (temperatureData, period, offset) => {
+    const days = Object.keys(temperatureData).map(Number); // Converta chaves para números
+    const minDay = Math.min(...days);
     return Array.from({ length: 5 }, (_, i) => {
-      const day = i + 1;
+      const day = minDay + i;
       const { temp_max, temp_min } = getTemperature(
-        temperatureData[day - 1],
-
+        temperatureData[day],
         period,
       );
 
       return {
-        day,
+        day: i + 1,
         temp_max: temp_max ? getTemperature01(temp_max).toFixed(0) : undefined,
         temp_min: temp_min
           ? getTemperature01(temp_min - offset).toFixed(0)
@@ -73,11 +75,12 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
       };
     });
   };
+
   const generateMorningData = () => {
     return generateTemperatureData(
       dailyData,
       newMomentDay,
-      newMomentDay === "manha" ? 2 : newMomentDay === "tarde" ? 10 : 5,
+      newMomentDay === "manha" ? 2 : newMomentDay === "tarde" ? 5 : 5,
     );
   };
 
@@ -90,7 +93,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     return `${day} - ${month} - ${year}`;
   };
   const CustomTooltipContent = ({ payload, label }) => {
-    const dayIndex = parseInt(label) - 1; // dayIndex começa em 1
+    const dayIndex = parseInt(label - 1); // dayIndex começa em 1
     const selectedData = dailyData[dayIndex];
     const formattedDate = selectedData
       ? formatCustomDate(selectedData.date)
@@ -215,15 +218,17 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     );
   };
 
-  const [connectNulls, setConnectNulls] = React.useState(true);
-  const extractHumidityData = () => {
+  const extractHumidityData = (period) => {
+    const dayPeriod = mapDayPeriod(period);
+    const days = Object.keys(dailyData).map(Number); // Converta chaves para números
+    const minDay = Math.min(...days);
     return Array.from({ length: 5 }, (_, i) => {
-      const day = 1 + i;
-      const humidity = dailyData[day - 1]?.morning[0]?.main.humidity;
-      const visibility = dailyData[day - 1]?.morning[0]?.visibility / 1000;
-      const cloudy = dailyData[day - 1]?.morning[0]?.clouds.all;
+      const day = minDay + i;
+      const humidity = dailyData[day]?.[dayPeriod]?.[0]?.main.humidity;
+      const visibility = dailyData[day]?.[dayPeriod]?.[0]?.visibility / 1000;
+      const cloudy = dailyData[day]?.[dayPeriod]?.[0]?.clouds.all;
       return {
-        day,
+        day: 1 + i,
         humidity: humidity !== undefined ? humidity : null,
         visibility: visibility !== undefined ? visibility : null,
         cloudy: cloudy !== undefined ? cloudy : null,
@@ -233,7 +238,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
   const valData = extractHumidityData();
 
   const CustomTooltip = ({ active, payload, label }) => {
-    const dayIndex = parseInt(label) - 1; // dayIndex começa em 1
+    const dayIndex = parseInt(label - 1); // dayIndex começa em 1
     const selectedData = dailyData[dayIndex];
     const formattedDate = selectedData
       ? formatCustomDate(selectedData.date)
@@ -418,57 +423,50 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
                 );
               }}
             />
+            {valData.map((data, index, array) => {
+              const nextDay = array[index + 1]?.day || data.day;
+
+              return (
+                <ReferenceArea
+                  key={`reference-area-${index}-overlay`}
+                  x1={data.day}
+                  x2={nextDay}
+                  y1={0}
+                  y2={Math.max(
+                    data.visibility || 0,
+                    array[index + 1]?.visibility || 0,
+                  )}
+                  stroke="none"
+                  fill="#6BB7E3"
+                  fillOpacity={0.1}
+                />
+              );
+            })}
             <Line
               type="monotone"
               dataKey="humidity"
               name="Umidade"
-              stroke="#4D648D"
+              stroke="#6BB7E3"
               strokeWidth={3}
-              dot={{ strokeWidth: 3, r: 4, fill: "#4D648D" }}
+              dot={{ strokeWidth: 3, r: 4, fill: "#6BB7E3" }}
               activeDot={{ r: 8 }}
             />
-            {valData.map((data, index, array) => {
-              if (index < array.length - 1) {
-                return (
-                  <ReferenceArea
-                    key={`reference-area-${index}`}
-                    x1={data.day}
-                    x2={array[index + 1].day}
-                    y1={0}
-                    y2={Math.max(data.cloudy, array[index + 1].cloudy)}
-                    stroke="none"
-                    fill="#5E5E5E"
-                    fillOpacity={0.3}
-                  />
-                );
-              }
-              return null;
-            })}
             <Line
               type="monotone"
               dataKey="cloudy"
               name="Nublado"
-              stroke="#5E5E5E"
+              stroke="#A5A5A5"
               strokeWidth={3}
-              dot={{ strokeWidth: 3, r: 4, fill: "#5E5E5E" }}
+              dot={{ strokeWidth: 3, r: 4, fill: "#A5A5A5" }}
               activeDot={{ r: 8 }}
-            />
-            <ReferenceArea
-              x1={valData[0].day}
-              x2={valData[valData.length - 1].day}
-              y1={0}
-              y2={Math.max(...valData.map((data) => data.visibility))}
-              stroke="none"
-              fill="#008FFB"
-              fillOpacity={0.7}
             />
             <Line
               type="monotone"
               dataKey="visibility"
               name="Visibilidade"
-              stroke="#008FFB"
+              stroke="#00AEEF"
               strokeWidth={3}
-              dot={{ strokeWidth: 3, r: 4, fill: "#008FFB" }}
+              dot={{ strokeWidth: 3, r: 4, fill: "#00AEEF" }}
               activeDot={{ r: 8 }}
             />
           </LineChart>

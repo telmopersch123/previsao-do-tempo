@@ -43,16 +43,23 @@ const Forecast = ({
             if (moment(item.dt_txt).format("HH:mm") === "12:00") {
               result[date].afternoon.push(item);
             }
-            if (moment(item.dt_txt).format("HH:mm") === "21:00") {
+            if (moment(item.dt_txt).format("HH:mm") === "00:00") {
               result[date].night.push(item);
             }
             return result;
           }, {});
 
           const dailyForecastArray = Object.values(filteredForecast);
+          const currentTime = moment().format("HH:mm");
+          const isAfter6PM = moment(currentTime, "HH:mm").isSameOrAfter(
+            moment("18:00", "HH:mm"),
+          );
+          const forecastSlice = isAfter6PM
+            ? dailyForecastArray.slice(0, 7)
+            : dailyForecastArray.slice(1, 7);
 
-          setDailyForecast(dailyForecastArray);
-          onDailyDataChange(dailyForecastArray);
+          setDailyForecast(forecastSlice);
+          onDailyDataChange(forecastSlice);
           setDailyData(dailyData);
         } else {
           alert("Ops!, algo deu errado!");
@@ -143,6 +150,7 @@ const Forecast = ({
         : convertorFahrenheit(temperature - 273.15)
     ).toFixed(0);
   }
+  useEffect;
   return (
     <div className="forecast">
       <div className="cont_title_prev">
@@ -160,7 +168,7 @@ const Forecast = ({
         <h2 className="title_prev">Previsão para cinco dias</h2>
       </div>
       <div className="separator-day">
-        {dailyForecast.slice(0, 5).map((day, index) => (
+        {dailyForecast.slice(0, 6).map((day, index) => (
           <div
             key={index}
             className="forecast-day"
@@ -227,7 +235,7 @@ const Forecast = ({
                         src={temperBaixa}
                         alt="Temperatura Baixa"
                       />
-                      {getTemperature(item.main.temp_min - 10, Celsius)}°
+                      {getTemperature(item.main.temp_min - 5, Celsius)}°
                       {Celsius ? "C" : "F"}
                     </p>
                   </div>
