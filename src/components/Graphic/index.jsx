@@ -1,8 +1,22 @@
 import { useState, useEffect } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
-import { PieChart } from "@mui/x-charts/PieChart";
+import * as React from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  Area,
+  ReferenceArea,
+} from "recharts";
+
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
+
 import grapchis_icon from "../../icones/grafico-preditivo.png";
 import grapchis_icon_weather from "../../icones/grafico_chuva.png";
 import grapchis_icon_cloudy from "../../icones/nublado_grafico.png";
@@ -75,7 +89,6 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     const [year, month, day] = dateString.split("-");
     return `${day} - ${month} - ${year}`;
   };
-
   const CustomTooltipContent = ({ payload, label }) => {
     const dayIndex = parseInt(label) - 1; // dayIndex começa em 1
     const selectedData = dailyData[dayIndex];
@@ -85,21 +98,17 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     return (
       <div
         style={{
-          background: "#141a1f",
-
+          background: "#1d2938",
           color: "#fff",
-
-          borderRadius: "13px",
-
+          borderRadius: "10px",
           textAlign: "center",
-
           padding: "10px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
         }}
       >
         {formattedDate}
 
-        <hr style={{ borderTop: "1px solid", opacity: 0.5 }} />
-
+        <hr style={{ borderTop: "1px solid #445366", margin: "8px 0" }} />
         <div style={{ display: "flex", flexDirection: "column" }}>
           {payload &&
             payload.map((entry, index) => (
@@ -130,7 +139,6 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
                     marginRight: "5px",
                   }}
                 ></div>
-
                 <span>
                   {entry.name} : {entry.value} °{Celsius ? "C" : "F"}
                 </span>
@@ -147,11 +155,6 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     );
   };
   const [showItems, setShowItems] = useState(false);
-  const data = [
-    { id: 0, value: 10, label: "series A" },
-    { id: 1, value: 15, label: "series B" },
-    { id: 2, value: 20, label: "series C" },
-  ];
   const Button = (props) => {
     const handleClick = () => {
       setShowItems(!showItems);
@@ -211,6 +214,77 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
       </g>
     );
   };
+
+  const [connectNulls, setConnectNulls] = React.useState(true);
+  const extractHumidityData = () => {
+    return Array.from({ length: 5 }, (_, i) => {
+      const day = 1 + i;
+      const humidity = dailyData[day - 1]?.morning[0]?.main.humidity;
+      const visibility = dailyData[day - 1]?.morning[0]?.visibility / 1000;
+      const cloudy = dailyData[day - 1]?.morning[0]?.clouds.all;
+      return {
+        day,
+        humidity: humidity !== undefined ? humidity : null,
+        visibility: visibility !== undefined ? visibility : null,
+        cloudy: cloudy !== undefined ? cloudy : null,
+      };
+    });
+  };
+  const valData = extractHumidityData();
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    const dayIndex = parseInt(label) - 1; // dayIndex começa em 1
+    const selectedData = dailyData[dayIndex];
+    const formattedDate = selectedData
+      ? formatCustomDate(selectedData.date)
+      : "";
+    if (active && payload && payload.length) {
+      return (
+        <div
+          style={{
+            background: "#1d2938",
+            color: "#fff",
+            borderRadius: "10px",
+            textAlign: "center",
+            padding: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          {formattedDate}
+          <hr style={{ borderTop: "1px solid #445366", margin: "8px 0" }} />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {payload.map((entry, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  margin: "5px 0",
+                }}
+              >
+                <div
+                  style={{
+                    width: "12px",
+                    height: "12px",
+                    borderRadius: "50%",
+                    background: entry.stroke,
+                    marginRight: "8px",
+                  }}
+                ></div>
+                <span>
+                  {entry.name === "Visibilidade"
+                    ? ` ${entry.value} KM de ${entry.name}`
+                    : ` ${entry.value} % de ${entry.name}`}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  };
   return (
     <div className="graphics">
       <Button onCloudyIconClick={handleCloudyIconClick} />
@@ -221,6 +295,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           data={morningData}
           style={{
             textShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
+            marginTop: "60px",
           }}
         >
           <XAxis
@@ -297,16 +372,107 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           </defs>
         </BarChart>
       ) : (
-        <PieChart
-          series={[
-            {
-              data,
-              highlightScope: { faded: "global", highlighted: "item" },
-              faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-            },
-          ]}
-          height={200}
-        />
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={valData}
+            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+          >
+            <XAxis
+              tick={{ fill: "#fff" }}
+              axisLine={{ stroke: "#fff" }}
+              dataKey="day"
+            />
+            <YAxis tick={{ fill: "#fff" }} axisLine={{ stroke: "#fff" }} />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend
+              verticalAlign="top"
+              align="center"
+              iconSize={20}
+              wrapperStyle={{
+                marginTop: "-25px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+              content={(props) => {
+                return (
+                  <ul style={{ listStyle: "none", padding: 0 }}>
+                    {props.payload.map((entry, index) => (
+                      <li
+                        key={`item-${index}`}
+                        style={{ display: "inline-block", marginRight: "20px" }}
+                      >
+                        <div
+                          style={{
+                            width: "12px",
+                            height: "12px",
+                            borderRadius: "50%",
+                            background: entry.color,
+                            marginRight: "8px",
+                            display: "inline-block",
+                          }}
+                        />
+                        <span style={{ color: "#fff" }}>{entry.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                );
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="humidity"
+              name="Umidade"
+              stroke="#4D648D"
+              strokeWidth={3}
+              dot={{ strokeWidth: 3, r: 4, fill: "#4D648D" }}
+              activeDot={{ r: 8 }}
+            />
+            {valData.map((data, index, array) => {
+              if (index < array.length - 1) {
+                return (
+                  <ReferenceArea
+                    key={`reference-area-${index}`}
+                    x1={data.day}
+                    x2={array[index + 1].day}
+                    y1={0}
+                    y2={Math.max(data.cloudy, array[index + 1].cloudy)}
+                    stroke="none"
+                    fill="#5E5E5E"
+                    fillOpacity={0.3}
+                  />
+                );
+              }
+              return null;
+            })}
+            <Line
+              type="monotone"
+              dataKey="cloudy"
+              name="Nublado"
+              stroke="#5E5E5E"
+              strokeWidth={3}
+              dot={{ strokeWidth: 3, r: 4, fill: "#5E5E5E" }}
+              activeDot={{ r: 8 }}
+            />
+            <ReferenceArea
+              x1={valData[0].day}
+              x2={valData[valData.length - 1].day}
+              y1={0}
+              y2={Math.max(...valData.map((data) => data.visibility))}
+              stroke="none"
+              fill="#008FFB"
+              fillOpacity={0.7}
+            />
+            <Line
+              type="monotone"
+              dataKey="visibility"
+              name="Visibilidade"
+              stroke="#008FFB"
+              strokeWidth={3}
+              dot={{ strokeWidth: 3, r: 4, fill: "#008FFB" }}
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       )}
     </div>
   );
