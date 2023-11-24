@@ -43,7 +43,7 @@ const Forecast = ({
             if (moment(item.dt_txt).format("HH:mm") === "12:00") {
               result[date].afternoon.push(item);
             }
-            if (moment(item.dt_txt).format("HH:mm") === "00:00") {
+            if (moment(item.dt_txt).format("HH:mm") === "21:00") {
               result[date].night.push(item);
             }
             return result;
@@ -55,8 +55,8 @@ const Forecast = ({
             moment("18:00", "HH:mm"),
           );
           const forecastSlice = isAfter6PM
-            ? dailyForecastArray.slice(0, 7)
-            : dailyForecastArray.slice(1, 7);
+            ? dailyForecastArray.slice(0, 5)
+            : dailyForecastArray.slice(1, 6);
 
           setDailyForecast(forecastSlice);
           onDailyDataChange(forecastSlice);
