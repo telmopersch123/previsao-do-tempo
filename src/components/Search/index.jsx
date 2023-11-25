@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import moment from "moment";
 
 import WeahterIcon from "../WeatherIcon";
 import Button from "../Button";

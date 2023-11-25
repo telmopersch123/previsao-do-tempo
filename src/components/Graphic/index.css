@@ -1,8 +1,10 @@
 
 .graphics{
-  min-height: 45vh;
   height: 100%;
+  min-height: 50vh;
   margin-top: 30px;
+  padding-top: 80px;
+  padding-bottom: 30px;
   background-color: #002d53;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.419);
   display: flex;
@@ -46,7 +48,7 @@
   position: absolute;
   align-self: first baseline;
   left: 0;
-  margin-top: 10px;
+  margin-top: -70px;
   margin-left: 10px;
 }
 .div_animada {
