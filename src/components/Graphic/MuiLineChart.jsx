@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   ComposedChart,
   XAxis,
@@ -8,6 +9,8 @@ import {
   Area,
   Line,
   ResponsiveContainer,
+  Label,
+  LabelList,
 } from "recharts";
 const MuiLineChart = (prop) => {
   const mapDayPeriod = (period) => {
@@ -31,57 +34,84 @@ const MuiLineChart = (prop) => {
     const dayPeriod = mapDayPeriod(period);
     const days = Object.keys(prop.dailyData).map(Number); // Converta chaves para números
     const minDay = Math.min(...days);
+
     return Array.from({ length: 5 }, (_, i) => {
       const day = minDay + i;
 
-      const speed = prop.dailyData[day]?.[dayPeriod]?.[0]?.wind.speed;
-      const gust = prop.dailyData[day]?.[dayPeriod]?.[0]?.wind.gust;
+      const windData = prop.dailyData[day]?.[dayPeriod]?.[0]?.wind || {};
+
+      const speed = windData.speed !== undefined ? windData.speed : null;
+      const gust = windData.gust !== undefined ? windData.gust : null;
+      const deg = windData.deg !== undefined ? windData.deg : null;
 
       return {
         day: 1 + i,
-        speed: speed !== undefined ? speed : null,
-        gust: gust !== undefined ? gust : null,
+        speed,
+        gust,
+        deg,
       };
     });
   };
+
   const valData = extractHumidityData();
   const data = [
     {
       name: "1",
       uv: valData[0].gust,
-      pv: 2400,
       amt: valData[0].speed,
     },
     {
       name: "2",
       uv: valData[1].gust,
-      pv: 1398,
       amt: valData[1].speed,
     },
     {
       name: "3",
       uv: valData[2].gust,
-      pv: 9800,
       amt: valData[2].speed,
     },
     {
       name: "4",
       uv: valData[3].gust,
-      pv: 3908,
       amt: valData[3].speed,
     },
     {
       name: "5",
       uv: valData[4].gust,
-      pv: 4800,
       amt: valData[4].speed,
     },
   ];
+
   const formatCustomDate = (dateString) => {
     const [year, month, day] = dateString.split("-");
     return `${day} - ${month} - ${year}`;
   };
+  const getArrowCharacter = (deg) => {
+    let direction;
+    if (deg >= 0 && deg < 45) {
+      direction = "Norte";
+      return { arrow: "➜", direction };
+    } else if (deg >= 45 && deg < 135) {
+      direction = "Leste";
+      return { arrow: "↘", direction };
+    } else if (deg >= 135 && deg < 225) {
+      direction = "Sul";
+      return { arrow: "↙", direction };
+    } else if (deg >= 225 && deg < 315) {
+      direction = "Oeste";
+      return { arrow: "↖", direction };
+    } else if (deg >= 315 && deg < 360) {
+      direction = "Norte";
+      return { arrow: "➜", direction };
+    } else {
+      direction = "Desconhecida";
+      return { arrow: "➜", direction }; // Valor padrão se não houver correspondência
+    }
+  };
   const CustomTooltip = ({ active, payload, label }) => {
+    const currentDeg = valData.map((data) => data.deg);
+    const arrowCharacters = currentDeg.map((deg) => getArrowCharacter(deg));
+    console.log(arrowCharacters);
     const speedColor = "#82ca9d"; // Cor correspondente à velocidade do vento
     const gustColor = "#ffc658";
     const dayIndex = parseInt(label - 1); // dayIndex começa em 1
@@ -89,6 +119,7 @@ const MuiLineChart = (prop) => {
     const formattedDate = selectedData
       ? formatCustomDate(selectedData.date)
       : "";
+
     if (active && payload && payload.length) {
       const speed = payload[0]?.payload?.amt;
       const gust = payload[0]?.payload?.uv;
@@ -136,18 +167,55 @@ const MuiLineChart = (prop) => {
               {`Rajada de Vento: ${gust.toFixed(2)} m/s`}
             </p>
           )}
+          <p>
+            <span
+              style={{
+                display: "inline-block",
+                fontSize: "20px",
+              }}
+            ></span>
+            {arrowCharacters[dayIndex] && (
+              <span>
+                Direção do Vento: {arrowCharacters[dayIndex].direction}
+              </span>
+            )}
+          </p>
         </div>
       );
     }
 
     return null;
   };
+  const CustomLabel = ({ x, y, index }) => {
+    const currentDeg = valData[index]?.deg;
+    const arrowCharacter = getArrowCharacter(currentDeg);
+
+    return (
+      <text
+        x={x + -5}
+        y={y}
+        dy={-10}
+        fill="white"
+        fontSize={16}
+        textAnchor="middle"
+      >
+        {currentDeg !== undefined && (
+          <>
+            {`${arrowCharacter.arrow} `}
+            <span style={{ fontWeight: "bold" }}>
+              {arrowCharacter.direction}
+            </span>
+          </>
+        )}
+      </text>
+    );
+  };
   return (
     <div style={{ width: "90%", height: "300px" }}>
       <ResponsiveContainer>
         <ComposedChart data={data}>
           <XAxis dataKey="name" tick={{ fill: "white" }} />
-          <YAxis tick={{ fill: "white" }} />
+          <YAxis tick={{ fill: "white", dx: -10 }} />
           <Legend
             verticalAlign="top"
             height={36}
@@ -175,7 +243,9 @@ const MuiLineChart = (prop) => {
             stroke="#ffc658"
             strokeWidth={2}
             name="Rajada de Vento"
-          />
+          >
+            <LabelList dataKey="uv" position="top" content={<CustomLabel />} />
+          </Line>
         </ComposedChart>
       </ResponsiveContainer>
     </div>

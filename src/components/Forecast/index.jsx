@@ -56,7 +56,7 @@ const Forecast = ({
           );
           const forecastSlice = isAfter6PM
             ? dailyForecastArray.slice(0, 5)
-            : dailyForecastArray.slice(1, 6);
+            : dailyForecastArray.slice(0, 6);
 
           setDailyForecast(forecastSlice);
           onDailyDataChange(forecastSlice);
