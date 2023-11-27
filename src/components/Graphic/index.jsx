@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import * as React from "react";
-import AreachartVal from "./AreachartVal";
+import AreaChartVal from "./AreaChartVal";
 import MuiLineChart from "./MuiLineChart";
 import {
   BarChart,
@@ -529,9 +529,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
       ) : selectedChart === "lineChart" ? (
         <MuiLineChart newMomentDay={newMomentDay} dailyData={dailyData} />
       ) : selectedChart === "radialChart" ? (
-        <div>
-          <AreachartVal />
-        </div>
+          <AreaChartVal newMomentDay={newMomentDay} dailyData={dailyData} />
       ) : (
         <div></div>
       )}

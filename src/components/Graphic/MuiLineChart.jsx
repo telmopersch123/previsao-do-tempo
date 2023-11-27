@@ -90,19 +90,19 @@ const MuiLineChart = (prop) => {
     let direction;
     if (deg >= 0 && deg < 45) {
       direction = "Norte";
-      return { arrow: "➜", direction };
+      return { arrow: "↑", direction };
     } else if (deg >= 45 && deg < 135) {
       direction = "Leste";
-      return { arrow: "↘", direction };
+      return { arrow: "➜", direction };
     } else if (deg >= 135 && deg < 225) {
       direction = "Sul";
-      return { arrow: "↙", direction };
+      return { arrow: "↓", direction }; // Corrigido para uma seta apontando para baixo
     } else if (deg >= 225 && deg < 315) {
       direction = "Oeste";
       return { arrow: "↖", direction };
     } else if (deg >= 315 && deg < 360) {
       direction = "Norte";
-      return { arrow: "➜", direction };
+      return { arrow: "↑", direction }; // Corrigido para uma seta apontando para cima
     } else {
       direction = "Desconhecida";
       return { arrow: "➜", direction }; // Valor padrão se não houver correspondência
@@ -111,7 +111,6 @@ const MuiLineChart = (prop) => {
   const CustomTooltip = ({ active, payload, label }) => {
     const currentDeg = valData.map((data) => data.deg);
     const arrowCharacters = currentDeg.map((deg) => getArrowCharacter(deg));
-    console.log(arrowCharacters);
     const speedColor = "#82ca9d"; // Cor correspondente à velocidade do vento
     const gustColor = "#ffc658";
     const dayIndex = parseInt(label - 1); // dayIndex começa em 1
