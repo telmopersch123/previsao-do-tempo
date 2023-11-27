@@ -51,13 +51,20 @@ const Forecast = ({
 
           const dailyForecastArray = Object.values(filteredForecast);
           const currentTime = moment().format("HH:mm");
-          const isAfter6PM = moment(currentTime, "HH:mm").isSameOrAfter(
+          const isDaytime = moment(currentTime, "HH:mm").isBetween(
+            moment("07:00", "HH:mm"),
             moment("18:00", "HH:mm"),
+            undefined,
+            "(]",
           );
-          const forecastSlice = isAfter6PM
-            ? dailyForecastArray.slice(0, 5)
-            : dailyForecastArray.slice(0, 6);
 
+          let forecastSlice;
+
+          if (isDaytime) {
+            forecastSlice = dailyForecastArray.slice(1, 6);
+          } else {
+            forecastSlice = dailyForecastArray.slice(0, 6);
+          }
           setDailyForecast(forecastSlice);
           onDailyDataChange(forecastSlice);
           setDailyData(dailyData);

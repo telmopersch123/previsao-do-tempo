@@ -529,7 +529,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
       ) : selectedChart === "lineChart" ? (
         <MuiLineChart newMomentDay={newMomentDay} dailyData={dailyData} />
       ) : selectedChart === "radialChart" ? (
-          <AreaChartVal newMomentDay={newMomentDay} dailyData={dailyData} />
+        <AreaChartVal newMomentDay={newMomentDay} dailyData={dailyData} />
       ) : (
         <div></div>
       )}
