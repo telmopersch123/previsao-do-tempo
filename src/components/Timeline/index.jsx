@@ -276,25 +276,24 @@ const Timeline = ({
           )}
         </div>
       </div>
+      <div className="Paragrafos">
+        <p className={`dados_def${temp !== undefined ? " dados_ind" : ""}`}>
+          {temp !== undefined ? (
+            `${temperatureDisplay.toFixed(0)} ${Celsius ? "°C" : "°F"}`
+          ) : (
+            <span>
+              {temp !== undefined
+                ? `${temp} km/h`
+                : "Temperatura Indisponível nessa região"}
+            </span>
+          )}
+        </p>
 
-      <p className={temp !== undefined ? "" : "dados_ind"}>
-        {temp !== undefined ? (
-          `Temperatura de ${temperatureDisplay.toFixed(0)} ${
-            Celsius ? "°C" : "°F"
-          }`
-        ) : (
-          <span>
-            {temp !== undefined
-              ? `${temp} km/h`
-              : "Temperatura Indisponível nessa região"}
-          </span>
-        )}
-      </p>
-
-      <p>{formattedTime}</p>
-      <p>{sys}</p>
-      <p>{name}</p>
-      <p>{weather}</p>
+        <p className="time_class">{formattedTime}</p>
+        <p>{sys}</p>
+        <p>{name}</p>
+        <p>{weather}</p>
+      </div>
     </div>
   );
 };
