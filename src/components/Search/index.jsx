@@ -7,8 +7,11 @@ import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
 import Forecast from "../forecast";
 import Graphic from "../Graphic";
+import atencao from "../../icones/atencao.png";
 
 function Search({ props }) {
+  const [searched, setSearched] = useState(false);
+
   const [Celsius, setIsCelsius] = useState(true);
   const [temperature, setTemperature] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
@@ -28,6 +31,7 @@ function Search({ props }) {
   const [lon, setLon] = useState();
   const [dailyData, setDailyData] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
+  const [capitalizedValue, setCapitalizedValue] = useState("");
   const handleTemperatureConversion = (newTemperature, newCelsius) => {
     setTemperature(newTemperature);
     setIsCelsius(newCelsius);
@@ -37,8 +41,19 @@ function Search({ props }) {
     setDailyData(newDailyData);
     setNewMomentDay(newMoment_day);
   };
+
+  const [inputValue, setInputValue] = useState("");
+  function changePlaceholderColor(isHovered) {
+    const input = document.querySelector(".inputCidade");
+    input.style.color = isHovered;
+  }
+
   const searchInput = (e) => {
     const valorCorrente = document.querySelector(".inputCidade").value;
+    const inputValueMinusc = valorCorrente.toLowerCase();
+    const capitalizedString =
+      inputValueMinusc.charAt(0).toUpperCase() + inputValueMinusc.slice(1);
+    setCapitalizedValue(capitalizedString);
 
     e.preventDefault();
 
@@ -82,6 +97,9 @@ function Search({ props }) {
                 setUnixSunrise(unixSunriseValue);
                 setUnixSunset(unixSunsetValue);
                 setConvertedDateTime(convertedDateTimeValue);
+
+                setSearched(true);
+                setInputValue(""); // Clear the input value after the search
               });
           } else {
             alert("Valor inserido é um continente ou um nome inválido");
@@ -95,28 +113,43 @@ function Search({ props }) {
         );
       });
   };
-
   return (
-    <div className="searchWr">
-      <div className="Search">
-        <h2 id="titulo-header">Escreva em baixo o nome da Cidade!</h2>
+    <div className={`searchWr ${searched ? "searched" : ""}`}>
+      <div className={`Search ${searched ? "searched" : ""}`}>
+        <h2 className={`title_master ${searched ? "searched" : ""}`}>
+          {searched
+            ? `Previsões para ${capitalizedValue}`
+            : "Escreva a baixo o nome da Cidade!"}
+        </h2>
         <form onSubmit={(e) => searchInput(e)}>
           <input
-            placeholder="Digite o nome da cidade"
-            className="inputCidade"
+            onChange={(e) => setInputValue(e.target.value)} // Update input value
+            onFocus={() => setInputValue("")} // Clear input value on focus
+            placeholder={
+              searched ? `Pesquisar por mais!` : "Digite o nome da cidade aqui!"
+            }
+            className={`inputCidade ${searched ? "searched" : ""}`}
             name="searchInp"
             type="text"
+            value={inputValue} // Use the state variable for the input value
+            autoComplete="off"
+            onMouseOver={() => changePlaceholderColor(true)}
+            onMouseOut={() => changePlaceholderColor(false)}
           />
           <input
             id="inputPesquisar"
             type="submit"
             value="Pesquisar por cidade!"
+            style={{ display: searched ? `none` : "inline-block" }}
           />
         </form>
-        <p className="alert_fuso">
-          Algumas regiões possuem fuso horarios diferentes! Assim como o nascer
-          do sol e o por do sol!
-        </p>
+        <div className={`alert_fuso ${searched ? "searched" : ""}`}>
+          <img style={{ width: "35px" }} src={atencao} />
+          <p>
+            Algumas regiões possuem fuso horarios diferentes! Assim como o
+            nascer do sol e o por do sol!
+          </p>
+        </div>
       </div>
       {weatherData ? (
         <div className={`objects ${backgroundClass}`}>
@@ -178,7 +211,7 @@ function Search({ props }) {
         </div>
       ) : (
         <>
-          <div>Pesquise por algo acima...</div>
+          <div></div>
         </>
       )}
     </div>

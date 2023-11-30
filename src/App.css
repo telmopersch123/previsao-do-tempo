@@ -9,26 +9,95 @@ form{
   display: flex;
   flex-direction: column;
 }
-
+.searchWr{
+  background: linear-gradient(38deg, #181818, #0c0c0c, #1e1933, #000000, #FFD700);
+    background-size: 300% 300%;
+    animation: gradient-animation 25s ease infinite;
+    display: flex;
+      flex-direction: column;
+      height: 100vh;
+    justify-content: center;
+}
+.searchWr.searched {
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(38deg, #3c3250, #2d2642, #1e1933, #1d435c, #0f0d25);
+    background-size: 300% 300%;
+      animation: gradient-animation 25s ease infinite;
+}
 .Search{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #1b325f;
+  background-color: transparent;
   padding: 10px;
+  align-items: center;
 }
-#titulo-header{
-  margin-bottom: 10px;
+.Search.searched{
+  margin-top: 20px;
+  flex-direction: column-reverse;
+}
+.title_master{
+  margin-top: 10px;
+  margin-bottom: 20px;
   color: white;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.467);
   text-align: center;
 }
+.title_master.searched{
+  color: #ffffff42;
+  font-size: 3vh;
+}
+.inputCidade.searched{
+  text-align: center;
+  margin-bottom: 20px;
+}
 .inputCidade{
   width: 75vw;
   padding: 20px;
-  border-radius: 50px;
+  border-radius: 15px;
   border: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.303);
+  background-color: #3c325039;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: 0.5s ease-in-out;
+  color: white;
+}
+.inputCidade::placeholder{
+  color: #ffffff34;
+}
+.inputCidade:hover{
+  background-color: #2e2f5294;
+  box-shadow: 0 0 5px rrgba(0, 0, 0, 0.243)
+}
+.inputCidade.searched::placeholder{
+    color: #ffffff12;
+    transition: color 0.3s ease;
+}
+.inputCidade.searched:hover::placeholder {
+  color: #ffffffa3;
+  /* Nova cor ao passar o mouse */
+}
+.alert_fuso {
+  color: rgba(255, 255, 255, 0.42);
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.292);
+  font-size: 60%;
+  font-weight: bold;
+  margin-top: 20px;
+  font-family: Verdana,
+    Geneva,
+    Tahoma,
+    sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.alert_fuso.searched{
+  display: none;
 }
 #inputPesquisar{
   width: 25%;
@@ -36,9 +105,6 @@ form{
   margin-top: 10PX;
 }
 .objects{
-  background: linear-gradient(38deg, #904ec0, #5095be, #3b7ba1, #275d7e, #53a1d0);
-    background-size: 300% 300%;
-    animation: gradient-animation 25s ease infinite;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -70,34 +136,6 @@ form{
 .align-text-icon {
   display: flex;
   gap: 0.5rem;
-}
-
-.searchWr {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-.alert_fuso{
-  color: rgb(255, 255, 255);
-  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.292);
-  font-size: 75%;
-  font-weight: bold;
-  padding-top: 5px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-}
-
-\\ CONF FUNDO \\
-.objects.nuvensquebradas_noite{
-  background-image: url('./videos/nuvensquebradas_noite.gif');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-.objects.nuvendispersas_noite{
-  background-image: url('./videos/nuvensdispersas_noite_1_.gif');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
 }
 
 .complementos{
@@ -172,42 +210,46 @@ form{
 }
 .icon_temp{
 display: flex;
-align-items: flex-start;
+align-items: center;
 flex-direction: row;
-
+width: 100%;
 }
-
 .icon-wrapper{
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #f26c4f;
+  background-color: #dfdfdf30;
   text-align: center;
-  padding: 10px;
+  padding: 1vh;
   border-radius: 100px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.422);
   margin: 10px 0 0 10px;
+  transition: 0.5s ease-in-out;
+}
+.icon-wrapper:hover {
+  background-color: #dfdfdf40;
 }
 .icon-wrapper > img{
   padding: 5px;
-  background-color: #e9f2f9;
+  background-color: #e9f2f9cc;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.517);
   border-radius: 100%;
 }
 .icon-wrapper > div > p{
-  padding: 10px;
+  padding: 1vh;
   margin: auto;
   font-size: 80%;
-  color: black;
-  text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.539);
-  font-weight: 700;
+  color: #e9f2f9cc;
+  text-shadow: 0px 0px 6px rgb(0, 0, 0);
+  font-weight: 600;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   border-radius: 0 0 0 0;
-  color: font-family;
 }
-
-
-.far_cel_button{
+.icon_set{
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.236);
+  border-radius: 100%;
+}
+.far_cel_button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,7 +258,7 @@ flex-direction: row;
   color: white;
   font-weight: 900;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.543);
-  background: linear-gradient(145deg, #c4e2fa, #9cc4e4);
+  background-color: #dfdfdf30;
   box-shadow: 2px 1px 10px -1px rgba(0, 0, 0, 0.31);
   margin: 10px 10px 0 0;
   width: 70px;
@@ -224,12 +266,11 @@ flex-direction: row;
   border-radius: 50%;
   border: none;
   cursor: pointer;
+  transition: 0.5s ease-in-out;
 }
-.icon_set{
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.236);
-  border-radius: 100%;
+.far_cel_button:hover{
+  background-color: #dfdfdf40;
 }
-
 @media screen and (max-width: 1022px){
   .icon-wrapper{
     width: auto;
