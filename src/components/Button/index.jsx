@@ -12,15 +12,9 @@ const Button = ({ temp, onTemperatureConversion, Celsius }) => {
   return (
     <button className="far_cel_button" onClick={myFunction}>
       {Celsius ? (
-        <img
-          style={{ width: "80%", height: "80%", opacity: "0.7" }}
-          src={fahrenheit}
-        />
+        <img className="icones_cel_far" src={fahrenheit} />
       ) : (
-        <img
-          style={{ width: "80%", height: "80%", opacity: "0.7" }}
-          src={celsius}
-        />
+        <img className="icones_cel_far" src={celsius} />
       )}
     </button>
   );

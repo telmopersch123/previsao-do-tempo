@@ -166,7 +166,6 @@ function Search({ props }) {
               convertedDateTime={convertedDateTime}
               currentTimeUpdate={currentTimeUpdate}
             />
-
             <Button
               Celsius={Celsius}
               onTemperatureConversion={handleTemperatureConversion}

@@ -9,6 +9,14 @@ form{
   display: flex;
   flex-direction: column;
 }
+body {
+  max-width: 100%;
+  /* Garante que o conteúdo não ultrapasse a largura da viewport */
+  margin: 0;
+  /* Remove as margens padrão do corpo para evitar espaços extras */
+  padding: 0;
+  /* Remove o preenchimento padrão do corpo para evitar espaços extras */
+}
 .searchWr{
   background: linear-gradient(38deg, #181818, #0c0c0c, #1e1933, #000000, #FFD700);
     background-size: 300% 300%;
@@ -44,10 +52,21 @@ form{
   color: white;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.467);
   text-align: center;
+
 }
 .title_master.searched{
   color: #ffffff42;
   font-size: 3vh;
+  background-color: #00000015;
+  box-shadow: 0 5px 20px rgba(255, 255, 255, 0.05);
+  padding: 10px 20px;
+  border-radius: 50px;
+  transition: 0.5s ease-in-out;
+  cursor: help;
+}
+.title_master.searched:hover{
+  background-color: #00000030;
+  box-shadow: 0 5px 20px rgba(255, 255, 255, 0.112);
 }
 .inputCidade.searched{
   text-align: center;
@@ -253,17 +272,13 @@ width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  right: 0;
   color: white;
-  font-weight: 900;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.543);
   background-color: #dfdfdf30;
   box-shadow: 2px 1px 10px -1px rgba(0, 0, 0, 0.31);
   margin: 10px 10px 0 0;
-  width: 70px;
+  width: 80px;
   height: 70px;
-  border-radius: 50%;
+  border-radius: 100px;
   border: none;
   cursor: pointer;
   transition: 0.5s ease-in-out;
@@ -271,8 +286,43 @@ width: 100%;
 .far_cel_button:hover{
   background-color: #dfdfdf40;
 }
+ .far_cel_button>img {
+   width: 60%;
+   height: 60%;
+   opacity: 0.5;
+ }
 @media screen and (max-width: 1022px){
   .icon-wrapper{
     width: auto;
   }
+}
+@media screen and (max-width: 350px) {
+  .title_master.searched{
+      font-size: 10vw;
+  }
+ .icon-wrapper{
+  margin: 0;
+  width: 90%;
+  font-size: 5vw;
+ }
+ .icon_temp{
+  flex-direction: column;
+  flex-wrap: wrap;
+ }
+ .far_cel_button{
+  width: 90%;
+  height: auto;
+  margin: 0;
+ }
+ .far_cel_button>img{
+  width: 50px;
+  padding: 5px;
+  height: auto;
+  opacity: 0.5;
+ }
+ .align-items{
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+ }
 }

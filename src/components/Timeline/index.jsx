@@ -228,10 +228,6 @@ const Timeline = ({
           <button
             className="layer-escolher"
             style={{
-              backgroundColor: "white",
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0px 0px 5px #00000080",
               borderRadius: showLayerButtons ? "10px 10px 0 0" : "10px",
             }}
             onClick={toggleLayerButtons}
@@ -291,7 +287,6 @@ const Timeline = ({
 
         <p className="time_class">{formattedTime}</p>
         <p>{sys}</p>
-        <p>{name}</p>
         <p>{weather}</p>
       </div>
     </div>
