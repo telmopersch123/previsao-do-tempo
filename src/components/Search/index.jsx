@@ -54,7 +54,6 @@ function Search({ props }) {
     const capitalizedString =
       inputValueMinusc.charAt(0).toUpperCase() + inputValueMinusc.slice(1);
     setCapitalizedValue(capitalizedString);
-
     e.preventDefault();
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=4d8fb5b93d4af21d66a2948710284366&units=metric`;
@@ -66,7 +65,6 @@ function Search({ props }) {
       .then(
         axios.spread((weatherResponse, coordsResponse) => {
           const { sys } = weatherResponse.data;
-
           if (sys.country !== undefined) {
             const { lat, lon } = coordsResponse.data[0];
             setLat(lat);
@@ -152,7 +150,7 @@ function Search({ props }) {
         </div>
       </div>
       {weatherData ? (
-        <div className={`objects ${backgroundClass}`}>
+        <div className="objects">
           <div className="align-items">
             <WeahterIcon
               weather={weatherData.weather[0]}

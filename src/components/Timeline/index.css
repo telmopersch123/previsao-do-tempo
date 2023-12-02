@@ -20,13 +20,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    gap: 80px;
     color: rgb(255, 255, 255);
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
     margin: 0px 20px;
     font-family: 'Oswald', sans-serif, monospace;
     font-size: 3vh;
-    gap: 30px;
+      background-color: #ffffff29;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.152);
+        border-radius: 50px;
+        padding: 10px;
+}
+.Paragrafos>p{
+    background-color: #ffffff29;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.152);
+      border-radius: 50px;
+      padding: 10px;
+      width: 100%;
+      text-align: center;;
 }
 .dados_ind {
   border-top-right-radius: 0;
@@ -60,8 +71,8 @@
         margin: 0;
 }
 .map-container {
-  width: 800px;
-  height: 100%;
+  width: 70vw;
+  height: 800px;
 }
 .numbers-bar {
   display: flex;
@@ -315,7 +326,7 @@ color: #48484a;
         background-color: #ffffff56;
         border-radius: 50px;
         width: 100%;
-            font-size: 5vw;
+        font-size: 5vw;
   }
   .map-container {
     width: 100%;

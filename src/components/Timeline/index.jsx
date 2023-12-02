@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 //Mapas//
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+const translate = require("google-translate-api");
 const scaleDetailsMap = {
   temp: (
     <div className="scale-details">
@@ -105,7 +106,6 @@ const scaleDetailsMap = {
     </div>
   ),
 };
-
 const Timeline = ({
   timeUpdate1,
   sys,
@@ -120,7 +120,6 @@ const Timeline = ({
     // Use a variável scaleDetailsMap definida no escopo mais amplo
     return <div className="info legend">{scaleDetailsMap[mapLayer]}</div>;
   };
-
   const updateFormattedTime = (time) =>
     moment(time, "DD-MM-YYYY HH:mm:ss").format("HH:mm");
 
@@ -216,7 +215,6 @@ const Timeline = ({
       mapInstance.current = map;
     }
   }, [lat, lon, mapLayer, scaleDetailsContent]);
-
   return (
     <div className="itens_prim">
       <div
@@ -287,7 +285,7 @@ const Timeline = ({
 
         <p className="time_class">{formattedTime}</p>
         <p>{sys}</p>
-        <p>{weather}</p>
+        <p>{translate(weather, { to: "en" }).text}</p>
       </div>
     </div>
   );
