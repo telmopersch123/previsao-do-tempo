@@ -336,13 +336,11 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     <div className="graphics">
       <Button onCloudyIconClick={handleCloudyIconClick} />
       {selectedChart === "barChart" ? (
-        <ResponsiveContainer>
+        <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={morningData}
             style={{
               textShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
-              width: "100%",
-              height: "300px",
             }}
           >
             <XAxis

@@ -1,7 +1,7 @@
 
 .graphics{
-  height: 100%;
-  min-height: 50vh;
+  height: auto;
+  /* min-height: 40vh; */
   margin-top: 30px;
   padding-top: 80px;
   padding-bottom: 30px;

@@ -3,10 +3,11 @@ import moment from "moment";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
 import ReactDOM from "react-dom";
+import axios from "axios";
 //Mapas//
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-const translate = require("google-translate-api");
+import DivideSquare from "feather-icons-react/build/IconComponents/DivideSquare";
 const scaleDetailsMap = {
   temp: (
     <div className="scale-details">
@@ -116,6 +117,24 @@ const Timeline = ({
   lat,
   lon,
 }) => {
+  const [detailsOfc, setDetailsOfc] = useState({});
+  const [item1Visivel, setItem1Visivel] = useState(false);
+  const mostrarItem1 = () => setItem1Visivel(!item1Visivel);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=5&appid=944362047ea30b04b99466aff4f5887e`,
+        );
+        const details = response.data[0];
+        setDetailsOfc(details);
+      } catch (error) {
+        console.error("Erro ao buscar dados da API:", error);
+      }
+    };
+    fetchData();
+  }, [lat, lon]);
   const ScaleDetails = ({ mapLayer }) => {
     // Use a variável scaleDetailsMap definida no escopo mais amplo
     return <div className="info legend">{scaleDetailsMap[mapLayer]}</div>;
@@ -282,10 +301,27 @@ const Timeline = ({
             </span>
           )}
         </p>
-
         <p className="time_class">{formattedTime}</p>
         <p>{sys}</p>
-        <p>{translate(weather, { to: "en" }).text}</p>
+        <p
+          className="text"
+          // style={{
+          //   display: detailsOfc.state !== undefined ? detailsOfc.state : "none",
+          // }}
+        >
+          {detailsOfc.state !== undefined && detailsOfc.state !== null
+            ? detailsOfc.state
+            : ""}
+        </p>
+        <div className={`long_lat `} onClick={mostrarItem1}>
+          <p className="top_cord">Coordenadas</p>
+          {item1Visivel && (
+            <div className="div_lat_lon">
+              <p>Latitude: {detailsOfc.lat}</p>
+              <p>Longitude: {detailsOfc.lon}</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
