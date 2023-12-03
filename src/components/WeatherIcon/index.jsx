@@ -317,6 +317,7 @@ function WeatherIcon({
     <div className="icon_temp">
       {iconSrc && (
         <div
+          style={{ width: "auto", marginBottom: "10px" }}
           className={`icon-wrapper icon2 ${
             iconSrc.includes(solLimpo) &&
             currentTime >= sunriseTime &&

@@ -146,7 +146,10 @@ body {
   flex-direction: column;
   height: auto;
 }
-
+.lua_sol{
+  width: auto;
+  margin-bottom: 10px;
+}
 @keyframes gradient-animation {
   0% {
     background-position: 0% 50%;
@@ -255,8 +258,9 @@ body {
   padding: 1vh;
   border-radius: 100px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.422);
-  margin: 10px 0 0 10px;
+  margin: 10px 0 10px 10px;
   transition: 0.5s ease-in-out;
+
 }
 
 .icon-wrapper:hover {
@@ -293,9 +297,8 @@ body {
   color: white;
   background-color: #dfdfdf30;
   box-shadow: 2px 1px 10px -1px rgba(0, 0, 0, 0.31);
-  margin: 10px 10px 0 0;
-  width: 80px;
-  height: 70px;
+  margin: 10px;
+  padding: 20px;
   border-radius: 100px;
   border: none;
   cursor: pointer;
@@ -307,8 +310,8 @@ body {
 }
 
 .far_cel_button>img {
-  width: 60%;
-  height: 60%;
+  width: 50px;
+  height: 50px;
   opacity: 0.5;
 }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSpring, animated } from "react-spring";
 import moment from "moment";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
@@ -7,7 +8,7 @@ import axios from "axios";
 //Mapas//
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import DivideSquare from "feather-icons-react/build/IconComponents/DivideSquare";
+
 const scaleDetailsMap = {
   temp: (
     <div className="scale-details">
@@ -120,6 +121,11 @@ const Timeline = ({
   const [detailsOfc, setDetailsOfc] = useState({});
   const [item1Visivel, setItem1Visivel] = useState(false);
   const mostrarItem1 = () => setItem1Visivel(!item1Visivel);
+  const dropdownAnimation = useSpring({
+    maxHeight: item1Visivel ? "200px" : "0px",
+    opacity: item1Visivel ? 1 : 0,
+    config: { duration: 500 },
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -303,22 +309,28 @@ const Timeline = ({
         </p>
         <p className="time_class">{formattedTime}</p>
         <p>{sys}</p>
+
         <p
           className="text"
-          // style={{
-          //   display: detailsOfc.state !== undefined ? detailsOfc.state : "none",
-          // }}
+          style={{ display: detailsOfc.state !== undefined ? "block" : "none" }}
         >
           {detailsOfc.state !== undefined && detailsOfc.state !== null
             ? detailsOfc.state
             : ""}
         </p>
-        <div className={`long_lat `} onClick={mostrarItem1}>
-          <p className="top_cord">Coordenadas</p>
+
+        <div className="long_lat">
+          <p className="top_cord" onClick={mostrarItem1}>
+            Coordenadas
+          </p>
           {item1Visivel && (
             <div className="div_lat_lon">
-              <p>Latitude: {detailsOfc.lat}</p>
-              <p>Longitude: {detailsOfc.lon}</p>
+              <animated.p style={dropdownAnimation}>
+                Latitude: {detailsOfc.lat}
+              </animated.p>
+              <animated.p style={dropdownAnimation}>
+                Longitude: {detailsOfc.lon}
+              </animated.p>
             </div>
           )}
         </div>

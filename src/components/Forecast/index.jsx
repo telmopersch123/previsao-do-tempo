@@ -62,7 +62,7 @@ const Forecast = ({
             forecastSlice = dailyForecastArray.slice(0, 6);
           } else {
             if (isDaytime === false)
-              forecastSlice = dailyForecastArray.slice(1, 6);
+              forecastSlice = dailyForecastArray.slice(0, 5);
           }
           setDailyForecast(forecastSlice);
           onDailyDataChange(forecastSlice);

@@ -21,8 +21,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: 80px;
+    justify-content: space-between;
+    width: auto;
     color: rgb(255, 255, 255);
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
     margin-bottom: 10px;
@@ -39,7 +39,7 @@
       border-radius: 50px;
       padding: 10px;
       text-align: center;
-
+      font-size: 3vh;
 }
 .dados_ind {
   border-top-right-radius: 0;
@@ -88,6 +88,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 .top_cord{
   background: #46464675;
@@ -97,6 +98,7 @@
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.422);
 }
+
 .div_lat_lon{
   margin-top: 10px;
   cursor: default;
@@ -345,15 +347,13 @@ color: #48484a;
       gap: 15px;
     }
   .Paragrafos{
-    align-items: center;
-    width: 90%;
-
+    width: 100%;
   }
   .Paragrafos>p{
         background-color: #ffffff56;
         border-radius: 50px;
-        width: 100%;
-        font-size: 5vw;
+        justify-content: space-between;
+        /* font-size: 5vw; */
   }
   .map-container {
     width: 100%;
@@ -366,11 +366,16 @@ color: #48484a;
     height: 500PX;
   }
 }
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 616px) {
   .map-container {
     width: 90vw;
     height: 500PX;
   }
+        .Paragrafos {
+          flex-wrap: wrap;
+          gap: 10px;
+          justify-content: center;
+        }
 }
 
 @media screen and (max-width: 420px) {
@@ -420,8 +425,13 @@ color: #48484a;
      }
   .scale-bar{
     width: 100%;
-
   }
+        .Paragrafos {
+        font-size: 2vh;
+        }
+        .Paragrafos>p {
+          font-size: 2vh;
+        }
 }
 @media screen and (max-width: 274px) {
 .layer-escolher {
