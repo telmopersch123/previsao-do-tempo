@@ -181,6 +181,7 @@ function Search({ props }) {
           />
           <DetailsWeather
             Celsius={Celsius}
+            weatherData={weatherData}
             feels_like={weatherData.main.feels_like}
             temp_max={weatherData.main.temp_max}
             temp_min={weatherData.main.temp_min}

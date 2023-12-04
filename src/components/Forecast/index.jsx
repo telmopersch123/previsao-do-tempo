@@ -59,7 +59,7 @@ const Forecast = ({
           );
           let forecastSlice;
           if (isDaytime === true) {
-            forecastSlice = dailyForecastArray.slice(0, 6);
+            forecastSlice = dailyForecastArray.slice(1, 6);
           } else {
             if (isDaytime === false)
               forecastSlice = dailyForecastArray.slice(0, 5);
@@ -83,7 +83,9 @@ const Forecast = ({
   let fundoManha = null;
   let fundoTarde = null;
   let fundoNoite = null;
-
+  let fundoGroundManha = null;
+  let fundoGroundTarde = null;
+  let fundoGroundNoite = null;
   const trocarTexto = () => {
     setCliques((cliques + 1) % textos.length);
   };
@@ -116,6 +118,9 @@ const Forecast = ({
             "radial-gradient(circle, #ffff7d 0%, #ffffe0 54%, #ffff9f 100%)",
           backgroundSize: "200% 200%",
         };
+        fundoGroundManha = {
+          background: "#FFD75030",
+        };
         return iconeManha;
       case "Tarde":
         dados_manha = { display: "none" };
@@ -126,6 +131,9 @@ const Forecast = ({
           backgroundImage:
             "radial-gradient(circle, #e89763 0%, #ffae79 54%, #ba6837 100%)",
           backgroundSize: "200% 200%",
+        };
+        fundoGroundTarde = {
+          background: "#FFA50050",
         };
         return iconeTarde;
 
@@ -138,6 +146,9 @@ const Forecast = ({
           backgroundImage:
             "radial-gradient(circle, #47487a 0%, #5d5c90 54%, #17487a 100%)",
           backgroundSize: "200% 200%",
+        };
+        fundoGroundNoite = {
+          background: "#00003350",
         };
         return iconeLua;
       default:
@@ -156,23 +167,45 @@ const Forecast = ({
         : convertorFahrenheit(temperature - 273.15)
     ).toFixed(0);
   }
-  useEffect;
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 500);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 500);
+    };
+    window.addEventListener("resize", handleResize);
+    // Limpa o evento de redimensionamento ao desmontar o componente
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const divBotaoStyle = {
+    ...fundoGroundManha,
+    ...fundoGroundTarde,
+    ...fundoGroundNoite,
+  };
   return (
     <div className="forecast">
-      <div className="cont_title_prev">
-        <div className="div_fore_title_weather">
-          <div className="div_botao_fore_troc">
-            <button
-              onClick={trocarTexto}
-              className="botao_fore_troc"
-              type="button"
-              style={botaoStyle}
-            ></button>
-          </div>
-          <p className="title_weather_fore">{textos[cliques]}</p>
+      <div className="div_fore_title_weather">
+        <div
+          style={Object.assign(
+            {},
+            {
+              background: isSmallScreen ? divBotaoStyle.background : "#717171",
+            },
+          )}
+          className="div_botao_fore_troc"
+        >
+          <button
+            onClick={trocarTexto}
+            className="botao_fore_troc"
+            type="button"
+            style={botaoStyle}
+          ></button>
         </div>
-        <h2 className="title_prev">Previsão para cinco dias</h2>
+        <p className="title_weather_fore">{textos[cliques]}</p>
       </div>
+      <h2 className="title_prev">Previsão do tempo!</h2>
       <div className="separator-day">
         {dailyForecast.slice(0, 6).map((day, index) => (
           <div

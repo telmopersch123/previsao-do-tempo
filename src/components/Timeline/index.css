@@ -10,6 +10,7 @@
   border-radius: 10px;
   background-color: #dfdfdf30;
   margin: 20px 0px 20px 0px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.589);
 }
 .layer-escolher{
     background-color: white;
@@ -365,6 +366,12 @@ color: #48484a;
     width: 90vw;
     height: 500PX;
   }
+    .Paragrafos {
+      font-size: 3vw;
+    }
+  .Paragrafos>p {
+    font-size: 3vw;
+  }
 }
 @media screen and (max-width: 616px) {
   .map-container {
@@ -399,6 +406,13 @@ color: #48484a;
     padding: 5px;
     margin-bottom: 30px;
   }
+            .Paragrafos {
+              font-size: 5vw;
+            }
+
+            .Paragrafos>p {
+              font-size: 5vw;
+            }
     /* .numbers-bar {
       display: flex;
       gap: 5px;
@@ -427,10 +441,10 @@ color: #48484a;
     width: 100%;
   }
         .Paragrafos {
-        font-size: 2vh;
+        font-size: 5vw;
         }
         .Paragrafos>p {
-          font-size: 2vh;
+          font-size: 5vw;
         }
 }
 @media screen and (max-width: 274px) {
