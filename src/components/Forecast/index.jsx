@@ -53,7 +53,7 @@ const Forecast = ({
           const currentTime = moment().format("HH:mm");
           const isDaytime = moment(currentTime, "HH:mm").isBetween(
             moment("07:00", "HH:mm"),
-            moment("18:00", "HH:mm"),
+            moment("17:00", "HH:mm"),
             undefined,
             "(]",
           );
@@ -62,7 +62,7 @@ const Forecast = ({
             forecastSlice = dailyForecastArray.slice(1, 6);
           } else {
             if (isDaytime === false)
-              forecastSlice = dailyForecastArray.slice(0, 5);
+              forecastSlice = dailyForecastArray.slice(0, 6);
           }
           setDailyForecast(forecastSlice);
           onDailyDataChange(forecastSlice);
@@ -187,21 +187,25 @@ const Forecast = ({
   return (
     <div className="forecast">
       <div className="div_fore_title_weather">
-        <div
-          style={Object.assign(
-            {},
-            {
-              background: isSmallScreen ? divBotaoStyle.background : "#717171",
-            },
-          )}
-          className="div_botao_fore_troc"
-        >
-          <button
-            onClick={trocarTexto}
-            className="botao_fore_troc"
-            type="button"
-            style={botaoStyle}
-          ></button>
+        <div className="div_botao_fore_troc_extern">
+          <div
+            style={Object.assign(
+              {},
+              {
+                background: isSmallScreen
+                  ? divBotaoStyle.background
+                  : "#717171",
+              },
+            )}
+            className="div_botao_fore_troc"
+          >
+            <button
+              onClick={trocarTexto}
+              className="botao_fore_troc"
+              type="button"
+              style={botaoStyle}
+            ></button>
+          </div>
         </div>
         <p className="title_weather_fore">{textos[cliques]}</p>
       </div>

@@ -321,6 +321,7 @@ body {
   background-color: #dfdfdf30;
   box-shadow: 2px 1px 10px -1px rgba(0, 0, 0, 0.31);
   margin: 10px;
+  margin-left: -10px;
   padding: 20px;
   border-radius: 100px;
   border: none;
@@ -410,7 +411,7 @@ body {
   .far_cel_button {
     width: 90%;
     height: auto;
-    margin: 0;
+    margin: 0px;
   }
 
   .far_cel_button>img {

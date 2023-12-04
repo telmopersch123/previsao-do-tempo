@@ -191,17 +191,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
           className={`button_grapchis`}
           onClick={handleClick}
         >
-          <img
-            style={{
-              width: "35px",
-              height: "30px",
-              boxShadow: "0 0 10px rgba(0, 0, 0, 0.419)",
-              borderRadius: "10px",
-              padding: "5px",
-            }}
-            src={grapchis_icon}
-            alt="Gráficos"
-          />
+          <img className="img_escolhe" src={grapchis_icon} alt="Gráficos" />
         </button>
         <div
           style={{
@@ -336,7 +326,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
     <div className="graphics">
       <Button onCloudyIconClick={handleCloudyIconClick} />
       {selectedChart === "barChart" ? (
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="90%" height={300}>
           <BarChart
             data={morningData}
             style={{
@@ -379,7 +369,10 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
             <Legend
               verticalAlign="top"
               align="center"
-              wrapperStyle={{ color: "#fff", marginTop: "-15px" }}
+              wrapperStyle={{
+                color: "#fff",
+                marginTop: "-30px",
+              }}
               iconType="square"
               iconSize={10}
               formatter={(value) => (
@@ -447,7 +440,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
               align="center"
               iconSize={20}
               wrapperStyle={{
-                marginTop: "-25px",
+                marginTop: "-30px",
                 display: "flex",
                 justifyContent: "center",
               }}

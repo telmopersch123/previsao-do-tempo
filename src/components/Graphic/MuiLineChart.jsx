@@ -225,6 +225,7 @@ const MuiLineChart = (prop) => {
             wrapperStyle={{
               color: "white",
               fontSize: "14px",
+              marginTop: "-30px",
             }}
           />
           <Tooltip content={<CustomTooltip />} />

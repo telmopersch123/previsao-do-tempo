@@ -23,7 +23,7 @@
   font-size: 14px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.677);
-  background-color: #717171de;
+  background-color: #717171;
   padding: 8px 8px 8px 10px;
   border-radius: 0 10em 10em 0;
   margin-left: -5px;
@@ -33,16 +33,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #717171;
-  width: 4em;
-  height: 4em;
-  border-radius: 10em;
-  margin-left: 10px;
+  background-color: transparent;
+    border-radius: 100px;
+  padding: 2px;
+}
+.div_botao_fore_troc_extern{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #717171aa;
+    width: 4em;
+    height: 4em;
+    border-radius: 10em;
+    margin-left: 10px;
+    transition: 0.5s ease-in-out;
+}
+.div_botao_fore_troc_extern:hover {
+  background-color: #8a8a8a;
 }
 .botao_fore_troc {
   width: 3em;
   height: 3em;
-  border-radius: 10em;
+  border-radius: 100px;
   border-color: transparent;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.262);
   background-size: 110% !important;
@@ -51,7 +63,7 @@
 }
 .title_prev {
   color: white;
-  background-color: #dfdfdf50;
+  background-color: #7a7a7a50;
   padding: 5px;
   text-align: center;
   width: 30%;
@@ -182,6 +194,17 @@ order: 2;
         }
 }
 @media screen and (max-width: 500px) {
+    .div_botao_fore_troc_extern {
+        background-color: #dfdfdf30;
+        box-shadow: 2px 0 7px rgba(0, 0, 0, 0.33);
+        position: absolute;
+        border-radius: 10px;
+        padding: 0;
+        height: auto;
+        width: auto;
+        margin: 0;
+        left: 0;
+      }
 .div_fore_title_weather {
   display: flex;
   align-items: center;
@@ -265,13 +288,13 @@ font-size: 4vw;
           display: flex;
           flex-wrap: wrap;
               width: 50%;
-                gap: 5px;
+                gap: 10px;
         }
         .Night_forecast{
           width: 50%;
         }
                     .forecast-day {
-                      gap: 7px;
+                      gap: 25px;
                       justify-content: space-around;
                     }
                                             .data_div_forecast {
