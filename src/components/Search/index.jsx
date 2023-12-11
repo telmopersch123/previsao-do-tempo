@@ -8,7 +8,7 @@ import DetailsWeather from "../DetailsWeather";
 import Forecast from "../forecast";
 import Graphic from "../Graphic";
 import atencao from "../../icones/atencao.png";
-
+import Alert from "../Alert";
 function Search({ props }) {
   const [searched, setSearched] = useState(false);
 
@@ -30,6 +30,7 @@ function Search({ props }) {
   const [lat, setLat] = useState();
   const [lon, setLon] = useState();
   const [dailyData, setDailyData] = useState([]);
+  const [daily, setDaily] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
   const [capitalizedValue, setCapitalizedValue] = useState("");
   const handleTemperatureConversion = (newTemperature, newCelsius) => {
@@ -37,9 +38,10 @@ function Search({ props }) {
     setIsCelsius(newCelsius);
   };
 
-  const handleDailyDataChange = (newDailyData, newMoment_day) => {
+  const handleDailyDataChange = (newDailyData, newMoment_day, newDaily) => {
     setDailyData(newDailyData);
     setNewMomentDay(newMoment_day);
+    setDaily(newDaily);
   };
 
   const [inputValue, setInputValue] = useState("");
@@ -56,54 +58,51 @@ function Search({ props }) {
     setCapitalizedValue(capitalizedString);
     e.preventDefault();
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=4d8fb5b93d4af21d66a2948710284366&units=metric`;
-    const coords = `https://nominatim.openstreetmap.org/search?q=${valorCorrente}&format=json`;
     setValorCorrente(valorCorrente);
-
     axios
-      .all([axios.get(url), axios.get(coords)])
-      .then(
-        axios.spread((weatherResponse, coordsResponse) => {
-          const { sys } = weatherResponse.data;
-          if (sys.country !== undefined) {
-            const { lat, lon } = coordsResponse.data[0];
-            setLat(lat);
-            setLon(lon);
-            axios
-              .get(
-                `https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=position&lat=${lat}&lng=${lon}`,
-              )
-              .then((response) => {
-                const weatherData = weatherResponse.data;
-                const cloudsData = weatherData.clouds;
-                const rainData = weatherData.rain;
-                const snowData = weatherData.snow;
-                const { formatted } = response.data;
-                const unixSunriseValue = weatherData.sys.sunrise;
-                const unixSunsetValue = weatherData.sys.sunset;
-                const convertedDateTimeValue = new Date().getTime() / 1000;
-
-                setTemperature(weatherData.main.temp);
-                setTimeUpdate1(formatted);
-                setCurrentTimeUpdate(formatted);
-
-                setWeatherData(weatherData);
-                setCloudsData(cloudsData);
-                setRainData(rainData);
-                setSnowData(snowData);
-
-                setUnixSunrise(unixSunriseValue);
-                setUnixSunset(unixSunsetValue);
-                setConvertedDateTime(convertedDateTimeValue);
-
-                setSearched(true);
-                setInputValue(""); // Clear the input value after the search
-              });
-          } else {
-            alert("Valor inserido é um continente ou um nome inválido");
-          }
-        }),
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=4d8fb5b93d4af21d66a2948710284366&units=metric`,
       )
+      .then((Responsed) => {
+        const { sys } = Responsed.data;
+        if (sys.country !== undefined) {
+          const { lon, lat } = Responsed.data.coord;
+          setLat(lat);
+          setLon(lon);
+          axios
+            .get(
+              `https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=position&lat=${lat}&lng=${lon}`,
+            )
+            .then((response) => {
+              const weatherData = Responsed.data;
+              const cloudsData = weatherData.clouds;
+              const rainData = weatherData.rain;
+              const snowData = weatherData.snow;
+              const { formatted } = response.data;
+              const unixSunriseValue = weatherData.sys.sunrise;
+              const unixSunsetValue = weatherData.sys.sunset;
+              const convertedDateTimeValue = new Date().getTime() / 1000;
+
+              setTemperature(weatherData.main.temp);
+              setTimeUpdate1(formatted);
+              setCurrentTimeUpdate(formatted);
+
+              setWeatherData(weatherData);
+              setCloudsData(cloudsData);
+              setRainData(rainData);
+              setSnowData(snowData);
+
+              setUnixSunrise(unixSunriseValue);
+              setUnixSunset(unixSunsetValue);
+              setConvertedDateTime(convertedDateTimeValue);
+
+              setSearched(true);
+              setInputValue(""); // Clear the input value after the search
+            });
+        } else {
+          alert("Valor inserido é um continente ou um nome inválido");
+        }
+      })
       .catch((error) => {
         alert(
           "Ops, Algo deu errado! Atualize a Página Por Favor!",
@@ -169,6 +168,7 @@ function Search({ props }) {
               onTemperatureConversion={handleTemperatureConversion}
             />
           </div>
+          <Alert daily={daily} />
           <Timeline
             Celsius={Celsius}
             timeUpdate1={timeUpdate1}
@@ -195,11 +195,13 @@ function Search({ props }) {
             lon={lon}
             Celsius={Celsius}
             dailyData={dailyData}
+            daily={daily}
             newMomentDay={newMomentDay}
             onDailyDataChange={handleDailyDataChange}
             onNewMomentDayChange={(newMomentDay) =>
               setNewMomentDay(newMomentDay)
             }
+            onDaily={(newDaily) => setDaily(newDaily)}
           />
           <Graphic
             dailyData={dailyData}

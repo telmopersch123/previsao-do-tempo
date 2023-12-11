@@ -226,6 +226,7 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.589);
     font-weight: bold;
     border-radius: 10px;
+
 }
 .text_div_parag{
 
@@ -241,7 +242,7 @@ body {
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0);
   flex-direction: row;
   padding: 20px;
-  text-align: center;
+  text-align: justify;
 }
 
 .icones {

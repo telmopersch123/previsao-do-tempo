@@ -14,7 +14,9 @@ const Forecast = ({
   Celsius,
   onDailyDataChange,
   onNewMomentDayChange,
+  onDaily,
 }) => {
+  const [daily, setDaily] = useState([]);
   const [dailyForecast, setDailyForecast] = useState([]);
   const [dailyData00, setDailyData] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
@@ -26,6 +28,7 @@ const Forecast = ({
       .then((response) => {
         if (Array.isArray(response.data.list)) {
           const dailyData = response.data.list;
+          const daily = response.data.list;
           setDailyData(response.data.list);
           const filteredForecast = dailyData.reduce((result, item) => {
             const date = moment(item.dt_txt).format("YYYY-MM-DD");
@@ -62,11 +65,13 @@ const Forecast = ({
             forecastSlice = dailyForecastArray.slice(1, 6);
           } else {
             if (isDaytime === false)
-              forecastSlice = dailyForecastArray.slice(0, 6);
+              forecastSlice = dailyForecastArray.slice(0, 5);
           }
           setDailyForecast(forecastSlice);
           onDailyDataChange(forecastSlice);
           setDailyData(dailyData);
+          // setDaily(daily);
+          onDaily(daily);
         } else {
           alert("Ops!, algo deu errado!");
         }

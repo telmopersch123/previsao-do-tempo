@@ -14,7 +14,6 @@ const DetailsWeather = ({
   Celsius,
   weatherData,
 }) => {
-  console.log(weatherData);
   const convertToKmh = (ms) => {
     return ms * 3.6;
   };

@@ -33,6 +33,7 @@
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.152);
         border-radius:10px;
         padding: 10px;
+            gap: 5px;
 }
 .Paragrafos>p{
     background-color: #ffffff29;
@@ -41,6 +42,7 @@
       padding: 10px;
       text-align: center;
       font-size: 3vh;
+      width: 100%;
 }
 .dados_ind {
   border-top-right-radius: 0;
@@ -349,6 +351,7 @@ color: #48484a;
     }
   .Paragrafos{
     width: 100%;
+
   }
   .Paragrafos>p{
         background-color: #ffffff56;
@@ -383,6 +386,9 @@ color: #48484a;
           gap: 10px;
           justify-content: center;
         }
+                        .Paragrafos>p {
+                          justify-content: center;
+                        }
 }
 
 @media screen and (max-width: 420px) {

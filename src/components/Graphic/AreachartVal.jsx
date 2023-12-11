@@ -52,36 +52,37 @@ const AreaChartVal = ({ dailyData, newMomentDay, Celsius }) => {
   };
 
   const valData = extractHumidityData();
+  console.log(valData);
   const data = [
     {
       name: "1",
-      uv: valData[0].pop || 0.0,
-      pv: valData[0].rain || 0.0,
-      snow: valData[0].snow || 0.0,
+      uv: valData[0].pop,
+      pv: valData[0].rain,
+      snow: valData[0].snow,
     },
     {
       name: "2",
-      uv: valData[1].pop || 0.0,
-      pv: valData[1].rain || 0.0,
-      snow: valData[1].snow || 0.0,
+      uv: valData[1].pop,
+      pv: valData[1].rain,
+      snow: valData[1].snow,
     },
     {
       name: "3",
-      uv: valData[2].pop || 0.0,
-      pv: valData[2].rain || 0.1,
-      snow: valData[2].snow || 0.0,
+      uv: valData[2].pop,
+      pv: valData[2].rain,
+      snow: valData[2].snow,
     },
     {
       name: "4",
-      uv: valData[3].pop || 0.0,
-      pv: valData[3].rain || 0.0,
-      snow: valData[3].snow || 0.0,
+      uv: valData[3].pop,
+      pv: valData[3].rain,
+      snow: valData[3].snow,
     },
     {
       name: "5",
-      uv: valData[4].pop || 0.0,
-      pv: valData[4].rain || 0.0,
-      snow: valData[4].snow || 0.0,
+      uv: valData[4].pop,
+      pv: valData[4].rain,
+      snow: valData[4].snow,
     },
   ];
   const formatCustomDate = (dateString) => {
@@ -129,7 +130,6 @@ const AreaChartVal = ({ dailyData, newMomentDay, Celsius }) => {
               <span style={{ color: "#0A4F6D", fontWeight: "bold" }}>
                 {rain.toFixed(2)}mm
               </span>
-              <span> nas Ult.3Hrs</span>
             </p>
           )}
           {pop !== undefined && (
@@ -163,7 +163,6 @@ const AreaChartVal = ({ dailyData, newMomentDay, Celsius }) => {
               <span style={{ color: "#FFFFFF", fontWeight: "bold" }}>
                 {snow.toFixed(2)}mm
               </span>
-              <span> nas Ult.3Hrs</span>
             </p>
           )}
         </div>

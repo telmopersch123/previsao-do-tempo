@@ -133,6 +133,7 @@ const Timeline = ({
         const response = await axios.get(
           `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=5&appid=944362047ea30b04b99466aff4f5887e`,
         );
+
         const details = response.data[0];
         setDetailsOfc(details);
       } catch (error) {
@@ -308,6 +309,7 @@ const Timeline = ({
           )}
         </p>
         <p className="time_class">{formattedTime}</p>
+
         <p>{sys}</p>
 
         <p
