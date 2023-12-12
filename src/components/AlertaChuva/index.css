@@ -1,0 +1,78 @@
+.alertPop{
+  width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    margin: auto;
+    gap: 30px;
+
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
+    position: relative;
+}
+.alertAlt {
+  background-color: #4683b47e;
+    width: 100%;
+    padding: 17px
+}
+.alertMed{
+  background-color: #7EC8FFAA;
+  width: 100%;
+  padding: 17px
+}
+.alertBai{
+  background-color: #AED6F1AA;
+    padding: 17px
+}
+.chuviscos_gif{
+  position: absolute;
+  left: 0;
+  margin-left: 5px;
+  box-shadow: 0 0 5px;
+  width: 50px;
+  border-radius: 100px;
+}
+@media screen and (max-width: 760px) {
+  .chuviscos_gif {
+      position: relative;
+    }
+  .alertPop {
+    justify-content: flex-start;
+    font-size: 2.5vw;
+  }
+    .alertAlt {
+      padding: 5px
+    }
+
+    .alertMed {
+      padding: 5px
+    }
+
+    .alertBai {
+      padding: 5px
+    }
+
+}
+@media screen and (max-width: 500px) {
+.alertPop{
+width: 95%;
+font-size: 4vw;
+gap: 10vw;
+}
+.alertMed{
+  width: 100%;
+}
+.alertAlt{
+  width: 100%;
+}
+}
+@media screen and (max-width: 300px) {
+.alertPop {
+
+    gap: 8vw;
+  }
+  .alertMed {
+    font-size: 5vw;
+  }
+}

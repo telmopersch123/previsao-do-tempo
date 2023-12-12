@@ -1,0 +1,65 @@
+.alert{
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  color: rgb(255, 255, 255);
+
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
+  font-size: 1vw;
+}
+.alertFrElevado {
+  background-color: rgba(0, 208, 255, 0.475);
+  padding: 5px;
+}
+
+.alertFrModerado {
+  background-color: rgba(138, 219, 254, 0.477);
+  padding: 5px;
+}
+
+.alertCaElevado {
+  background-color: rgba(255, 0, 0, 0.467);
+  width: 100%;
+  padding: 5px;
+}
+
+.alertCaModerado {
+  background-color: rgba(250, 250, 112, 0.475);
+  padding: 5px;
+}
+.img_alert{
+  width: 40px;
+  height: auto;
+  fill: #ffc048;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.366));
+}
+
+@media screen and (max-width: 1110px) {
+  .alert{
+    font-size: 2vw;
+  }
+}
+@media screen and (max-width: 500px) {
+  .alert {
+    font-size: 2.8vw;
+    width: auto;
+    width: 95%;
+  }
+  .alertCaElevado{
+    width: 100%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .alert {
+    margin-top: 10px;
+    font-size: 3.5vw;
+  }
+  .alertCaElevado {
+      margin-top: 0px;
+    }
+}

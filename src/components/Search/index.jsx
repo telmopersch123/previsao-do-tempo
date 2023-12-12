@@ -7,8 +7,8 @@ import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
 import Forecast from "../forecast";
 import Graphic from "../Graphic";
-import atencao from "../../icones/atencao.png";
 import Alert from "../Alert";
+import AlertaChuva from "../AlertaChuva";
 function Search({ props }) {
   const [searched, setSearched] = useState(false);
 
@@ -55,7 +55,7 @@ function Search({ props }) {
     const inputValueMinusc = valorCorrente.toLowerCase();
     const capitalizedString =
       inputValueMinusc.charAt(0).toUpperCase() + inputValueMinusc.slice(1);
-    setCapitalizedValue(capitalizedString);
+
     e.preventDefault();
 
     setValorCorrente(valorCorrente);
@@ -74,30 +74,32 @@ function Search({ props }) {
               `https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=position&lat=${lat}&lng=${lon}`,
             )
             .then((response) => {
-              const weatherData = Responsed.data;
-              const cloudsData = weatherData.clouds;
-              const rainData = weatherData.rain;
-              const snowData = weatherData.snow;
-              const { formatted } = response.data;
-              const unixSunriseValue = weatherData.sys.sunrise;
-              const unixSunsetValue = weatherData.sys.sunset;
-              const convertedDateTimeValue = new Date().getTime() / 1000;
+              if (Responsed.data.sys.country !== undefined) {
+                const weatherData = Responsed.data;
+                const cloudsData = weatherData.clouds;
+                const rainData = weatherData.rain;
+                const snowData = weatherData.snow;
+                const { formatted } = response.data;
+                const unixSunriseValue = weatherData.sys.sunrise;
+                const unixSunsetValue = weatherData.sys.sunset;
+                const convertedDateTimeValue = new Date().getTime() / 1000;
+                setCapitalizedValue(capitalizedString);
+                setTemperature(weatherData.main.temp);
+                setTimeUpdate1(formatted);
+                setCurrentTimeUpdate(formatted);
 
-              setTemperature(weatherData.main.temp);
-              setTimeUpdate1(formatted);
-              setCurrentTimeUpdate(formatted);
+                setWeatherData(weatherData);
+                setCloudsData(cloudsData);
+                setRainData(rainData);
+                setSnowData(snowData);
 
-              setWeatherData(weatherData);
-              setCloudsData(cloudsData);
-              setRainData(rainData);
-              setSnowData(snowData);
+                setUnixSunrise(unixSunriseValue);
+                setUnixSunset(unixSunsetValue);
+                setConvertedDateTime(convertedDateTimeValue);
 
-              setUnixSunrise(unixSunriseValue);
-              setUnixSunset(unixSunsetValue);
-              setConvertedDateTime(convertedDateTimeValue);
-
-              setSearched(true);
-              setInputValue(""); // Clear the input value after the search
+                setSearched(true);
+                setInputValue("");
+              } // Clear the input value after the search
             });
         } else {
           alert("Valor inserido é um continente ou um nome inválido");
@@ -141,7 +143,6 @@ function Search({ props }) {
           />
         </form>
         <div className={`alert_fuso ${searched ? "searched" : ""}`}>
-          <img style={{ width: "35px" }} src={atencao} />
           <p>
             Algumas regiões possuem fuso horarios diferentes! Assim como o
             nascer do sol e o por do sol!
@@ -189,6 +190,7 @@ function Search({ props }) {
             gust={weatherData.wind.gust}
             directionWind={weatherData.wind.deg}
           />
+          {/* <AlertaChuva daily={daily} /> */}
           <Forecast
             valorCorrente={valorCorrente}
             lat={lat}

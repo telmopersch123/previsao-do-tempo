@@ -11,6 +11,15 @@
   position: relative;
   width: 100%;
 } */
+.organized_chuvas{
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
 .div_fore_title_weather{
   position: absolute;
   display: flex;

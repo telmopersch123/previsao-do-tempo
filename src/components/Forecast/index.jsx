@@ -8,6 +8,7 @@ import temperBaixa from "../../icones/temperatura-baixa.png";
 import iconeManha from "../../icones/sol_manha.gif";
 import iconeTarde from "../../icones/sol_tarde.gif";
 import iconeLua from "../../icones/lua_noite.gif";
+import AlertaChuva from "../AlertaChuva";
 const Forecast = ({
   lat,
   lon,
@@ -20,6 +21,8 @@ const Forecast = ({
   const [dailyForecast, setDailyForecast] = useState([]);
   const [dailyData00, setDailyData] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
+  const [alertaChuva, setAlertaChuva] = useState(null);
+
   useEffect(() => {
     axios
       .get(
@@ -29,6 +32,7 @@ const Forecast = ({
         if (Array.isArray(response.data.list)) {
           const dailyData = response.data.list;
           const daily = response.data.list;
+          setDaily(daily);
           setDailyData(response.data.list);
           const filteredForecast = dailyData.reduce((result, item) => {
             const date = moment(item.dt_txt).format("YYYY-MM-DD");
@@ -214,7 +218,10 @@ const Forecast = ({
         </div>
         <p className="title_weather_fore">{textos[cliques]}</p>
       </div>
-      <h2 className="title_prev">Previsão do tempo!</h2>
+      <div className="organized_chuvas">
+        <h2 className="title_prev">Previsão do tempo!</h2>
+        <AlertaChuva daily={daily} />
+      </div>
       <div className="separator-day">
         {dailyForecast.slice(0, 6).map((day, index) => (
           <div
