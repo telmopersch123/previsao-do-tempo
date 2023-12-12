@@ -2,33 +2,53 @@
   width: 50%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
     color: rgb(255, 255, 255);
     margin: auto;
-    gap: 30px;
-
+    gap: 5px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
     position: relative;
 }
+.o_div{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.div_neve{
+display: flex;
+align-items: center;
+gap: 5px;
+width: auto;
+padding: 2px;
+border-radius: 10px;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.622);
+background-color: rgba(240, 255, 255, 0.324);
+text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
+}
+.neve_gif{
+    box-shadow: 0 0 5px;
+      width: 40px;
+      border-radius: 100px;
+  height: auto;
+}
 .alertAlt {
   background-color: #4683b47e;
     width: 100%;
-    padding: 17px
+    padding: 5px
 }
 .alertMed{
   background-color: #7EC8FFAA;
   width: 100%;
-  padding: 17px
+  padding: 5px
 }
 .alertBai{
   background-color: #AED6F1AA;
-    padding: 17px
+    padding: 5px
 }
 .chuviscos_gif{
-  position: absolute;
-  left: 0;
-  margin-left: 5px;
   box-shadow: 0 0 5px;
   width: 50px;
   border-radius: 100px;
@@ -58,7 +78,6 @@
 .alertPop{
 width: 95%;
 font-size: 4vw;
-gap: 10vw;
 }
 .alertMed{
   width: 100%;
@@ -68,10 +87,6 @@ gap: 10vw;
 }
 }
 @media screen and (max-width: 300px) {
-.alertPop {
-
-    gap: 8vw;
-  }
   .alertMed {
     font-size: 5vw;
   }
