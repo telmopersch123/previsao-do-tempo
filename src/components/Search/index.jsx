@@ -8,16 +8,13 @@ import DetailsWeather from "../DetailsWeather";
 import Forecast from "../forecast";
 import Graphic from "../Graphic";
 import Alert from "../Alert";
-import AlertaChuva from "../AlertaChuva";
 function Search({ props }) {
   const [searched, setSearched] = useState(false);
-
   const [Celsius, setIsCelsius] = useState(true);
   const [temperature, setTemperature] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
   const [timeUpdate1, setTimeUpdate1] = useState(null);
   const [backgroundClass, setBackGroundClass] = useState("");
-  const [classes, setClasses] = useState("");
   const [cloudsData, setCloudsData] = useState(null);
   const [rainData, setRainData] = useState(null);
   const [snowData, setSnowData] = useState(null);
@@ -136,18 +133,13 @@ function Search({ props }) {
             onMouseOut={() => changePlaceholderColor(false)}
           />
           <input
-            id="inputPesquisar"
+            className="input_Pesquisar"
             type="submit"
             value="Pesquisar por cidade!"
-            style={{ display: searched ? `none` : "inline-block" }}
+            style={{ display: searched ? `none` : "flex" }}
           />
         </form>
-        <div className={`alert_fuso ${searched ? "searched" : ""}`}>
-          <p>
-            Algumas regiões possuem fuso horarios diferentes! Assim como o
-            nascer do sol e o por do sol!
-          </p>
-        </div>
+        <div className={`alert_fuso ${searched ? "searched" : ""}`}></div>
       </div>
       {weatherData ? (
         <div className="objects">

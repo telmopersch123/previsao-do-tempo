@@ -6,10 +6,10 @@ import chuva from "../../icones/chuva.gif";
 import chuvaForte from "../../icones/trovoada.gif";
 import nublado from "../../icones/nublado.gif";
 import neve from "../../icones/neve-unscreen.gif";
+import "./index.css";
 
 function WeatherIcon({
   weather,
-  timeUpdate1,
   setClasses,
   cloudsData,
   rainData,
@@ -17,9 +17,9 @@ function WeatherIcon({
   unixSunrise,
   unixSunset,
   convertedDateTime,
-  myFunction,
-  Celsius,
 }) {
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [observacoes, setObservacoes] = useState("");
   const sunriseTime = unixSunrise * 1000;
   const sunsetTime = unixSunset * 1000;
   const currentTime = convertedDateTime * 1000;
@@ -313,8 +313,34 @@ function WeatherIcon({
     setClasses(backgroundClass);
   }, [backgroundClass, setClasses]);
 
+  const handleDivClick = () => {
+    setMostrarModal(true);
+  };
+  const handleModalClose = () => {
+    setMostrarModal(false);
+  };
+
+  // Use uma função para lidar com o clique no span para evitar a propagação do evento
+  const handleSpanClick = (e) => {
+    e.stopPropagation(); // Impede que o evento se propague para a div
+    handleModalClose(); // Chama a função para fechar o modal
+  };
+
   return (
-    <div className="icon_temp">
+    <div onClick={handleDivClick} className="icon_temp">
+      {mostrarModal && (
+        <div className="overlay" onClick={handleModalClose}></div>
+      )}
+      {mostrarModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleSpanClick}>
+              &times;
+            </span>
+            <p className="text_modal">Adicionar Observações</p>
+          </div>
+        </div>
+      )}
       {iconSrc && (
         <div
           style={{ width: "auto", marginBottom: "10px" }}

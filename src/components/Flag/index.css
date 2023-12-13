@@ -1,0 +1,15 @@
+.img_flag{
+    width: 50px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #0000004D;
+    /* A imagem ocupará 100% da largura da div */
+    height: auto;
+    /* A altura será ajustada automaticamente */
+    display: block;
+    /* Remove espaços extras abaixo da imagem */
+    transition: 0.5s ease;
+}
+.img_flag:hover{
+  transform: scale(1.2);
+}

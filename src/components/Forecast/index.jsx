@@ -50,7 +50,7 @@ const Forecast = ({
             if (moment(item.dt_txt).format("HH:mm") === "12:00") {
               result[date].afternoon.push(item);
             }
-            if (moment(item.dt_txt).format("HH:mm") === "18:00") {
+            if (moment(item.dt_txt).format("HH:mm") === "21:00") {
               result[date].night.push(item);
             }
             return result;

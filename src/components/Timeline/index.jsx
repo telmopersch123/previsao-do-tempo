@@ -5,6 +5,9 @@ import { convertorFahrenheit } from "../Conv";
 import "./index.css";
 import ReactDOM from "react-dom";
 import axios from "axios";
+
+import Flag from "../Flag";
+
 //Mapas//
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -118,6 +121,10 @@ const Timeline = ({
   lat,
   lon,
 }) => {
+  const [sysFlag, setSysFlag] = useState("");
+  useEffect(() => {
+    setSysFlag(sys);
+  }, [sys]);
   const [detailsOfc, setDetailsOfc] = useState({});
   const [item1Visivel, setItem1Visivel] = useState(false);
   const mostrarItem1 = () => setItem1Visivel(!item1Visivel);
@@ -310,11 +317,16 @@ const Timeline = ({
         </p>
         <p className="time_class">{formattedTime}</p>
 
-        <p>{sys}</p>
+        <div className="div_p_flags">
+          <p>
+            <Flag sysFlag={sysFlag} />
+          </p>
+          <p>{sys}</p>
+        </div>
 
         <p
           className="text"
-          style={{ display: detailsOfc.state !== undefined ? "block" : "none" }}
+          style={{ display: detailsOfc.state !== undefined ? "flex" : "none" }}
         >
           {detailsOfc.state !== undefined && detailsOfc.state !== null
             ? detailsOfc.state

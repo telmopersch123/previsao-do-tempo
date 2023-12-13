@@ -1,0 +1,39 @@
+.modal{
+  background-color: #535353;
+  border: 2.5px #434343 solid;
+  border-radius: 10px;
+  position: fixed;
+
+  top: 10px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    width: 50%;
+    height: auto;
+    z-index: 1001;
+}
+.modal-content{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.close{
+  font-size: 25px;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  margin-left: 5px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Cor de fundo com transparência */
+  z-index: 1001;
+  /* Garante que o overlay esteja acima do conteúdo principal */
+}
+
