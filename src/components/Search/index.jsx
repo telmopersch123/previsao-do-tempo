@@ -8,7 +8,11 @@ import DetailsWeather from "../DetailsWeather";
 import Forecast from "../forecast";
 import Graphic from "../Graphic";
 import Alert from "../Alert";
+
+import regiao from "../../icones/paises.png";
 function Search({ props }) {
+  const [verifClicked, setVerifiClicked] = useState(false);
+
   const [searched, setSearched] = useState(false);
   const [Celsius, setIsCelsius] = useState(true);
   const [temperature, setTemperature] = useState(true);
@@ -109,14 +113,55 @@ function Search({ props }) {
         );
       });
   };
+
+  const hlandeVerifiOpen = () => {
+    setVerifiClicked(true);
+  };
+  const hlandeVerifiClose = () => {
+    setVerifiClicked(false);
+  };
+
   return (
     <div className={`searchWr ${searched ? "searched" : ""}`}>
       <div className={`Search ${searched ? "searched" : ""}`}>
-        <h2 className={`title_master ${searched ? "searched" : ""}`}>
+        <h2
+          onClick={() => {
+            hlandeVerifiOpen();
+          }}
+          className={`title_master ${searched ? "searched" : ""}`}
+        >
           {searched
             ? `Previsões para ${capitalizedValue}`
             : "Escreva a baixo o nome da Cidade!"}
         </h2>
+        {verifClicked && (
+          <div className="overlay" onClick={hlandeVerifiClose}></div>
+        )}
+        {verifClicked && (
+          <div className="modal_regiao">
+            <span className="close_regiao" onClick={hlandeVerifiClose}>
+              &times;
+            </span>
+            <p className="title_regiao">Região Pesquisada</p>
+            <img className="foto_regiao" src={regiao} alt="regiao?" />
+            <p className="text_regiao">
+              Todas as regiões pesquisadas, tanto cidades quanto estados ou
+              paises podem possuir também cidades, estados ou paises diferentes
+              com o mesmo nome em diferentes locais! Utilize o mapa para se
+              localizar, e caso não achou a sua cidade, perdoa-nos, a API que
+              foi utilizada é um serviço gratuito, graças a isso existe
+              limitações, então caso não achou, tente usar cidades mais proxima
+              da sua, ou o site da{" "}
+              <a
+                href="https://openweathermap.org"
+                rel="noreferrer"
+                target="_blank"
+              >
+                OpenWeaterMaps
+              </a>
+            </p>
+          </div>
+        )}
         <form onSubmit={(e) => searchInput(e)}>
           <input
             onChange={(e) => setInputValue(e.target.value)} // Update input value

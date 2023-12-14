@@ -46,16 +46,13 @@ const Forecast = ({
             }
             if (moment(item.dt_txt).format("HH:mm") === "09:00") {
               result[date].morning.push(item);
-            }
-            if (moment(item.dt_txt).format("HH:mm") === "12:00") {
+            } else if (moment(item.dt_txt).format("HH:mm") === "12:00") {
               result[date].afternoon.push(item);
-            }
-            if (moment(item.dt_txt).format("HH:mm") === "21:00") {
+            } else if (moment(item.dt_txt).format("HH:mm") === "21:00") {
               result[date].night.push(item);
             }
             return result;
           }, {});
-
           const dailyForecastArray = Object.values(filteredForecast);
           const currentTime = moment().format("HH:mm");
           const isDaytime = moment(currentTime, "HH:mm").isBetween(
@@ -65,16 +62,17 @@ const Forecast = ({
             "(]",
           );
           let forecastSlice;
+
           if (isDaytime === true) {
             forecastSlice = dailyForecastArray.slice(1, 6);
           } else {
             if (isDaytime === false)
               forecastSlice = dailyForecastArray.slice(0, 5);
           }
+
           setDailyForecast(forecastSlice);
           onDailyDataChange(forecastSlice);
           setDailyData(dailyData);
-          // setDaily(daily);
           onDaily(daily);
         } else {
           alert("Ops!, algo deu errado!");

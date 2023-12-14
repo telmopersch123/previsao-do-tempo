@@ -18,6 +18,7 @@ function WeatherIcon({
   unixSunset,
   convertedDateTime,
 }) {
+  const [exibirPeriodo, setExibirPeriodo] = useState(true);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [observacoes, setObservacoes] = useState("");
   const sunriseTime = unixSunrise * 1000;
@@ -326,8 +327,21 @@ function WeatherIcon({
     handleModalClose(); // Chama a função para fechar o modal
   };
 
+  const alternarImagem = () => {
+    setExibirPeriodo(!exibirPeriodo);
+  };
+
+  const [clicked, setClicked] = useState(false);
+  const handleClick = () => {
+    setClicked(true);
+
+    setTimeout(() => {
+      setClicked(false);
+    }, 200);
+  };
+
   return (
-    <div onClick={handleDivClick} className="icon_temp">
+    <div className="icon_temp">
       {mostrarModal && (
         <div className="overlay" onClick={handleModalClose}></div>
       )}
@@ -337,12 +351,74 @@ function WeatherIcon({
             <span className="close" onClick={handleSpanClick}>
               &times;
             </span>
-            <p className="text_modal">Adicionar Observações</p>
+            <div className="div_avo00">
+              <p className="title_temp_modal">
+                Icones do periodo correspondente da região
+              </p>
+              <div className="div_pai00">
+                <div
+                  onClick={() => {
+                    alternarImagem();
+                    handleClick();
+                  }}
+                  className={`div_filho00 ${clicked ? "clicked" : ""}`}
+                >
+                  {exibirPeriodo ? (
+                    <img src={solLimpo} />
+                  ) : (
+                    <img src={luaLimpa} />
+                  )}
+                </div>
+                <p className="text_temp_modal">
+                  Cada icone representa o periodo que está a região, o Sol
+                  representa que a região pesquisada esta no periodo Diurno, e a
+                  Lua no Noturno!
+                </p>
+              </div>
+            </div>
+
+            <div className="div_avo01">
+              <p className="text_modal_weather">
+                Icones do tempo correspondente para a região
+              </p>
+              <div className="div_pai01">
+                <div className="div_filhos">
+                  <img src={chuva} />
+                  <p>
+                    Icone que representa o periodo chuvoso fraco/médio na região
+                    pesquisada, inclui chuviscos e sereno!
+                  </p>
+                </div>
+                <div className="div_filhos">
+                  <img src={chuvaForte} />
+                  <p>
+                    Icone que representa um periodo chuvoso forte na região
+                    pesquisada, inclui granizos, trovoadas e ventos fortes!
+                  </p>
+                </div>
+                <div className="div_filhos">
+                  <img src={nublado} />
+                  <p>
+                    Icone que representa um tempo nublado na região pesquisada,
+                    inclui frente fria, tempo fechado e poluição!
+                  </p>
+                </div>
+                <div className="div_filhos">
+                  <img src={neve} />
+                  <p>
+                    Icone que representa um tempo nevoso na região pesquisada,
+                    isso inclui estações de inverno de grande quantidade de neve
+                    que existem em algums regiões do mundo!
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
       {iconSrc && (
         <div
+          onClick={handleDivClick}
           style={{ width: "auto", marginBottom: "10px" }}
           className={`icon-wrapper icon2 ${
             iconSrc.includes(solLimpo) &&
@@ -359,7 +435,7 @@ function WeatherIcon({
         </div>
       )}
       {iconSrcTemp && (
-        <div className="icon-wrapper icon2">
+        <div onClick={handleDivClick} className="icon-wrapper icon2">
           <img className="icones" src={iconSrcTemp} alt={weather.description} />
           {descriptionText && (
             <div className="description-text">{descriptionText}</div>
@@ -367,7 +443,7 @@ function WeatherIcon({
         </div>
       )}
       {iconNeve && (
-        <div className="icon-wrapper icon3">
+        <div onClick={handleDivClick} className="icon-wrapper icon3">
           <img className="icones" src={iconNeve} alt={weather.description} />
           {descriptionTextSnow && (
             <div className="description-text">{descriptionTextSnow}</div>
