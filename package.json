@@ -27,6 +27,7 @@
     "react-flags-select": "^2.2.3",
     "react-leaflet": "^4.2.1",
     "react-refresh": "^0.14.0",
+    "react-router-dom": "^6.21.0",
     "react-scripts": "5.0.1",
     "react-spring": "^9.7.3",
     "recharts": "^2.9.3",

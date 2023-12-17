@@ -11,6 +11,7 @@
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
   font-size: 1vw;
+  cursor: help;
 }
 .alertFrElevado {
   background-color: rgba(0, 208, 255, 0.475);
@@ -39,6 +40,83 @@
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.366));
 }
 
+
+
+.alert_avo{
+  width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(240, 248, 255, 0.184);
+    border-radius: 10px;
+    z-index: 1;
+}
+.alert_text0{
+  text-align: center;
+    width: 100%;
+    padding: 5px;
+    background-color: rgba(240, 248, 255, 0.208);
+    border-radius: 7px 7px 0px 0px;
+}
+.alert_text1 {
+    text-align: center;
+      width: auto;
+      padding: 5px;
+      border-radius: 10px;
+      font-size: 16px;
+      background-color: rgba(240, 248, 255, 0.100);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
+      margin: 5px 0px 10px 0px;
+      transition: 0.2s ease-in-out;
+}
+.p:hover{
+    background-color: rgba(240, 248, 255, 0.159);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.438);
+}
+.alert_text2 {
+    text-align: center;
+      width: auto;
+      padding: 20px;
+      border-radius: 100px;
+      font-size: 25px;
+      font-weight: bold;
+      background-color: rgba(240, 248, 255, 0.100);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
+      margin: 5px 0px 10px 0px;
+      transition: 0.2s ease-in-out;
+}
+.alert_text2.calor{
+color: rgb(253, 191, 191);
+}
+.alert_text2.frio {
+color: rgb(191, 242, 253);
+
+}
+.alert_text2:hover{
+  font-size: calc(25px + 3%);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.549);
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.668);
+}
+.alert_text3 {
+    text-align: center;
+      width: 85%;
+      padding: 5px;
+      border-radius: 10px;
+      font-size: 16px;
+      background-color: rgba(240, 248, 255, 0.100);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
+      margin: 5px 0px 10px 0px;
+      transition: 0.2s ease-in-out;
+}
+strong{
+  color: rgb(255, 255, 255);
+  transition: 0.2s ease-in-out;
+}
+strong:hover{
+  text-shadow: 0 0 5px rgba(241, 161, 40, 0.717);
+}
 @media screen and (max-width: 1110px) {
   .alert{
     font-size: 2vw;

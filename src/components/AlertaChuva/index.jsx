@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import chuviscos from "../../icones/chuvisco.gif";
 import neve from "../../icones/neve.gif";
+import Graphic from "../Graphic";
 
-function AlertaChuva({ daily }) {
+function AlertaChuva({ daily, idWind, onVerifChange }) {
+  const [modalVerif, setModalVerif] = useState(false);
+  const [verifSnow, setVerifSnow] = useState(false);
   if (!daily) {
     return null;
   }
@@ -39,6 +42,7 @@ function AlertaChuva({ daily }) {
   const pops = alertDataPop.map((item) => item.pop);
   const soma0 = pops.reduce((acc, pop) => acc + pop, 0);
   const media0 = Number((soma0 / pops.length).toFixed(0));
+
   let alertaChuva;
 
   function getProbabilidadeNeve(media1) {
@@ -55,10 +59,75 @@ function AlertaChuva({ daily }) {
   }
   const probabilidadeNeve = getProbabilidadeNeve(media1);
 
+  const handleVerifiOpen = () => {
+    setModalVerif(true);
+  };
+  const handleVerifiClose = () => {
+    setModalVerif(false);
+  };
+
+  const handleVerif = (e) => {
+    e.stopPropagation();
+    handleVerifiClose();
+    onVerifChange(true);
+  };
+
+  const cor = media0 > 25 ? "alto" : "baixo";
+
+  const conteinerModal = () => {
+    return (
+      <div>
+        {modalVerif && (
+          <div className="overlay" onClick={() => handleVerifiClose()}></div>
+        )}
+        {modalVerif && (
+          <div className="modal">
+            <div className="alert_avo">
+              <span onClick={handleVerif} className="close">
+                &times;
+              </span>
+              <p className="alert_text0">Alerta do clima!</p>
+              <p className="alert_text1 p">
+                As chances de chuva é calculado com base na previsão de até 5
+                dias da região pesquisada
+              </p>
+              <p className={`alert_text2 ${cor}`}>
+                {media0}% de chances de chover
+              </p>
+              {media1 > 0 && (
+                <div>
+                  <p>Região com Neve!</p>
+                  <p className={`alert_text2 snow_text`}>
+                    {media1}% chances de nevar
+                  </p>
+                </div>
+              )}
+              <p className="alert_text3 p">
+                Com base nas possibilidades dos próximos dias&nbsp;
+                <strong onClick={handleVerif} style={{ cursor: "pointer" }}>
+                  <a href={`#${idWind}`} className="text_chuva">
+                    (você pode ver na sessão de gráficos da chuva)
+                  </a>
+                </strong>
+                &nbsp;é basicamente feito a média dos numeros obtidos
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (media0 > 50) {
     alertaChuva = (
-      <div className="alertAlt alertPop" role="alert">
-        <div className="o_div">
+      <div
+        onClick={() => handleVerifiOpen()}
+        className="alertAlt alertPop"
+        role="alert"
+      >
+        <div
+          className={`o_div ${probabilidadeNeve !== null ? "case_snow" : ""}`}
+        >
           <img className="chuviscos_gif" src={chuviscos} />
           <p>Chances altas de Chuva para os proximos dias!</p>
         </div>
@@ -68,11 +137,16 @@ function AlertaChuva({ daily }) {
             <p className="p_snow">{probabilidadeNeve}</p>
           </div>
         )}
+        {conteinerModal()}
       </div>
     );
   } else if (media0 >= 30 && media0 <= 50) {
     alertaChuva = (
-      <div className="alertMed alertPop" role="alert">
+      <div
+        onClick={() => handleVerifiOpen()}
+        className="alertMed alertPop"
+        role="alert"
+      >
         <div className="o_div">
           <img className="chuviscos_gif" src={chuviscos} />
           <p>Chances médias de Chuva para os proximos dias!</p>
@@ -83,11 +157,16 @@ function AlertaChuva({ daily }) {
             <p className="p_snow">{probabilidadeNeve}</p>
           </div>
         )}
+        {conteinerModal()}
       </div>
     );
   } else if (media0 < 30) {
     alertaChuva = (
-      <div className="alertBai alertPop" role="alert">
+      <div
+        onClick={() => handleVerifiOpen()}
+        className="alertBai alertPop"
+        role="alert"
+      >
         <div className="o_div">
           <img className="chuviscos_gif" src={chuviscos} />
           <p>Chances baixas de Chuva para os proximos dias!</p>
@@ -98,13 +177,14 @@ function AlertaChuva({ daily }) {
             <p className="p_snow">{probabilidadeNeve}</p>
           </div>
         )}
+        {conteinerModal()}
       </div>
     );
     return alertaChuva;
   }
 
   return (
-    <div className="alertPop" role="alert">
+    <div className="alert" role="alert">
       {alertaChuva}
     </div>
   );

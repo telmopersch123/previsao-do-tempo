@@ -20,7 +20,6 @@ function WeatherIcon({
 }) {
   const [exibirPeriodo, setExibirPeriodo] = useState(true);
   const [mostrarModal, setMostrarModal] = useState(false);
-  const [observacoes, setObservacoes] = useState("");
   const sunriseTime = unixSunrise * 1000;
   const sunsetTime = unixSunset * 1000;
   const currentTime = convertedDateTime * 1000;

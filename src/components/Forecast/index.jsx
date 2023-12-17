@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import moment from "moment";
 import { convertorFahrenheit } from "../Conv";
@@ -15,13 +15,19 @@ const Forecast = ({
   Celsius,
   onDailyDataChange,
   onNewMomentDayChange,
+  onVerifChange,
   onDaily,
+  idProp,
+  idWind,
 }) => {
   const [daily, setDaily] = useState([]);
   const [dailyForecast, setDailyForecast] = useState([]);
   const [dailyData00, setDailyData] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
-  const [alertaChuva, setAlertaChuva] = useState(null);
+
+  const handleVerifChange = (verifValue) => {
+    onVerifChange(verifValue);
+  };
 
   useEffect(() => {
     axios
@@ -72,6 +78,7 @@ const Forecast = ({
 
           setDailyForecast(forecastSlice);
           onDailyDataChange(forecastSlice);
+          onNewMomentDayChange(newMomentDay);
           setDailyData(dailyData);
           onDaily(daily);
         } else {
@@ -192,7 +199,7 @@ const Forecast = ({
     ...fundoGroundNoite,
   };
   return (
-    <div className="forecast">
+    <div id={idProp} className="forecast">
       <div className="div_fore_title_weather">
         <div className="div_botao_fore_troc_extern">
           <div
@@ -218,7 +225,11 @@ const Forecast = ({
       </div>
       <div className="organized_chuvas">
         <h2 className="title_prev">Previsão do tempo!</h2>
-        <AlertaChuva daily={daily} />
+        <AlertaChuva
+          idWind={idWind}
+          daily={daily}
+          onVerifChange={handleVerifChange}
+        />
       </div>
       <div className="separator-day">
         {dailyForecast.slice(0, 6).map((day, index) => (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import WeahterIcon from "../WeatherIcon";
@@ -8,10 +8,10 @@ import DetailsWeather from "../DetailsWeather";
 import Forecast from "../forecast";
 import Graphic from "../Graphic";
 import Alert from "../Alert";
-
 import regiao from "../../icones/paises.png";
 function Search({ props }) {
   const [verifClicked, setVerifiClicked] = useState(false);
+  const [verifValue, setVerifValue] = useState(null);
 
   const [searched, setSearched] = useState(false);
   const [Celsius, setIsCelsius] = useState(true);
@@ -26,7 +26,6 @@ function Search({ props }) {
   const [unixSunset, setUnixSunset] = useState(null);
   const [convertedDateTime, setConvertedDateTime] = useState(null);
   const [currentTimeUpdate, setCurrentTimeUpdate] = useState(null);
-  const apiKey = "H6TZ60LH2XNH";
   const [valorCorrente, setValorCorrente] = useState();
   const [lat, setLat] = useState();
   const [lon, setLon] = useState();
@@ -34,6 +33,17 @@ function Search({ props }) {
   const [daily, setDaily] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
   const [capitalizedValue, setCapitalizedValue] = useState("");
+  const idDoComponente = "forecast";
+  const idDoComponente0 = "wind";
+  const apiKey = "H6TZ60LH2XNH";
+
+  const handleVerifValueChange = () => {
+    setVerifValue(false);
+  };
+  const handleVerifChangeFromForecast = (verifValue) => {
+    setVerifValue(verifValue);
+  };
+
   const handleTemperatureConversion = (newTemperature, newCelsius) => {
     setTemperature(newTemperature);
     setIsCelsius(newCelsius);
@@ -132,7 +142,7 @@ function Search({ props }) {
         >
           {searched
             ? `Previsões para ${capitalizedValue}`
-            : "Escreva a baixo o nome da Cidade!"}
+            : "Escreva abaixo o nome da Cidade!"}
         </h2>
         {verifClicked && (
           <div className="overlay" onClick={hlandeVerifiClose}></div>
@@ -164,15 +174,15 @@ function Search({ props }) {
         )}
         <form onSubmit={(e) => searchInput(e)}>
           <input
-            onChange={(e) => setInputValue(e.target.value)} // Update input value
-            onFocus={() => setInputValue("")} // Clear input value on focus
+            onChange={(e) => setInputValue(e.target.value)}
+            onFocus={() => setInputValue("")}
             placeholder={
               searched ? `Pesquisar por mais!` : "Digite o nome da cidade aqui!"
             }
             className={`inputCidade ${searched ? "searched" : ""}`}
             name="searchInp"
             type="text"
-            value={inputValue} // Use the state variable for the input value
+            value={inputValue}
             autoComplete="off"
             onMouseOver={() => changePlaceholderColor(true)}
             onMouseOut={() => changePlaceholderColor(false)}
@@ -186,6 +196,7 @@ function Search({ props }) {
         </form>
         <div className={`alert_fuso ${searched ? "searched" : ""}`}></div>
       </div>
+
       {weatherData ? (
         <div className="objects">
           <div className="align-items">
@@ -201,12 +212,15 @@ function Search({ props }) {
               convertedDateTime={convertedDateTime}
               currentTimeUpdate={currentTimeUpdate}
             />
+
             <Button
               Celsius={Celsius}
               onTemperatureConversion={handleTemperatureConversion}
             />
           </div>
-          <Alert daily={daily} />
+
+          <Alert idProp={idDoComponente} daily={daily} />
+
           <Timeline
             Celsius={Celsius}
             timeUpdate1={timeUpdate1}
@@ -227,8 +241,9 @@ function Search({ props }) {
             gust={weatherData.wind.gust}
             directionWind={weatherData.wind.deg}
           />
-          {/* <AlertaChuva daily={daily} /> */}
           <Forecast
+            idWind={idDoComponente0}
+            idProp={idDoComponente}
             valorCorrente={valorCorrente}
             lat={lat}
             lon={lon}
@@ -241,11 +256,15 @@ function Search({ props }) {
               setNewMomentDay(newMomentDay)
             }
             onDaily={(newDaily) => setDaily(newDaily)}
+            onVerifChange={handleVerifChangeFromForecast}
           />
           <Graphic
+            idWind={idDoComponente0}
             dailyData={dailyData}
             newMomentDay={newMomentDay}
             Celsius={Celsius}
+            verifValue={verifValue}
+            onVerifValueChange={handleVerifValueChange}
           />
         </div>
       ) : (
@@ -256,5 +275,4 @@ function Search({ props }) {
     </div>
   );
 }
-
 export default Search;

@@ -23,7 +23,14 @@ import grapchis_icon_cloudy from "../../icones/nublado_grafico.png";
 import grapchis_icon_estatistics from "../../icones/estatisticas_grafico.png";
 import grapchis_icon_temper from "../../icones/temper_grapchis.png";
 
-const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
+const Graphic = ({
+  dailyData,
+  newMomentDay,
+  Celsius,
+  idWind,
+  verifValue,
+  onVerifValueChange,
+}) => {
   const [morningData, setMorningData] = useState([]);
   const mapDayPeriod = (period) => {
     period = newMomentDay;
@@ -154,7 +161,6 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
 
   const [selectedChart, setSelectedChart] = useState("barChart");
   const [showItems, setShowItems] = useState(false);
-
   const handleStatisticsIconClick = () => {
     setSelectedChart("lineChart");
   };
@@ -178,6 +184,13 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
             : "barChart",
     );
   };
+  useEffect(() => {
+    if (verifValue) {
+      setSelectedChart("radialChart");
+      onVerifValueChange();
+    }
+  });
+
   const Button = () => {
     const handleClick = () => {
       setShowItems(!showItems);
@@ -323,7 +336,7 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
   };
 
   return (
-    <div className="graphics">
+    <div id={idWind} className="graphics">
       <Button onCloudyIconClick={handleCloudyIconClick} />
       {selectedChart === "barChart" ? (
         <ResponsiveContainer width="90%" height={300}>
@@ -520,7 +533,11 @@ const Graphic = ({ dailyData, newMomentDay, Celsius }) => {
       ) : selectedChart === "lineChart" ? (
         <MuiLineChart newMomentDay={newMomentDay} dailyData={dailyData} />
       ) : selectedChart === "radialChart" ? (
-        <AreaChartVal newMomentDay={newMomentDay} dailyData={dailyData} />
+        <AreaChartVal
+          idWind={idWind}
+          newMomentDay={newMomentDay}
+          dailyData={dailyData}
+        />
       ) : (
         <div></div>
       )}

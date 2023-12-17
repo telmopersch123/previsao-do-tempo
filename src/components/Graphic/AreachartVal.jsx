@@ -1,4 +1,3 @@
-import { popoverClasses } from "@mui/material";
 import React from "react";
 import {
   AreaChart,
@@ -10,7 +9,7 @@ import {
   CartesianGrid,
 } from "recharts";
 // pop,rain,snow
-const AreaChartVal = ({ dailyData, newMomentDay, Celsius }) => {
+const AreaChartVal = ({ dailyData, newMomentDay }) => {
   const mapDayPeriod = (period) => {
     period = newMomentDay;
 
@@ -52,7 +51,6 @@ const AreaChartVal = ({ dailyData, newMomentDay, Celsius }) => {
   };
 
   const valData = extractHumidityData();
-  console.log(valData);
   const data = [
     {
       name: "1",
