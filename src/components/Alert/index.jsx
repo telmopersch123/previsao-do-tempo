@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./index.css";
+import { CSSTransition } from "react-transition-group";
 import { icone } from "./icone.jsx";
 function Alert({ daily, idProp }) {
   const [modalVerif, setModalVerifi] = useState(false);
@@ -46,7 +47,12 @@ function Alert({ daily, idProp }) {
         {modalVerif && (
           <div className="overlay" onClick={() => handleVerifiClose()}></div>
         )}
-        {modalVerif && (
+        <CSSTransition
+          in={modalVerif}
+          timeout={500}
+          classNames="modal"
+          unmountOnExit
+        >
           <div className="modal">
             <div className="alert_avo">
               <span onClick={handleVerif} className="close">
@@ -69,7 +75,7 @@ function Alert({ daily, idProp }) {
               </p>
             </div>
           </div>
-        )}
+        </CSSTransition>
       </div>
     );
   };

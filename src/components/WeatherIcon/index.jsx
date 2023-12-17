@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import solLimpo from "../../icones/sol.gif";
 import luaLimpa from "../../icones/lua.gif";
@@ -344,7 +345,13 @@ function WeatherIcon({
       {mostrarModal && (
         <div className="overlay" onClick={handleModalClose}></div>
       )}
-      {mostrarModal && (
+
+      <CSSTransition
+        in={mostrarModal}
+        timeout={500}
+        classNames="modal"
+        unmountOnExit
+      >
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={handleSpanClick}>
@@ -414,7 +421,7 @@ function WeatherIcon({
             </div>
           </div>
         </div>
-      )}
+      </CSSTransition>
       {iconSrc && (
         <div
           onClick={handleDivClick}

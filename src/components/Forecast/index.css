@@ -36,6 +36,7 @@
   padding: 8px 8px 8px 10px;
   border-radius: 0 10em 10em 0;
   margin-left: -5px;
+    cursor: help;
 }
 
 .div_botao_fore_troc{
@@ -189,6 +190,90 @@ order: 2;
   margin: 0;
   padding: 0;
 }
+
+
+
+
+
+.icones_container {
+  position: relative;
+  width: 200px;
+  /* Ajuste conforme necessário */
+  height: 200px;
+  /* Ajuste conforme necessário */
+}
+
+.icones_period {
+  position: absolute;
+  width: 50px;
+  /* Ajuste conforme necessário */
+  height: 50px;
+  /* Ajuste conforme necessário */
+  border-radius: 100px;
+}
+
+.relogio {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: auto;
+}
+
+.lua {
+  top: 5%;
+    left: 50%;
+    transform-origin: 0% 180%;
+  animation: girarLua 5s linear infinite;
+}
+
+.solTarde {
+  top: 50%;
+    left: 70%;
+    transform-origin: -80% 0;
+  animation: girarSolTarde 5s linear infinite;
+}
+
+.solManha {
+  top: 50%;
+    left: 7%;
+    transform-origin: 175% 0;
+  animation: girarSolManha 5s linear infinite;
+}
+
+@keyframes girarLua {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes girarSolTarde {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes girarSolManha {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.alert_text1:hover{
+background-color: rgba(202, 202, 202, 0.200);
+}
 @media screen and (max-width: 575px) {
   .forecast-day {
     align-items: center;
@@ -232,6 +317,7 @@ border-radius: 10px;
 padding: 15px;
 margin: 5px;
   font-size: 5vw;
+
 }
 .div_botao_fore_troc{
 background-color: #dfdfdf30;
@@ -316,4 +402,7 @@ font-size: 4vw;
                                                                                               font-size: 5vw;
                                                                                               padding: 5vw;
                                                                                             }
+}
+@media screen and (max-width: 240px) {
+
 }

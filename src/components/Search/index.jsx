@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-
+import { CSSTransition } from "react-transition-group";
 import WeahterIcon from "../WeatherIcon";
 import Button from "../Button";
 import Timeline from "../Timeline";
@@ -9,7 +9,52 @@ import Forecast from "../forecast";
 import Graphic from "../Graphic";
 import Alert from "../Alert";
 import regiao from "../../icones/paises.png";
+const getRandomPosition = () => {
+  const getRandomColor = () => {
+    const shadesOfGray = [
+      "f0f0f0",
+      "e0e0e0",
+      "d0d0d0",
+      "c0c0c0",
+      "b0b0b0",
+      "a0a0a0",
+    ];
+    const randomIndex = Math.floor(Math.random() * shadesOfGray.length);
+    return `#${shadesOfGray[randomIndex]}`;
+  };
+
+  const getRandomValue = () => Math.floor(Math.random() * 600) - 200;
+
+  const createRainDrops = () => {
+    const numberOfDrops = 20;
+    const rainDrops = [];
+
+    for (let i = 0; i < numberOfDrops; i++) {
+      rainDrops.push(
+        <div
+          key={i}
+          className="rain-drop"
+          style={{
+            top: `${getRandomValue()}px`,
+            left: `${getRandomValue()}px`,
+          }}
+        ></div>,
+      );
+    }
+
+    return rainDrops;
+  };
+
+  return {
+    top: `${getRandomValue()}px`,
+    left: `${getRandomValue()}px`,
+    backgroundColor: getRandomColor(),
+    rainDrops: createRainDrops(),
+  };
+};
+
 function Search({ props }) {
+  const position = useMemo(() => getRandomPosition(), []);
   const [verifClicked, setVerifiClicked] = useState(false);
   const [verifValue, setVerifValue] = useState(null);
 
@@ -131,6 +176,17 @@ function Search({ props }) {
     setVerifiClicked(false);
   };
 
+  const [rainDrops, setRainDrops] = useState(
+    () => getRandomPosition().rainDrops,
+  );
+
+  const [isDaytime, setIsDaytime] = useState(true);
+  useEffect(() => {
+    const now = new Date();
+    const currentHours = now.getHours();
+    ~setIsDaytime(currentHours >= 6 && currentHours < 18);
+  }, []);
+
   return (
     <div className={`searchWr ${searched ? "searched" : ""}`}>
       <div className={`Search ${searched ? "searched" : ""}`}>
@@ -147,7 +203,12 @@ function Search({ props }) {
         {verifClicked && (
           <div className="overlay" onClick={hlandeVerifiClose}></div>
         )}
-        {verifClicked && (
+        <CSSTransition
+          in={verifClicked}
+          timeout={500}
+          classNames="modal"
+          unmountOnExit
+        >
           <div className="modal_regiao">
             <span className="close_regiao" onClick={hlandeVerifiClose}>
               &times;
@@ -171,8 +232,13 @@ function Search({ props }) {
               </a>
             </p>
           </div>
-        )}
-        <form onSubmit={(e) => searchInput(e)}>
+        </CSSTransition>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            searchInput(e);
+          }}
+        >
           <input
             onChange={(e) => setInputValue(e.target.value)}
             onFocus={() => setInputValue("")}
@@ -194,7 +260,76 @@ function Search({ props }) {
             style={{ display: searched ? `none` : "flex" }}
           />
         </form>
-        <div className={`alert_fuso ${searched ? "searched" : ""}`}></div>
+        {/* <div className={`alert_fuso ${searched ? "searched" : ""}`}></div> */}
+        <div
+          style={{ display: searched ? `none` : "flex" }}
+          className="animation"
+        >
+          {isDaytime ? (
+            <div className="sun"></div>
+          ) : (
+            <div className="moon"></div>
+          )}
+
+          <div className="cloud c01" style={getRandomPosition()}></div>
+          <div className="cloud c02" style={getRandomPosition()}></div>
+          <div className="cloud c03" style={getRandomPosition()}></div>
+          <div className="cloud c04" style={getRandomPosition()}></div>
+          <div className="cloud c05" style={getRandomPosition()}></div>
+          <div className="cloud c06" style={getRandomPosition()}></div>
+          <div className="cloud c07" style={getRandomPosition()}></div>
+          <div className="cloud c08" style={getRandomPosition()}></div>
+          <div className="cloud c09" style={getRandomPosition()}></div>
+          <div className="cloud c10" style={getRandomPosition()}></div>
+          <div className="cloud c11" style={getRandomPosition()}></div>
+          <div className="cloud c12" style={getRandomPosition()}></div>
+          <div className="cloud c13" style={getRandomPosition()}></div>
+          <div className="cloud c14" style={getRandomPosition()}></div>
+          <div className="cloud c15" style={getRandomPosition()}></div>
+          <div className="cloud c16" style={getRandomPosition()}></div>
+          <div className="cloud c17" style={getRandomPosition()}></div>
+          <div className="cloud c18" style={getRandomPosition()}></div>
+          <div className="cloud c19" style={getRandomPosition()}></div>
+          <div className="cloud c20" style={getRandomPosition()}></div>
+          <div className="cloud c21" style={getRandomPosition()}></div>
+          <div className="cloud c22" style={getRandomPosition()}></div>
+          <div className="cloud c23" style={getRandomPosition()}></div>
+          <div className="cloud c24" style={getRandomPosition()}></div>
+          <div className="cloud c13" style={getRandomPosition()}></div>
+          <div className="cloud c14" style={getRandomPosition()}>
+            {" "}
+            {rainDrops.map((drop, index) => (
+              <React.Fragment key={index}>{drop}</React.Fragment>
+            ))}
+          </div>
+          <div className="cloud c15" style={getRandomPosition()}></div>
+          <div className="cloud c16" style={getRandomPosition()}></div>
+          <div className="cloud c17" style={getRandomPosition()}></div>
+          <div className="cloud c18" style={getRandomPosition()}></div>
+          <div className="cloud c19" style={getRandomPosition()}></div>
+          <div className="cloud c20" style={getRandomPosition()}></div>
+          <div className="cloud c21" style={getRandomPosition()}></div>
+          <div className="cloud c22" style={getRandomPosition()}></div>
+          <div className="cloud c23" style={getRandomPosition()}></div>
+          <div className="cloud c24" style={getRandomPosition()}></div>
+          <div className="cloud c13" style={getRandomPosition()}></div>
+          <div className="cloud c14" style={getRandomPosition()}></div>
+          <div className="cloud c15" style={getRandomPosition()}></div>
+          <div className="cloud c16" style={getRandomPosition()}></div>
+          <div className="cloud c17" style={getRandomPosition()}></div>
+          <div className="cloud c18" style={getRandomPosition()}></div>
+          <div className="cloud c19" style={getRandomPosition()}></div>
+          <div className="cloud c20" style={getRandomPosition()}></div>
+          <div className="cloud c21" style={getRandomPosition()}></div>
+          <div className="cloud c22" style={getRandomPosition()}>
+            {" "}
+            {rainDrops.map((drop, index) => (
+              <React.Fragment key={index}>{drop}</React.Fragment>
+            ))}
+          </div>
+          <div className="cloud c23" style={getRandomPosition()}></div>
+          <div className="cloud c24" style={getRandomPosition()}></div>
+        </div>
       </div>
 
       {weatherData ? (

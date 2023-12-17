@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "../Button";
 import FeatherIcon from "feather-icons-react";
 import { convertorFahrenheit } from "../Conv";
+import { CSSTransition } from "react-transition-group";
 import "../../App.css";
 
 const DetailsWeather = ({

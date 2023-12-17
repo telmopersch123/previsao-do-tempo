@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import moment from "moment";
 import { convertorFahrenheit } from "../Conv";
@@ -9,6 +10,11 @@ import iconeManha from "../../icones/sol_manha.gif";
 import iconeTarde from "../../icones/sol_tarde.gif";
 import iconeLua from "../../icones/lua_noite.gif";
 import AlertaChuva from "../AlertaChuva";
+
+import solMaEfeito from "../../icones/sol_manha.gif";
+import solTarEfeito from "../../icones/sol_tarde.gif";
+import luaEfeito from "../../icones/lua_noite.gif";
+import relogioEfeito from "../../icones/espere.gif";
 const Forecast = ({
   lat,
   lon,
@@ -24,6 +30,7 @@ const Forecast = ({
   const [dailyForecast, setDailyForecast] = useState([]);
   const [dailyData00, setDailyData] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
+  const [modalVerif, setModalVerif] = useState(false);
 
   const handleVerifChange = (verifValue) => {
     onVerifChange(verifValue);
@@ -198,6 +205,13 @@ const Forecast = ({
     ...fundoGroundTarde,
     ...fundoGroundNoite,
   };
+  const handleVerifOpen = () => {
+    setModalVerif(true);
+  };
+  const handleVerifClose = () => {
+    setModalVerif(false);
+  };
+
   return (
     <div id={idProp} className="forecast">
       <div className="div_fore_title_weather">
@@ -221,8 +235,44 @@ const Forecast = ({
             ></button>
           </div>
         </div>
-        <p className="title_weather_fore">{textos[cliques]}</p>
+        <p onClick={handleVerifOpen} className="title_weather_fore">
+          {textos[cliques]}
+        </p>
       </div>
+      {modalVerif && <div onClick={handleVerifClose} className="overlay"></div>}
+      <CSSTransition
+        in={modalVerif}
+        timeout={500}
+        classNames="modal"
+        unmountOnExit
+      >
+        <div className="modal">
+          <div className="alert_avo">
+            <span onClick={handleVerifClose} className="close">
+              &times;
+            </span>
+            <p className="alert_text0">Periodo Do Dia!</p>
+            <div className="icones_container">
+              <img
+                className="icones_period relogio"
+                alt="icone de relogio"
+                src={relogioEfeito}
+              ></img>
+              <img className="icones_period solManha" src={solMaEfeito}></img>
+              <img className="icones_period solTarde" src={solTarEfeito}></img>
+              <img className="icones_period lua" src={luaEfeito}></img>
+            </div>
+            <div>
+              <p className="alert_text1">
+                Cada icone representa o periodo que esta as temperaturas da
+                previsão do tempo, veja as temperatuas para até cinco dias de
+                cada periodo da região pesquisada!
+              </p>
+            </div>
+          </div>
+        </div>
+      </CSSTransition>
+
       <div className="organized_chuvas">
         <h2 className="title_prev">Previsão do tempo!</h2>
         <AlertaChuva

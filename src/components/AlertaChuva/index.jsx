@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./index.css";
 import chuviscos from "../../icones/chuvisco.gif";
 import neve from "../../icones/neve.gif";
-import Graphic from "../Graphic";
-
+import { CSSTransition } from "react-transition-group";
 function AlertaChuva({ daily, idWind, onVerifChange }) {
   const [modalVerif, setModalVerif] = useState(false);
   const [verifSnow, setVerifSnow] = useState(false);
@@ -73,14 +72,26 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
   };
 
   const cor = media0 > 25 ? "alto" : "baixo";
-
+  console.log(alertDataSnow);
   const conteinerModal = () => {
     return (
       <div>
-        {modalVerif && (
-          <div className="overlay" onClick={() => handleVerifiClose()}></div>
-        )}
-        {modalVerif && (
+        {/* Seu código anterior */}
+        <CSSTransition
+          in={modalVerif}
+          timeout={500}
+          classNames="overlay"
+          unmountOnExit
+          onClick={handleVerifiClose}
+        >
+          <div className="overlay"></div>
+        </CSSTransition>
+        <CSSTransition
+          in={modalVerif}
+          timeout={500}
+          classNames="modal"
+          unmountOnExit
+        >
           <div className="modal">
             <div className="alert_avo">
               <span onClick={handleVerif} className="close">
@@ -88,7 +99,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
               </span>
               <p className="alert_text0">Alerta do clima!</p>
               <p className="alert_text1 p">
-                As chances de chuva é calculado com base na previsão de até 5
+                As chances de chuva são calculadas com base na previsão de até 5
                 dias da região pesquisada
               </p>
               <p className={`alert_text2 ${cor}`}>
@@ -109,15 +120,16 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
                     (você pode ver na sessão de gráficos da chuva)
                   </a>
                 </strong>
-                &nbsp;é basicamente feito a média dos numeros obtidos
+                &nbsp;é basicamente feito a média dos números obtidos
               </p>
             </div>
           </div>
-        )}
+        </CSSTransition>
+
+        {/* Restante do seu componente */}
       </div>
     );
   };
-
   if (media0 > 50) {
     alertaChuva = (
       <div
@@ -147,7 +159,9 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
         className="alertMed alertPop"
         role="alert"
       >
-        <div className="o_div">
+        <div
+          className={`o_div ${probabilidadeNeve !== null ? "case_snow" : ""}`}
+        >
           <img className="chuviscos_gif" src={chuviscos} />
           <p>Chances médias de Chuva para os proximos dias!</p>
         </div>
@@ -167,7 +181,9 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
         className="alertBai alertPop"
         role="alert"
       >
-        <div className="o_div">
+        <div
+          className={`o_div ${probabilidadeNeve !== null ? "case_snow" : ""}`}
+        >
           <img className="chuviscos_gif" src={chuviscos} />
           <p>Chances baixas de Chuva para os proximos dias!</p>
         </div>

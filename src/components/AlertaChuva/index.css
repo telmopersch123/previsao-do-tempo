@@ -8,18 +8,18 @@
     text-align: center;
     color: rgb(255, 255, 255);
     margin: auto;
-    gap: 5px;
+
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
     position: relative;
-cursor: help;
+    cursor: help;
 }
 .o_div{
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 10px;
-
+  padding: 20px;
+  font-size: 20px;
 }
 
 .div_neve{
@@ -35,9 +35,8 @@ text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
 }
 .neve_gif{
     box-shadow: 0 0 5px;
-      width: 40px;
       border-radius: 100px;
-  height: auto;
+  width: 50px
 
 }
 .alertAlt {
@@ -53,7 +52,7 @@ text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
 }
 .alertBai{
   background-color: #AED6F1AA;
-    padding: 5px
+
 }
 .chuviscos_gif{
   box-shadow: 0 0 5px;
@@ -67,14 +66,43 @@ text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
   color: white;
 }
 .case_snow {
-  box-shadow: 0 0 5px rgb(255, 255, 255) !important;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.667) !important;
+  border-radius: 5px;
+  width: 100.5%;
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  margin-bottom: 10px;
 }
+
 .modal{
-  cursor: auto;
+cursor: AUTO;
 }
-.overlay{
-  cursor: auto;
+.overlay {
+  cursor: AUTO;
 }
+
+.modal-enter {
+  transform: translateY(0%) scaleY(0);
+}
+
+.modal-enter-active {
+  transform: translateY(0%) scaleY(1);
+  transition: transform 300ms;
+}
+
+.modal-exit {
+  transform: translateY(0%) scaleY(1);
+}
+
+.modal-exit-active {
+  transform: translateX(-150%) scaleY(1);
+    transition: transform 300ms;
+
+}
+
+
+
 .text_chuva{
   color: rgb(136, 191, 246);
 }
@@ -90,7 +118,7 @@ color: rgba(198, 238, 253, 0.832);
 
 @media screen and (max-width: 1055px) {
   .o_div{
-    padding: 0;
+    padding: 5px;
   }
   .chuviscos_gif {
     position: relative;
