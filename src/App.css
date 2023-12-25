@@ -18,10 +18,25 @@ user-select: none;
   /* Remove as margens padrão do corpo para evitar espaços extras */
   padding: 0;
   /* Remove o preenchimento padrão do corpo para evitar espaços extras */
+
+}
+body::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  /* Largura da barra de rolagem */
 }
 
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  /* Cor da barra de rolagem com transparência */
+}
+
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+  /* Cor de fundo da área de rastreamento (transparente) */
+}
 .searchWr {
-  background: linear-gradient(38deg, #181818, #0c0c0c, #1e1933, #000000, #FFD700);
+  background: linear-gradient(38deg, #181818, #0c0c0c, #1e1933, #000000, #443971);
   background-size: 300% 300%;
   animation: gradient-animation 25s ease infinite;
   display: flex;
@@ -46,6 +61,7 @@ user-select: none;
   background-color: transparent;
   padding: 10px;
   align-items: center;
+  width: 100%;
 }
 .input_Pesquisar{
   display: flex;
@@ -422,38 +438,76 @@ user-select: none;
 }
 
                                 .animation {
-                                  opacity: 50%;
+                                  opacity: 100%;
                                   position: relative;
                                   display: flex;
                                   justify-content: center;
                                   background-color: #017dcf;
-                                  align-items: flex-start;
+                                  align-items: center;
                                   padding-top: 10px;
                                   margin-top: 100px;
-                                  width: 40%;
-                                  height: 200px;
-                                  border-radius: 150px 150px 100px 100px;
-                                  overflow: hidden;
+                                  width: 50%;
+
+                                }
+                                .noite{
+                                  display: flex;
+                                  justify-content: center;
+                                  align-items: center;
+                                  background: linear-gradient(to bottom, #18002bb3,
+                                  #18002bb3 50%,transparent 100%);
+                                  position: absolute;
+                                  top: 0px;
+                                  width: 100%;
+                                  height: 40vh;
+                                }
+                                .manha{
+                                  display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    background: linear-gradient(to bottom, rgba(63, 166, 251, 0.612),
+                                        rgba(63, 166, 251, 0.422) 50%,rgba(63, 166, 251, 0.24) 75%, transparent 100%);
+                                    position: absolute;
+                                    top: 0px;
+                                    width: 100%;
+                                    height: 40vh;
                                 }
 
                                 .sun {
-                                  position: absolute;
+                                  position: relative;
+                                  z-index: 1;
+                                  margin-top: -150px;
                                   background-color: #FFD700;
+                                  box-shadow: 0 0 30px #FFD700;
                                   /* cor do sol - amarelo */
                                   width: 100px;
                                   height: 100px;
                                   border-radius: 50%;
                                   animation: rotateSun 5s linear infinite;
                                 }
-
                                 .moon {
-                                  position: absolute;
+                                  z-index: 1;
+                                  position: relative;
+                                  margin-top: -150px;
+                                  display: flex;
                                   background-color: #f0f0f0;
+                                  box-shadow: 0 0 20px #f0f0f0;
                                   /* cor da lua - cinza claro */
                                   width: 80px;
                                   height: 80px;
                                   border-radius: 50%;
                                   /* Adicione outras propriedades de estilo para ajustar a aparência da lua conforme necessário */
+                                }
+
+                                .stars{
+                                  z-index: 0;
+                                  width: 5px;
+                                  height: 5px;
+                                  background-color: rgb(241, 251, 126);
+                                  box-shadow: 0 0 10px yellow;
+                                  position: absolute;
+
+                                  border-radius: 100px;
+                                  animation: shineStars 10s linear infinite;
                                 }
 
                                 .moon::before {
@@ -462,6 +516,7 @@ user-select: none;
                                   width: 10px;
                                   height: 10px;
                                   background-color: #ccc;
+                                  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.401);
                                   /* Cor das pintinhas */
                                   border-radius: 50%;
                                   /* Forma circular */
@@ -472,6 +527,7 @@ user-select: none;
                                 .moon::after {
                                   content: '';
                                   position: absolute;
+                                  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.401);
                                   width: 8px;
                                   height: 8px;
                                   background-color: #ccc;
@@ -489,42 +545,100 @@ user-select: none;
                                   width: 100px;
                                   height: 30px;
                                   border-radius: 150px;
-                                  animation: moveCloud 30s linear infinite;
+                                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                                  animation: moveCloud 40s linear infinite;
+                                  z-index: 2;
                                 }
-
-                                .cloud::before,
-                                .cloud::after {
-                                  content: "";
-                                  position: absolute;
-                                  background-color: #FFFFFF;
-                                  /* cor das nuvens - branco */
-                                  border-radius: 50%;
+                                .div_clouds_mais{
+                                    position: absolute;
+                                      background-color: #FFFFFF;
+                                      /* cor das nuvens - branco */
+                                      width: 100px;
+                                      height: 30px;
+                                      border-radius: 150px;
+                                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.528);
+                                      animation: moveCloudMais 30s linear infinite;
                                 }
-
-                                /* Estilo para as gotas de chuva */
-                                .rain-drop {
-                                  position: relative;
+                                .wind{
                                   width: 2px;
-                                  height: 5px;
+                                  height: 10px;
                                   background-color: #fff;
-                                  /* Cor da gota de chuva */
-                                  animation: fall linear infinite;
-                                  animation-duration: 2s;
-                                  /* Ajuste conforme necessário */
+                                  animation: rainAnimation linear infinite;
+                                  animation-duration: 8s;
+                                  /* Ajuste a duração conforme necessário */
+                                  position: relative;
+                                }
+                                .div_avo{
+                                  position: absolute;
+                                  width: auto;
+                                  top: 100px;
+                                  display: flex;
+                                  flex-direction: column;
+                                  align-items: center;
+
+                                  will-change: transform;
+                                  transform: translate3d(0, 0, 0);
+                                  animation: weather 50s linear infinite;
+                                }
+                                .div_pai{
+                                  background-color: #767676;
+                                  box-shadow: 0 0 5px rgb(100, 100, 100);
+                                  bottom: #FFFFFF;
+                                  width: 100px;
+                                  height: 30px;
+                                  border-radius: 150px;
+                                  position: relative;
+                                  z-index: 0;
                                 }
 
-                                @keyframes fall {
+                                .div_filho{
+                                  width: 2px;
+                                  height: 10px;
+                                  background-color: rgb(255, 255, 255);
+                                  box-shadow: 0 0 10px rgb(255, 255, 255);
+                                  border-radius: 100px;
+                                  position: relative;
+                                  will-change: transform;
+                                  transform: translate3d(0, 0, 0);
+                                  animation: moveWind 0.1s linear infinite;
+
+                                }
+                                @keyframes shineStars {
+                                  0%{
+                                    box-shadow: 0 0 5px 5px rgba(255, 255, 0, 0.249);
+                                  }
+                                  25%{
+                                    box-shadow: 0 0 7px 7px rgba(255, 255, 0, 0.249);
+                                  }
+                                  50%{
+                                    box-shadow: 0 0 10px 10px rgba(255, 255, 0, 0.407);
+                                  }
+                                  75%{
+                                    box-shadow: 0 0 7px 7px rgba(255, 255, 0, 0.249);
+                                  }
+                                  100%{
+                                    box-shadow: 0 0 5px 5px rgba(255, 255, 0, 0.249);
+                                  }
+                                }
+                                @keyframes moveWind {
                                   0% {
-                                    transform: translateY(-100px);
-                                  }
+                                      transform: translateY(0%);
+                                    }
 
-                                  100% {
-                                    transform: translateY(300px);
-                                    /* Ajuste conforme necessário para a altura da animação de queda */
-                                  }
+                                    100% {
+                                      transform: translateY(1000%);
+                                    }
                                 }
 
+                              @keyframes rainAnimation {
+                                      0% {
+                                        transform: translateY(-100px);
+                                      }
 
+                                      100% {
+                                        transform: translateY(300px);
+                                      }
+                                }
                                 @keyframes rotateSun {
                                   0% {
                                     transform: rotate(0deg);
@@ -537,13 +651,34 @@ user-select: none;
 
                                 @keyframes moveCloud {
                                   0% {
-                                    transform: translateX(-1000%);
+                                    transform: translateX(-600vw)
                                   }
 
                                   100% {
-                                    transform: translateX(1000%);
+                                    transform: translateX(100vw);
                                   }
                                 }
+                                @keyframes moveCloudMais {
+                                  0% {
+                                    transform: translateX(-200vw)
+                                  }
+
+                                  100% {
+                                    transform: translateX(110vw);
+                                  }
+                                }
+                                @keyframes weather {
+                                  0% {
+                                    transform: translateX(-600vw)
+                                  }
+
+                                  100% {
+                                    transform: translateX(150vw);
+                                  }
+                                }
+
+
+
 @media screen and (max-width: 1050px) {
   .icon-wrapper {
     width: auto;
@@ -577,6 +712,24 @@ user-select: none;
 }
 }
 @media screen and (max-width: 450px) {
+                                  @keyframes moveCloudMais {
+                                      0% {
+                                        transform: translateX(-400vw)
+                                      }
+
+                                      100% {
+                                        transform: translateX(110vw);
+                                      }
+                                    }
+                                  @keyframes weather {
+                                  0% {
+                                    transform: translateX(-800vw)
+                                  }
+
+                                  100% {
+                                    transform: translateX(110vw);
+                                  }
+                                }
   .foto_regiao{
     width: 20vw;
   }

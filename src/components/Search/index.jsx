@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
 import { CSSTransition } from "react-transition-group";
 import WeahterIcon from "../WeatherIcon";
@@ -9,52 +9,8 @@ import Forecast from "../forecast";
 import Graphic from "../Graphic";
 import Alert from "../Alert";
 import regiao from "../../icones/paises.png";
-const getRandomPosition = () => {
-  const getRandomColor = () => {
-    const shadesOfGray = [
-      "f0f0f0",
-      "e0e0e0",
-      "d0d0d0",
-      "c0c0c0",
-      "b0b0b0",
-      "a0a0a0",
-    ];
-    const randomIndex = Math.floor(Math.random() * shadesOfGray.length);
-    return `#${shadesOfGray[randomIndex]}`;
-  };
-
-  const getRandomValue = () => Math.floor(Math.random() * 600) - 200;
-
-  const createRainDrops = () => {
-    const numberOfDrops = 20;
-    const rainDrops = [];
-
-    for (let i = 0; i < numberOfDrops; i++) {
-      rainDrops.push(
-        <div
-          key={i}
-          className="rain-drop"
-          style={{
-            top: `${getRandomValue()}px`,
-            left: `${getRandomValue()}px`,
-          }}
-        ></div>,
-      );
-    }
-
-    return rainDrops;
-  };
-
-  return {
-    top: `${getRandomValue()}px`,
-    left: `${getRandomValue()}px`,
-    backgroundColor: getRandomColor(),
-    rainDrops: createRainDrops(),
-  };
-};
 
 function Search({ props }) {
-  const position = useMemo(() => getRandomPosition(), []);
   const [verifClicked, setVerifiClicked] = useState(false);
   const [verifValue, setVerifValue] = useState(null);
 
@@ -82,6 +38,34 @@ function Search({ props }) {
   const idDoComponente0 = "wind";
   const apiKey = "H6TZ60LH2XNH";
 
+  const [estaChovendo, setEstaChovendo] = useState(0);
+  const [estaNublado, setEstaNublado] = useState(0);
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          axios
+            .get(
+              `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+            )
+            .then((response) => {
+              setEstaNublado(response.data.clouds.all);
+              setEstaChovendo(response.data.rain?.["1h"]);
+            })
+            .catch((error) => {
+              console.error("Erro ao obter localização:", error.message);
+            });
+        },
+        (error) => {
+          console.error("Erro ao obter localização:", error.message);
+        },
+      );
+    } else {
+      console.error("Geolocalização não é suportada neste navegador");
+    }
+  }, []);
   const handleVerifValueChange = () => {
     setVerifValue(false);
   };
@@ -117,7 +101,7 @@ function Search({ props }) {
     setValorCorrente(valorCorrente);
     axios
       .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=4d8fb5b93d4af21d66a2948710284366&units=metric`,
+        `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=6e7169fc97f97c75ccd396e1ec444ca0&units=metric`,
       )
       .then((Responsed) => {
         const { sys } = Responsed.data;
@@ -176,16 +160,386 @@ function Search({ props }) {
     setVerifiClicked(false);
   };
 
-  const [rainDrops, setRainDrops] = useState(
-    () => getRandomPosition().rainDrops,
-  );
-
   const [isDaytime, setIsDaytime] = useState(true);
+
   useEffect(() => {
     const now = new Date();
     const currentHours = now.getHours();
     ~setIsDaytime(currentHours >= 6 && currentHours < 18);
   }, []);
+  const [currentPos, setCurrentPos] = useState(0);
+  const [cloudPosition, setCloudPosition] = useState(0);
+  const [colors, setColors] = useState(0);
+  const [windPosition, setWindPosition] = useState(0);
+  const [maisPosition, setMaisPosition] = useState(0);
+  const [fimdou, setFimdou] = useState(true);
+  const [fimdou01, setFimdou01] = useState(true);
+  const [index, setIndex] = useState(true);
+
+  const getRandomPosition = useCallback(() => {
+    if (fimdou) {
+      let positionTop = Math.floor(Math.random() * -20) + 20;
+      let positionLeft = Math.floor(Math.random() * 500);
+
+      return { top: positionTop, left: positionLeft };
+    } else {
+      return Math.floor(Math.random() * -20) + 20;
+    }
+  }, [fimdou]);
+  const getColors = useCallback(() => {
+    let shadesOfGray;
+    if (estaNublado > 81) {
+      shadesOfGray = [
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+      ];
+    } else {
+      shadesOfGray = [
+        "#ffffff",
+        "#ffffff",
+        "#f0f0f0",
+        "#e0e0e0",
+        "#d0d0d0",
+        "#c0c0c0",
+        "#b0b0b0",
+        "#a0a0a0",
+      ];
+    }
+    if (fimdou) {
+      const randomIndex = Math.floor(Math.random() * shadesOfGray.length);
+      return shadesOfGray[randomIndex];
+    } else {
+      // Retorna uma cor padrão quando fimdou não for verdadeiro
+      return Math.floor(Math.random() * shadesOfGray.length);
+    }
+  }, [fimdou, estaNublado]);
+
+  useEffect(() => {
+    function restartAnimation() {
+      setCloudPosition(getRandomPosition());
+      setColors(getColors());
+      setFimdou(true);
+    }
+
+    const elementKey = document.querySelector(".cloud");
+
+    if (elementKey) {
+      elementKey.addEventListener("animationiteration", restartAnimation);
+
+      return () => {
+        setFimdou(false);
+        elementKey.removeEventListener("animationiteration", restartAnimation);
+      };
+    }
+  }, [getRandomPosition, fimdou, getColors]);
+
+  const getWindPosition = useCallback(() => {
+    return Math.floor(Math.random() * 3500) - 2000;
+  }, []);
+
+  useEffect(() => {
+    function restartWind() {
+      setWindPosition(getWindPosition());
+    }
+
+    const elementKeyWind = document.querySelector(".div_filho");
+
+    if (elementKeyWind) {
+      elementKeyWind.addEventListener("animationiteration", restartWind);
+
+      return () => {
+        elementKeyWind.removeEventListener("animationiteration", restartWind);
+      };
+    }
+  }, [getWindPosition]);
+
+  const getColors01 = useCallback(() => {
+    let shadesOfGray;
+    if (estaNublado > 81) {
+      shadesOfGray = [
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+        "#808080",
+      ];
+    } else {
+      shadesOfGray = [
+        "#ffffff",
+        "#ffffff",
+        "#f0f0f0",
+        "#e0e0e0",
+        "#d0d0d0",
+        "#c0c0c0",
+        "#b0b0b0",
+        "#a0a0a0",
+      ];
+    }
+
+    if (fimdou01) {
+      const randomIndex = Math.floor(Math.random() * shadesOfGray.length);
+      return shadesOfGray[randomIndex];
+    } else {
+      // Retorna uma cor padrão quando fimdou não for verdadeiro
+      return Math.floor(Math.random() * shadesOfGray.length);
+    }
+  }, [fimdou01, estaNublado]);
+
+  const getPositionMais = useCallback(() => {
+    if (fimdou01) {
+      let posTop = Math.floor(Math.random() * -150) + 150;
+      let posLeft = Math.floor(Math.random() * 600);
+      let windTop = Math.floor(Math.random() * 10);
+      let camada = Math.floor(Math.random() * 2);
+      return { top: posTop, left: posLeft, windTop: windTop, camadaZ: camada };
+    } else {
+      return {};
+    }
+  }, [fimdou01]);
+
+  useEffect(() => {
+    function restartAnimationMais() {
+      setMaisPosition(getPositionMais);
+      setFimdou01(true);
+
+      setColors(getColors01());
+      setCurrentPos(Math.floor(Math.random() * 3));
+    }
+
+    const elementKeyMais = document.querySelector(".div_clouds_mais");
+
+    if (elementKeyMais) {
+      elementKeyMais.addEventListener(
+        "animationiteration",
+        restartAnimationMais,
+      );
+
+      return () => {
+        setFimdou01(false);
+        elementKeyMais.removeEventListener(
+          "animationiteration",
+          restartAnimationMais,
+        );
+      };
+    }
+  }, [getPositionMais, fimdou01, getColors01]);
+
+  const [cached, setCached] = useState(null);
+  const [stars, setStars] = useState([]);
+  useEffect(() => {
+    if (cached === null) {
+      const newStars = [];
+      for (let i = 0; i < 10; i++) {
+        const starsTop = Math.floor(Math.random() * 30);
+        const starsLeft = Math.floor(Math.random() * 100);
+        const animationDuration = `${Math.floor(Math.random() * 15) + 1}s`;
+        newStars.push({ starsTop, starsLeft, animationDuration });
+      }
+      setCached(0);
+      setStars(newStars);
+    }
+  }, [cached]);
+  const cloudsWind = () => {
+    if (estaChovendo > 0) {
+      const divWind = [];
+
+      for (let i = 0; i < 3; i++) {
+        divWind.push(
+          <div
+            key={i}
+            style={{
+              top: `${getRandomPosition()}%`,
+              left: `${getWindPosition()}%`,
+            }}
+            className="div_filho"
+          ></div>,
+        );
+      }
+      return divWind;
+    } else {
+      const divWind = [];
+
+      for (let i = 0; i < 20; i++) {
+        divWind.push(
+          <div
+            key={i}
+            style={{
+              top: `${getRandomPosition()}%`,
+              left: `${getWindPosition()}%`,
+            }}
+            className="div_filho"
+          ></div>,
+        );
+      }
+      return divWind;
+    }
+  };
+
+  const wind = () => {
+    const chuva = [];
+
+    for (let i = 0; i < currentPos; i++) {
+      let positions = getPositionMais();
+      let top = positions.windTop;
+      let left = positions.left;
+      chuva.push(
+        <div
+          key={i}
+          style={{
+            top: `${top}vh`,
+            left: `${left}vw`,
+          }}
+          className="div_avo"
+        >
+          <div className="div_pai"></div>
+          <div>{cloudsWind()}</div>
+        </div>,
+      );
+    }
+
+    return chuva;
+  };
+
+  const clouds = () => {
+    if (estaChovendo > 0) {
+      const chuva = [];
+
+      for (let i = 0; i < 30; i++) {
+        let positions = getPositionMais();
+        let top = positions.windTop;
+        let left = positions.left;
+        let camadasZ = positions.camadaZ;
+        chuva.push(
+          <div
+            key={i}
+            style={{
+              top: `${top}vh`,
+              left: `${left}vw`,
+              zIndex: `${camadasZ}`,
+              position: "absolute",
+            }}
+            className="div_avo"
+          >
+            <div className="div_pai"></div>
+            <div>{cloudsWind()}</div>
+          </div>,
+        );
+      }
+
+      return chuva;
+    } else if (estaChovendo === 0) {
+      const divClouds = [];
+      for (let i = 0; i < 50; i++) {
+        let positions = getRandomPosition();
+        let colors = getColors();
+        let top = positions.top;
+        let left = positions.left;
+
+        divClouds.push(
+          <div
+            key={i}
+            style={{
+              backgroundColor: colors,
+              top: `${top}vh`,
+              left: `${left}vw`,
+            }}
+            className="cloud"
+          ></div>,
+        );
+      }
+      return divClouds;
+    }
+  };
+
+  const cloudsMais = () => {
+    if (estaChovendo > 0) {
+      const chuva = [];
+
+      for (let i = 0; i < 30; i++) {
+        let positions = getPositionMais();
+        let top = positions.windTop;
+        let left = positions.left;
+        let camadasZ = positions.camadaZ;
+        chuva.push(
+          <div
+            key={i}
+            style={{
+              top: `${top}vh`,
+              left: `${left}vw`,
+              zIndex: `${camadasZ}`,
+              position: "absolute",
+            }}
+            className="div_avo"
+          >
+            <div className="div_pai"></div>
+            <div>{cloudsWind()}</div>
+          </div>,
+        );
+      }
+      return chuva;
+    } else if (estaChovendo === 0) {
+      const divClouds = [];
+      for (let i = 0; i < 30; i++) {
+        let colors = getColors01();
+        let positions = getPositionMais();
+        let camadasZ = positions.camadaZ;
+        let top = positions.top;
+        let left = positions.left;
+        divClouds.push(
+          <div
+            key={i}
+            style={{
+              backgroundColor: colors,
+              top: `${top}px`,
+              left: `${left}px`,
+              zIndex: `${camadasZ}`,
+              position: "absolute",
+            }}
+            className="div_clouds_mais"
+          ></div>,
+        );
+      }
+      return divClouds;
+    }
+  };
+  const shineStars = () => {
+    if (estaChovendo > 0) {
+      return null;
+    } else {
+      let value;
+      if (estaNublado > 80) {
+        value = 20;
+      } else {
+        value = 100;
+      }
+      return (
+        stars.length > 0 &&
+        stars.map((position, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                top: `${position.starsTop}vh`,
+                left: `${position.starsLeft}vw`,
+                opacity: `${value}%`,
+                animation: `shineStars ${position.animationDuration} infinite alternate`,
+              }}
+              className="stars"
+            ></div>
+          );
+        })
+      );
+    }
+  };
 
   return (
     <div className={`searchWr ${searched ? "searched" : ""}`}>
@@ -241,7 +595,9 @@ function Search({ props }) {
         >
           <input
             onChange={(e) => setInputValue(e.target.value)}
-            onFocus={() => setInputValue("")}
+            onFocus={() => {
+              setInputValue("");
+            }}
             placeholder={
               searched ? `Pesquisar por mais!` : "Digite o nome da cidade aqui!"
             }
@@ -260,75 +616,34 @@ function Search({ props }) {
             style={{ display: searched ? `none` : "flex" }}
           />
         </form>
+
         {/* <div className={`alert_fuso ${searched ? "searched" : ""}`}></div> */}
+
         <div
-          style={{ display: searched ? `none` : "flex" }}
-          className="animation"
+          style={{
+            display: searched ? `none` : "flex",
+            background:
+              estaChovendo > 0
+                ? "linear-gradient(to bottom, rgba(128, 128, 128, 0.6), rgba(128, 128, 128, 0.4) 50%, rgba(128, 128, 128, 0.24) 75%, transparent 100%)"
+                : estaNublado > 80
+                  ? "linear-gradient(to bottom, rgba(169, 169, 169, 0.6), rgba(169, 169, 169, 0.4) 50%, rgba(169, 169, 169, 0.24) 75%, transparent 100%)"
+                  : "",
+          }}
+          className={`animation' ${isDaytime ? "manha" : "noite"}`}
         >
           {isDaytime ? (
-            <div className="sun"></div>
+            <div>
+              <div className={`sun ${estaChovendo > 0 ? "chuva" : ""}`}></div>
+            </div>
           ) : (
-            <div className="moon"></div>
+            <div>
+              <div className={`moon ${estaChovendo > 0 ? "chuva" : ""}`}></div>
+              {shineStars()}
+            </div>
           )}
-
-          <div className="cloud c01" style={getRandomPosition()}></div>
-          <div className="cloud c02" style={getRandomPosition()}></div>
-          <div className="cloud c03" style={getRandomPosition()}></div>
-          <div className="cloud c04" style={getRandomPosition()}></div>
-          <div className="cloud c05" style={getRandomPosition()}></div>
-          <div className="cloud c06" style={getRandomPosition()}></div>
-          <div className="cloud c07" style={getRandomPosition()}></div>
-          <div className="cloud c08" style={getRandomPosition()}></div>
-          <div className="cloud c09" style={getRandomPosition()}></div>
-          <div className="cloud c10" style={getRandomPosition()}></div>
-          <div className="cloud c11" style={getRandomPosition()}></div>
-          <div className="cloud c12" style={getRandomPosition()}></div>
-          <div className="cloud c13" style={getRandomPosition()}></div>
-          <div className="cloud c14" style={getRandomPosition()}></div>
-          <div className="cloud c15" style={getRandomPosition()}></div>
-          <div className="cloud c16" style={getRandomPosition()}></div>
-          <div className="cloud c17" style={getRandomPosition()}></div>
-          <div className="cloud c18" style={getRandomPosition()}></div>
-          <div className="cloud c19" style={getRandomPosition()}></div>
-          <div className="cloud c20" style={getRandomPosition()}></div>
-          <div className="cloud c21" style={getRandomPosition()}></div>
-          <div className="cloud c22" style={getRandomPosition()}></div>
-          <div className="cloud c23" style={getRandomPosition()}></div>
-          <div className="cloud c24" style={getRandomPosition()}></div>
-          <div className="cloud c13" style={getRandomPosition()}></div>
-          <div className="cloud c14" style={getRandomPosition()}>
-            {" "}
-            {rainDrops.map((drop, index) => (
-              <React.Fragment key={index}>{drop}</React.Fragment>
-            ))}
-          </div>
-          <div className="cloud c15" style={getRandomPosition()}></div>
-          <div className="cloud c16" style={getRandomPosition()}></div>
-          <div className="cloud c17" style={getRandomPosition()}></div>
-          <div className="cloud c18" style={getRandomPosition()}></div>
-          <div className="cloud c19" style={getRandomPosition()}></div>
-          <div className="cloud c20" style={getRandomPosition()}></div>
-          <div className="cloud c21" style={getRandomPosition()}></div>
-          <div className="cloud c22" style={getRandomPosition()}></div>
-          <div className="cloud c23" style={getRandomPosition()}></div>
-          <div className="cloud c24" style={getRandomPosition()}></div>
-          <div className="cloud c13" style={getRandomPosition()}></div>
-          <div className="cloud c14" style={getRandomPosition()}></div>
-          <div className="cloud c15" style={getRandomPosition()}></div>
-          <div className="cloud c16" style={getRandomPosition()}></div>
-          <div className="cloud c17" style={getRandomPosition()}></div>
-          <div className="cloud c18" style={getRandomPosition()}></div>
-          <div className="cloud c19" style={getRandomPosition()}></div>
-          <div className="cloud c20" style={getRandomPosition()}></div>
-          <div className="cloud c21" style={getRandomPosition()}></div>
-          <div className="cloud c22" style={getRandomPosition()}>
-            {" "}
-            {rainDrops.map((drop, index) => (
-              <React.Fragment key={index}>{drop}</React.Fragment>
-            ))}
-          </div>
-          <div className="cloud c23" style={getRandomPosition()}></div>
-          <div className="cloud c24" style={getRandomPosition()}></div>
+          {cloudsMais()}
+          {clouds()}
+          {wind()}
         </div>
       </div>
 
