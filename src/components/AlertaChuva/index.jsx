@@ -68,7 +68,11 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
   const handleVerif = (e) => {
     e.stopPropagation();
     handleVerifiClose();
+  };
+  const handleVerifTwo = (e) => {
     onVerifChange(true);
+    e.stopPropagation();
+    handleVerifiClose();
   };
 
   const cor = media0 > 25 ? "alto" : "baixo";
@@ -115,7 +119,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
               )}
               <p className="alert_text3 p">
                 Com base nas possibilidades dos próximos dias&nbsp;
-                <strong onClick={handleVerif} style={{ cursor: "pointer" }}>
+                <strong onClick={handleVerifTwo} style={{ cursor: "pointer" }}>
                   <a href={`#${idWind}`} className="text_chuva">
                     (você pode ver na sessão de gráficos da chuva)
                   </a>

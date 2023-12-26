@@ -51,8 +51,8 @@ function Search({ props }) {
               `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
             )
             .then((response) => {
-              setEstaNublado(response.data.clouds.all);
-              setEstaChovendo(response.data.rain?.["1h"]);
+              setEstaNublado(response.data.clouds?.all ?? 0);
+              setEstaChovendo(response.data.rain?.["1h"] ?? 0);
             })
             .catch((error) => {
               console.error("Erro ao obter localização:", error.message);
@@ -187,30 +187,19 @@ function Search({ props }) {
     }
   }, [fimdou]);
   const getColors = useCallback(() => {
-    let shadesOfGray;
-    if (estaNublado > 81) {
-      shadesOfGray = [
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-      ];
-    } else {
-      shadesOfGray = [
-        "#ffffff",
-        "#ffffff",
-        "#f0f0f0",
-        "#e0e0e0",
-        "#d0d0d0",
-        "#c0c0c0",
-        "#b0b0b0",
-        "#a0a0a0",
-      ];
+    if (estaNublado > 80) {
+      return "#808080"; // Retorna a cor fixa para nuvens quando está nublado
     }
+
+    let shadesOfGray = [
+      "#ffffff",
+      "#f0f0f0",
+      "#e0e0e0",
+      "#d0d0d0",
+      "#c0c0c0",
+      "#b0b0b0",
+      "#a0a0a0",
+    ];
     if (fimdou) {
       const randomIndex = Math.floor(Math.random() * shadesOfGray.length);
       return shadesOfGray[randomIndex];
@@ -260,30 +249,19 @@ function Search({ props }) {
   }, [getWindPosition]);
 
   const getColors01 = useCallback(() => {
-    let shadesOfGray;
     if (estaNublado > 81) {
-      shadesOfGray = [
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-        "#808080",
-      ];
-    } else {
-      shadesOfGray = [
-        "#ffffff",
-        "#ffffff",
-        "#f0f0f0",
-        "#e0e0e0",
-        "#d0d0d0",
-        "#c0c0c0",
-        "#b0b0b0",
-        "#a0a0a0",
-      ];
+      return "#808080";
     }
+
+    let shadesOfGray = [
+      "#ffffff",
+      "#f0f0f0",
+      "#e0e0e0",
+      "#d0d0d0",
+      "#c0c0c0",
+      "#b0b0b0",
+      "#a0a0a0",
+    ];
 
     if (fimdou01) {
       const randomIndex = Math.floor(Math.random() * shadesOfGray.length);
@@ -310,7 +288,6 @@ function Search({ props }) {
     function restartAnimationMais() {
       setMaisPosition(getPositionMais);
       setFimdou01(true);
-
       setColors(getColors01());
       setCurrentPos(Math.floor(Math.random() * 3));
     }
@@ -349,7 +326,7 @@ function Search({ props }) {
     }
   }, [cached]);
   const cloudsWind = () => {
-    if (estaChovendo > 0) {
+    if (estaChovendo > 1) {
       const divWind = [];
 
       for (let i = 0; i < 3; i++) {
@@ -410,7 +387,7 @@ function Search({ props }) {
   };
 
   const clouds = () => {
-    if (estaChovendo > 0) {
+    if (estaChovendo > 1) {
       const chuva = [];
 
       for (let i = 0; i < 30; i++) {
@@ -461,7 +438,7 @@ function Search({ props }) {
   };
 
   const cloudsMais = () => {
-    if (estaChovendo > 0) {
+    if (estaChovendo > 1) {
       const chuva = [];
 
       for (let i = 0; i < 30; i++) {
@@ -486,7 +463,7 @@ function Search({ props }) {
         );
       }
       return chuva;
-    } else if (estaChovendo === 0) {
+    } else if (estaChovendo <= 1) {
       const divClouds = [];
       for (let i = 0; i < 30; i++) {
         let colors = getColors01();
@@ -512,7 +489,7 @@ function Search({ props }) {
     }
   };
   const shineStars = () => {
-    if (estaChovendo > 0) {
+    if (estaChovendo > 1) {
       return null;
     } else {
       let value;
@@ -590,7 +567,9 @@ function Search({ props }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            searchInput(e);
+            if (searched === true) {
+              searchInput(e);
+            }
           }}
         >
           <input
@@ -609,12 +588,17 @@ function Search({ props }) {
             onMouseOver={() => changePlaceholderColor(true)}
             onMouseOut={() => changePlaceholderColor(false)}
           />
-          <input
+          <button
             className="input_Pesquisar"
-            type="submit"
-            value="Pesquisar por cidade!"
+            type="button" // Defina o tipo como 'button' para evitar a submissão automática
+            onClick={(e) => {
+              e.preventDefault();
+              searchInput(e);
+            }}
             style={{ display: searched ? `none` : "flex" }}
-          />
+          >
+            Pesquisar por cidade!
+          </button>
         </form>
 
         {/* <div className={`alert_fuso ${searched ? "searched" : ""}`}></div> */}
@@ -623,7 +607,7 @@ function Search({ props }) {
           style={{
             display: searched ? `none` : "flex",
             background:
-              estaChovendo > 0
+              estaChovendo > 1
                 ? "linear-gradient(to bottom, rgba(128, 128, 128, 0.6), rgba(128, 128, 128, 0.4) 50%, rgba(128, 128, 128, 0.24) 75%, transparent 100%)"
                 : estaNublado > 80
                   ? "linear-gradient(to bottom, rgba(169, 169, 169, 0.6), rgba(169, 169, 169, 0.4) 50%, rgba(169, 169, 169, 0.24) 75%, transparent 100%)"
@@ -633,11 +617,11 @@ function Search({ props }) {
         >
           {isDaytime ? (
             <div>
-              <div className={`sun ${estaChovendo > 0 ? "chuva" : ""}`}></div>
+              <div className={`sun ${estaChovendo > 5 ? "chuva" : ""}`}></div>
             </div>
           ) : (
             <div>
-              <div className={`moon ${estaChovendo > 0 ? "chuva" : ""}`}></div>
+              <div className={`moon ${estaChovendo > 5 ? "chuva" : ""}`}></div>
               {shineStars()}
             </div>
           )}

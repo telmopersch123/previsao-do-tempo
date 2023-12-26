@@ -8,6 +8,7 @@
     text-align: center;
     color: rgb(255, 255, 255);
     margin: auto;
+    padding: 5px;
 
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
@@ -116,7 +117,7 @@ color: rgb(101, 143, 248);
 color: rgba(198, 238, 253, 0.832);
 }
 
-@media screen and (max-width: 1055px) {
+@media screen and (max-width: 1245px) {
   .o_div{
     padding: 5px;
   }

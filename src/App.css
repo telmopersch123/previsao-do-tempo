@@ -80,6 +80,7 @@ body::-webkit-scrollbar-track {
       font-weight: bold;
       color: #ffffff68;
         transition: 0.5s ease-in-out;
+        cursor: pointer;
 }
 .input_Pesquisar:hover{
   box-shadow: 0 0 3px rgba(255, 255, 255, 0.05);
@@ -117,6 +118,7 @@ body::-webkit-scrollbar-track {
 .inputCidade.searched {
   text-align: center;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .inputCidade {
@@ -128,7 +130,7 @@ body::-webkit-scrollbar-track {
   background-color: #3c325039;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
-  cursor: pointer;
+
   outline: none;
   transition: 0.5s ease-in-out;
   color: white;

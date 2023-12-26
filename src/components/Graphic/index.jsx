@@ -189,7 +189,7 @@ const Graphic = ({
       setSelectedChart("radialChart");
       onVerifValueChange();
     }
-  });
+  }, [onVerifValueChange, verifValue]);
 
   const Button = () => {
     const handleClick = () => {
