@@ -37,7 +37,8 @@ text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
 .neve_gif{
     box-shadow: 0 0 5px;
       border-radius: 100px;
-  width: 50px
+  width: 50px;
+
 
 }
 .alertAlt {
@@ -61,7 +62,7 @@ text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
   border-radius: 100px;
   position: absolute;
   left: 0;
-  margin-left: 5px;
+  margin-left: 10px;
 }
 .snow_text{
   color: white;
@@ -97,8 +98,8 @@ cursor: AUTO;
 }
 
 .modal-exit-active {
-  transform: translateX(-150%) scaleY(1);
-    transition: transform 300ms;
+  transform: translateY(0%) scaleY(0);
+    transition: transform 100ms;
 
 }
 
@@ -117,7 +118,7 @@ color: rgb(101, 143, 248);
 color: rgba(198, 238, 253, 0.832);
 }
 
-@media screen and (max-width: 1245px) {
+@media screen and (max-width: 1250px) {
   .o_div{
     padding: 5px;
   }
@@ -158,11 +159,17 @@ font-size: 4vw;
 .alertAlt{
   width: 100%;
 }
+.o_div{
+  font-size: 2.8vw;
+}
 }
 @media screen and (max-width: 300px) {
   .alert_text0{
     font-size: 16px;
   }
+    .o_div {
+      font-size: 3.5vw;
+    }
   .alertMed {
     font-size: 5vw;
   }

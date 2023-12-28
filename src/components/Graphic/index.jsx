@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+
 import * as React from "react";
 import AreaChartVal from "./AreaChartVal";
 import MuiLineChart from "./MuiLineChart";
@@ -7,13 +8,15 @@ import {
   Bar,
   XAxis,
   YAxis,
-  Tooltip,
+  Tooltip as RechartsTooltip,
   Legend,
   LineChart as RechartsLineChart,
   Line as RechartsLine,
   ResponsiveContainer,
   ReferenceArea,
 } from "recharts";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
 
@@ -32,68 +35,82 @@ const Graphic = ({
   onVerifValueChange,
 }) => {
   const [morningData, setMorningData] = useState([]);
-  const mapDayPeriod = (period) => {
-    period = newMomentDay;
-    switch (period) {
-      case "manha":
-        return "morning";
+  const mapDayPeriod = useCallback(
+    (period) => {
+      period = newMomentDay;
+      switch (period) {
+        case "manha":
+          return "morning";
 
-      case "tarde":
-        return "afternoon";
+        case "tarde":
+          return "afternoon";
 
-      case "noite":
-        return "night";
+        case "noite":
+          return "night";
 
-      default:
-        return period;
-    }
-  };
-  const getTemperature = (dailyData, period) => {
-    const day = mapDayPeriod(period);
-    return (
-      dailyData?.[day]?.[0]?.main || {
-        temp_max: undefined,
-        temp_min: undefined,
+        default:
+          return period;
       }
-    );
-  };
-  function getTemperature01(temperature) {
-    return Celsius
-      ? temperature - 273.15
-      : convertorFahrenheit(temperature - 273.15);
-  }
-
-  const generateTemperatureData = (temperatureData, period, offset) => {
-    const days = Object.keys(temperatureData).map(Number); // Converta chaves para números
-    const minDay = Math.min(...days);
-    return Array.from({ length: 5 }, (_, i) => {
-      const day = minDay + i;
-      const { temp_max, temp_min } = getTemperature(
-        temperatureData[day],
-        period,
+    },
+    [newMomentDay],
+  );
+  const getTemperature = useCallback(
+    (dailyData, period) => {
+      const day = mapDayPeriod(period);
+      return (
+        dailyData?.[day]?.[0]?.main || {
+          temp_max: undefined,
+          temp_min: undefined,
+        }
       );
+    },
+    [mapDayPeriod],
+  );
+  const getTemperature01 = useCallback(
+    (temperature) => {
+      return Celsius
+        ? temperature - 273.15
+        : convertorFahrenheit(temperature - 273.15);
+    },
+    [Celsius],
+  );
 
-      return {
-        day: i + 1,
-        temp_max: temp_max ? getTemperature01(temp_max).toFixed(0) : undefined,
-        temp_min: temp_min
-          ? getTemperature01(temp_min - offset).toFixed(0)
-          : undefined,
-      };
-    });
-  };
+  const generateTemperatureData = useCallback(
+    (temperatureData, period, offset) => {
+      const days = Object.keys(temperatureData).map(Number); // Converta chaves para números
+      const minDay = Math.min(...days);
+      return Array.from({ length: 5 }, (_, i) => {
+        const day = minDay + i;
+        const { temp_max, temp_min } = getTemperature(
+          temperatureData[day],
+          period,
+        );
 
-  const generateMorningData = () => {
+        return {
+          day: i + 1,
+          temp_max: temp_max
+            ? getTemperature01(temp_max).toFixed(0)
+            : undefined,
+          temp_min: temp_min
+            ? getTemperature01(temp_min - offset).toFixed(0)
+            : undefined,
+        };
+      });
+    },
+    [getTemperature, getTemperature01],
+  );
+
+  const generateMorningData = useCallback(() => {
     return generateTemperatureData(
       dailyData,
       newMomentDay,
       newMomentDay === "manha" ? 2 : newMomentDay === "tarde" ? 5 : 5,
     );
-  };
+  }, [dailyData, generateTemperatureData, newMomentDay]);
 
   useEffect(() => {
     setMorningData(generateMorningData());
-  }, [dailyData, Celsius, newMomentDay]);
+  }, [dailyData, Celsius, newMomentDay, generateMorningData]);
 
   const formatCustomDate = (dateString) => {
     const [year, month, day] = dateString.split("-");
@@ -195,6 +212,21 @@ const Graphic = ({
     const handleClick = () => {
       setShowItems(!showItems);
     };
+
+    const LightTooltip = styled(({ className, ...props }) => (
+      <Tooltip {...props} arrow classes={{ popper: className }} />
+    ))(({ theme }) => ({
+      [`& .${tooltipClasses.arrow}`]: {
+        color: theme.palette.common.black,
+      },
+      [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: "rgb(255, 255, 255, 0.900) !important",
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+      },
+    }));
+
     return (
       <div className={`div_button_grapchis`}>
         <button
@@ -212,41 +244,45 @@ const Graphic = ({
           }}
           className={`div_tipo_grapchis ${showItems ? "div_animada" : ""}`}
         >
-          <img
-            onClick={() => {
-              handleStatisticsIconClick();
-            }}
-            title="Condições de Ventos"
-            src={grapchis_icon_estatistics}
-            alt="Gráficos"
-          />
+          <LightTooltip title="Condições de Ventos">
+            <img
+              onClick={() => {
+                handleStatisticsIconClick();
+              }}
+              src={grapchis_icon_estatistics}
+              alt="Gráficos"
+            />
+          </LightTooltip>
           <p>|</p>
-          <img
-            onClick={() => {
-              handleStatisticsIconClickTwo();
-            }}
-            title="Condições Sinóticas"
-            src={grapchis_icon_cloudy}
-            alt="Gráficos"
-          />
+          <LightTooltip title="Condições Sinóticas">
+            <img
+              onClick={() => {
+                handleStatisticsIconClickTwo();
+              }}
+              src={grapchis_icon_cloudy}
+              alt="Gráficos"
+            />
+          </LightTooltip>
           <p>|</p>
-          <img
-            onClick={() => {
-              handleStatisticsIconClickFour();
-            }}
-            title="Condições de Chuvas"
-            src={grapchis_icon_weather}
-            alt="Gráficos"
-          />
+          <LightTooltip title="Condições de Chuvas">
+            <img
+              onClick={() => {
+                handleStatisticsIconClickFour();
+              }}
+              src={grapchis_icon_weather}
+              alt="Gráficos"
+            />
+          </LightTooltip>
           <p>|</p>
-          <img
-            onClick={() => {
-              handleStatisticsIconClickThree();
-            }}
-            title="Temperaturas"
-            src={grapchis_icon_temper}
-            alt="Gráficos"
-          />
+          <LightTooltip title="Temperaturas">
+            <img
+              onClick={() => {
+                handleStatisticsIconClickThree();
+              }}
+              src={grapchis_icon_temper}
+              alt="Gráficos"
+            />
+          </LightTooltip>
         </div>
       </div>
     );
@@ -353,7 +389,7 @@ const Graphic = ({
             />
             <YAxis axisLine={{ stroke: "#fff" }} tick={<CustomYAxisTick />} />
 
-            <Tooltip
+            <RechartsTooltip
               labelFormatter={(day) => (
                 <div>
                   {day}
@@ -378,7 +414,7 @@ const Graphic = ({
               content={<CustomTooltipContent />}
             >
               {/* outros conteúdos do Tooltip */}
-            </Tooltip>
+            </RechartsTooltip>
             <Legend
               verticalAlign="top"
               align="center"
@@ -447,7 +483,7 @@ const Graphic = ({
               dataKey="day"
             />
             <YAxis tick={{ fill: "#fff" }} axisLine={{ stroke: "#fff" }} />
-            <Tooltip content={<CustomTooltip />} />
+            <RechartsTooltip content={<CustomTooltip />} />
             <Legend
               verticalAlign="top"
               align="center"

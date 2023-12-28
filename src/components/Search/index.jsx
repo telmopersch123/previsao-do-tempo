@@ -40,6 +40,11 @@ function Search({ props }) {
 
   const [estaChovendo, setEstaChovendo] = useState(0);
   const [estaNublado, setEstaNublado] = useState(0);
+
+  useEffect(() => {
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }, []);
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -115,6 +120,11 @@ function Search({ props }) {
             )
             .then((response) => {
               if (Responsed.data.sys.country !== undefined) {
+                window.history.replaceState(
+                  {},
+                  document.title,
+                  window.location.pathname,
+                );
                 const weatherData = Responsed.data;
                 const cloudsData = weatherData.clouds;
                 const rainData = weatherData.rain;
@@ -139,6 +149,13 @@ function Search({ props }) {
 
                 setSearched(true);
                 setInputValue("");
+                axios
+                  .get(
+                    `http://api.openweathermap.org/geo/1.0/direct?q=${valorCorrente}&limit=5&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+                  )
+                  .then((location) => {
+                    console.log(location.data);
+                  });
               } // Clear the input value after the search
             });
         } else {
@@ -522,15 +539,20 @@ function Search({ props }) {
     <div className={`searchWr ${searched ? "searched" : ""}`}>
       <div className={`Search ${searched ? "searched" : ""}`}>
         <h2
-          onClick={() => {
-            hlandeVerifiOpen();
-          }}
+          onClick={searched ? hlandeVerifiOpen : () => {}}
           className={`title_master ${searched ? "searched" : ""}`}
         >
           {searched
             ? `Previsões para ${capitalizedValue}`
             : "Escreva abaixo o nome da Cidade!"}
+          <p
+            className="era_essa"
+            style={{ display: searched ? "block" : "none" }}
+          >
+            era essa a região que você queria?
+          </p>
         </h2>
+
         {verifClicked && (
           <div className="overlay" onClick={hlandeVerifiClose}></div>
         )}
@@ -545,7 +567,10 @@ function Search({ props }) {
               &times;
             </span>
             <p className="title_regiao">Região Pesquisada</p>
-            <img className="foto_regiao" src={regiao} alt="regiao?" />
+            <div>
+              <img className="foto_regiao" src={regiao} alt="regiao?" />
+            </div>
+
             <p className="text_regiao">
               Todas as regiões pesquisadas, tanto cidades quanto estados ou
               paises podem possuir também cidades, estados ou paises diferentes

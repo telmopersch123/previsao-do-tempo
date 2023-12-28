@@ -76,7 +76,6 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
   };
 
   const cor = media0 > 25 ? "alto" : "baixo";
-  console.log(alertDataSnow);
   const conteinerModal = () => {
     return (
       <div>
@@ -86,7 +85,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           timeout={500}
           classNames="overlay"
           unmountOnExit
-          onClick={handleVerifiClose}
+          onClick={handleVerif}
         >
           <div className="overlay"></div>
         </CSSTransition>

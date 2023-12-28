@@ -104,9 +104,9 @@ background-color: rgba(240, 248, 255, 0.243);
   margin: 5px 0px 10px 0px;
   transition: 0.2s ease-in-out;
 }
-a{
+a {
   color: pink;
- text-decoration: none;
+  text-decoration: none;
 }
 .text_temp_modal:hover {
   background-color: rgba(240, 248, 255, 0.159);

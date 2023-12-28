@@ -262,8 +262,11 @@ const Forecast = ({
               <img className="icones_period solTarde" src={solTarEfeito}></img>
               <img className="icones_period lua" src={luaEfeito}></img>
             </div>
-            <div>
-              <p className="alert_text1">
+            <div
+              style={{ marginLeft: "10px", marginRight: "10pxnpm" }}
+              className="alert_text1"
+            >
+              <p>
                 Cada icone representa o periodo que esta as temperaturas da
                 previsão do tempo, veja as temperatuas para até cinco dias de
                 cada periodo da região pesquisada!

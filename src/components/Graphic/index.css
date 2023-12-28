@@ -1,10 +1,6 @@
 .graphics {
   height: auto;
-  min-height: 40vh;
-  margin-top: 30px;
-  padding-top: 0px;
   padding-bottom: 30px;
-  background-color: #dfdfdf30;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.419);
   display: flex;
   align-items: center;
@@ -18,14 +14,14 @@
 
 .button_grapchis {
   display: flex;
-  background-color: #dfdfdf40;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
+
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.274);
   border-radius: 50px;
   padding: 10px;
   color: rgba(255, 255, 255, 0.257);
   border: none;
   width: auto;
-  margin-top: 0px;
+  margin-top: 10px;
   margin-bottom: 50px;
   align-items: center;
   cursor: pointer;
@@ -35,7 +31,7 @@
 background-color: #dfdfdf60;
 }
 .div_tipo_grapchis {
-  background-color: #dfdfdf30;
+
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
   border-radius: 0 50px 50px 0px;
   padding: 5px 15px;
@@ -44,7 +40,7 @@ background-color: #dfdfdf60;
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 }
 
 .div_tipo_grapchis>img {
@@ -235,7 +231,7 @@ background-color: #dfdfdf60;
 
 .MuiTooltip-tooltip {
   color: pink !important;
-  /* Define a cor do texto da dica de ferramenta */
+  /*  Define a cor do texto da dica de ferramenta */
 }
 
 .img_escolhe {
@@ -248,14 +244,14 @@ background-color: #dfdfdf60;
 
 @media screen and (max-width: 338px) {
   .div_tipo_grapchis {
-    /* background-color: #dfdfdf30;
+    background-color: #dfdfdf30;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
     border-radius: 0 50px 50px 0px;
     padding: 5px 15px;
     color: rgba(255, 255, 255, 0.257);
     border: none;
     display: flex;
-    align-items: center; */
+    align-items: center;
 
     width: 70vw;
     gap: 4vw;
@@ -263,9 +259,9 @@ background-color: #dfdfdf60;
   }
 
   .div_tipo_grapchis>img {
-    /* width: 25px;
+    width: 25px;
     height: 25px;
-    transition: width, height, 0.1s ease-in-out; */
+    transition: width, height, 0.1s ease-in-out;
     width: 8vw;
     height: auto;
   }
@@ -289,12 +285,12 @@ background-color: #dfdfdf60;
   }
 
   .div_tipo_grapchis {
-    /* background-color: #dfdfdf30;
+    background-color: #dfdfdf30;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
     border-radius: 0 50px 50px 0px;
     padding: 5px 15px;
     color: rgba(255, 255, 255, 0.257);
-    border: none; */
+    border: none;
     display: flex;
     align-items: center;
     gap: 20px;
