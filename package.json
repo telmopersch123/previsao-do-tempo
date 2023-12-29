@@ -19,6 +19,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "feather-icons-react": "^0.6.2",
     "leaflet": "^1.9.4",
+    "lodash.debounce": "^4.0.8",
     "moment": "^2.29.4",
     "ol": "^8.1.0",
     "ol-ext": "^4.0.11",

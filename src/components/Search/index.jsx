@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import debounce from "lodash.debounce";
+
 import axios from "axios";
 import { CSSTransition } from "react-transition-group";
 import WeahterIcon from "../WeatherIcon";
@@ -37,7 +39,7 @@ function Search({ props }) {
   const idDoComponente = "forecast";
   const idDoComponente0 = "wind";
   const apiKey = "H6TZ60LH2XNH";
-
+  const [searchResults, setSearchResults] = useState([]);
   const [estaChovendo, setEstaChovendo] = useState(0);
   const [estaNublado, setEstaNublado] = useState(0);
 
@@ -95,15 +97,48 @@ function Search({ props }) {
     input.style.color = isHovered;
   }
 
+  const debouncedSearch = useRef(
+    debounce((value) => {
+      if (!inputValue.trim()) {
+        setSearchResults([]);
+      }
+      axios
+        .get(
+          `http://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+        )
+        .then((response) => {
+          const locations = response.data;
+          setSearchResults(locations);
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar localização:", error.message);
+        });
+    }, 300),
+  ).current;
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+    const value = e.target.value;
+    debouncedSearch(value);
+    setValorCorrente(value);
+    debouncedSearch(value);
+
+    // Other logic related to input change if needed
+  };
+
+  const handleInputBlur = () => {
+    // Quando o foco é perdido, se o valor do input for vazio, limpe os resultados
+    if (!inputValue.trim()) {
+      setSearchResults([]);
+    }
+  };
   const searchInput = (e) => {
     const valorCorrente = document.querySelector(".inputCidade").value;
     const inputValueMinusc = valorCorrente.toLowerCase();
     const capitalizedString =
       inputValueMinusc.charAt(0).toUpperCase() + inputValueMinusc.slice(1);
-
     e.preventDefault();
 
-    setValorCorrente(valorCorrente);
     axios
       .get(
         `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=6e7169fc97f97c75ccd396e1ec444ca0&units=metric`,
@@ -125,6 +160,7 @@ function Search({ props }) {
                   document.title,
                   window.location.pathname,
                 );
+                setSearchResults([]);
                 const weatherData = Responsed.data;
                 const cloudsData = weatherData.clouds;
                 const rainData = weatherData.rain;
@@ -149,14 +185,7 @@ function Search({ props }) {
 
                 setSearched(true);
                 setInputValue("");
-                axios
-                  .get(
-                    `http://api.openweathermap.org/geo/1.0/direct?q=${valorCorrente}&limit=5&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
-                  )
-                  .then((location) => {
-                    console.log(location.data);
-                  });
-              } // Clear the input value after the search
+              }
             });
         } else {
           alert("Valor inserido é um continente ou um nome inválido");
@@ -552,7 +581,6 @@ function Search({ props }) {
             era essa a região que você queria?
           </p>
         </h2>
-
         {verifClicked && (
           <div className="overlay" onClick={hlandeVerifiClose}></div>
         )}
@@ -598,7 +626,8 @@ function Search({ props }) {
           }}
         >
           <input
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
             onFocus={() => {
               setInputValue("");
             }}
@@ -613,6 +642,19 @@ function Search({ props }) {
             onMouseOver={() => changePlaceholderColor(true)}
             onMouseOut={() => changePlaceholderColor(false)}
           />
+
+          {searchResults.length > 0 && (
+            <div className="rodape_input">
+              <div className="rodape_input_den">
+                {searchResults.map((location, index) => (
+                  <p className="cidades_pesq" key={index}>
+                    {location.name}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
+
           <button
             className="input_Pesquisar"
             type="button" // Defina o tipo como 'button' para evitar a submissão automática
@@ -620,7 +662,9 @@ function Search({ props }) {
               e.preventDefault();
               searchInput(e);
             }}
-            style={{ display: searched ? `none` : "flex" }}
+            style={{
+              display: searched ? "none" : "flex",
+            }}
           >
             Pesquisar por cidade!
           </button>
