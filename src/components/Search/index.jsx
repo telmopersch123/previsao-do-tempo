@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+
+
 import debounce from "lodash.debounce";
 
 import axios from "axios";
@@ -7,7 +9,7 @@ import WeahterIcon from "../WeatherIcon";
 import Button from "../Button";
 import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
-import Forecast from "../forecast";
+import Forecast from "../Forecast";
 import Graphic from "../Graphic";
 import Alert from "../Alert";
 import regiao from "../../icones/paises.png";
@@ -36,7 +38,7 @@ function Search({ props }) {
   const [daily, setDaily] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
   const [capitalizedValue, setCapitalizedValue] = useState("");
-  const idDoComponente = "forecast";
+  const idDoComponente = "forecast";yarn
   const idDoComponente0 = "wind";
   const apiKey = "H6TZ60LH2XNH";
   const [searchResults, setSearchResults] = useState([]);

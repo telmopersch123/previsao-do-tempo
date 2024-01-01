@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
 import * as React from "react";
-import AreaChartVal from "./AreaChartVal";
+import AreaChartVal from "./AreachartVal";
 import MuiLineChart from "./MuiLineChart";
 import {
   BarChart,

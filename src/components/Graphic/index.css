@@ -41,6 +41,7 @@ background-color: #dfdfdf60;
   align-items: center;
   gap: 20px;
   margin-bottom: 100px;
+  cursor: pointer;
 }
 
 .div_tipo_grapchis>img {
