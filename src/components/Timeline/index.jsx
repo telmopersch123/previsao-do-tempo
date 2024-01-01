@@ -124,7 +124,9 @@ const Timeline = ({
   const [sysFlag, setSysFlag] = useState("");
   useEffect(() => {
     setSysFlag(sys);
+
   }, [sys]);
+
   const [detailsOfc, setDetailsOfc] = useState({});
   const [item1Visivel, setItem1Visivel] = useState(false);
   const mostrarItem1 = () => setItem1Visivel(!item1Visivel);
@@ -318,7 +320,7 @@ const Timeline = ({
         <p className="time_class">{formattedTime}</p>
 
         <div className="div_p_flags">
-          <p>
+          <p className="p_flags">
             <Flag sysFlag={sysFlag} />
           </p>
           <p>{sys}</p>

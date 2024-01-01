@@ -6,11 +6,20 @@
 
 }
 
-form {
+.formulario {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40vh;
 }
-
+.formulario.searched {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 00vh;
+}
 
 body {
 user-select: none;
@@ -18,7 +27,7 @@ user-select: none;
   height: 100vh;
   padding: 0;
   margin: 0;
-
+    background: #1e1933;
 }
 body::-webkit-scrollbar {
   width: 0px;
@@ -35,10 +44,11 @@ body::-webkit-scrollbar-track {
   background-color: transparent;
   /* Cor de fundo da área de rastreamento (transparente) */
 }
+
 .searchWr {
-  background: linear-gradient(38deg, #181818, #0c0c0c, #1e1933, #000000, #443971);
+  /* background: linear-gradient(38deg, #181818, #0c0c0c, #1e1933, #000000, #443971);
   background-size: 300% 300%;
-  animation: gradient-animation 25s ease infinite;
+  animation: gradient-animation 25s ease infinite; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,8 +74,8 @@ body::-webkit-scrollbar-track {
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 20%;
-  margin-bottom: 42vh;
+
+
 }
 .Search.searched {
   margin-top: 20px;
@@ -107,6 +117,7 @@ body::-webkit-scrollbar-track {
   color: white;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.467);
   text-align: center;
+
 }
 
 .title_master.searched {
@@ -118,6 +129,7 @@ body::-webkit-scrollbar-track {
   border-radius: 50px;
   transition: 0.5s ease-in-out;
   cursor: help;
+  width: 50%;
 }
 
 .title_master.searched:hover {
@@ -154,7 +166,7 @@ body::-webkit-scrollbar-track {
   gap: 50px;
 }
 .rodape_input {
-    width: 80%;
+  width: 60vw;
   z-index: 0;
   background-color: rgba(63, 54, 79, 0.341);
   padding: 10px;
@@ -171,8 +183,20 @@ body::-webkit-scrollbar-track {
   color: rgba(255, 255, 255, 0.714);
 
 }
-
+.rodape_found{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.p_found{
+  margin: 0;
+  padding: 0;
+}
 .cidades_pesq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   background-color: rgba(63, 54, 79, 0.341);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.375);
   padding: 10px;
@@ -502,6 +526,8 @@ form{
 
 }
 
+
+
                                 .animation {
                                   opacity: 100%;
 
@@ -643,7 +669,7 @@ form{
 
                                   will-change: transform;
                                   transform: translate3d(0, 0, 0);
-                                  animation: weather 30s linear infinite;
+                                  animation: weather 40s linear infinite;
                                   z-index: 2;
                                 }
                                 .div_pai{
@@ -735,19 +761,17 @@ form{
                                 }
                                 @keyframes weather {
                                   0% {
-                                    transform: translateX(-200vw)
+                                    transform: translateX(-600vw)
                                   }
 
                                   100% {
-                                    transform: translateX(110vw);
+                                    transform: translateX(100vw);
                                   }
                                 }
 
+/*
+@media screen and (min-width: 2100px) {
 
-@media screen and (min-width: 2400px) {
-  body{
-      background: #1e1933;
-  }
   .searchWr {
       justify-content: flex-start;
       display: flex;
@@ -757,7 +781,7 @@ form{
       background-size: 300% 300%;
       animation: gradient-animation 25s ease infinite;
     }
-}
+} */
 @media screen and (max-width: 1050px) {
   .icon-wrapper {
     width: auto;
@@ -790,7 +814,25 @@ form{
   color: #ffffff9d;
 }
 }
+@media screen and (max-width: 550px){
+  .rodape_found{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  .svg_not_found{
+    width: 50px;
+    height: auto;
+  }
+  .cidades_pesq>p{
+    font-size: 3vw;
+  }
+}
 @media screen and (max-width: 450px) {
+  .cidades_pesq{
+    width: 109%;
+    border-radius: 0;
+  }
                                   @keyframes moveCloudMais {
                                       0% {
                                         transform: translateX(-400vw)
@@ -838,8 +880,15 @@ form{
 }
 
 @media screen and (max-width: 400px) {
+  .svg_not_found{
+    width: 70px;
+    height: auto;
+  }
+  .formulario {
+    margin-top: 42vh;
+  }
   .title_master.searched {
-    font-size: 10vw;
+    font-size: 7vw;
   }
 
   .icon-wrapper {
@@ -877,5 +926,13 @@ form{
     .div_wind {
       width: 100%;
   font-size: 5vw;
+    }
+    @media screen and (max-width: 300px){
+      .cidades_pesq>p{
+        font-size: 3.5vw;
+      }
+      .formulario {
+        margin-top: 47vh;
+      }
     }
 }

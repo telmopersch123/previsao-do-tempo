@@ -22,7 +22,7 @@ function Flag({ sysFlag }) {
   return (
     <div className={"flag"}>
       {country && country[0] && country[0].flags && country[0].flags.svg && (
-        <div>
+        <div className="div_flag">
           <img
             title={country[0].name?.common}
             className="img_flag"

@@ -12,6 +12,7 @@ import DetailsWeather from "../DetailsWeather";
 import Forecast from "../Forecast";
 import Graphic from "../Graphic";
 import Alert from "../Alert";
+import Flag from "../Flag";
 import regiao from "../../icones/paises.png";
 
 function Search({ props }) {
@@ -38,13 +39,15 @@ function Search({ props }) {
   const [daily, setDaily] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
   const [capitalizedValue, setCapitalizedValue] = useState("");
-  const idDoComponente = "forecast";yarn
+  const idDoComponente = "forecast";
   const idDoComponente0 = "wind";
   const apiKey = "H6TZ60LH2XNH";
   const [searchResults, setSearchResults] = useState([]);
   const [estaChovendo, setEstaChovendo] = useState(0);
   const [estaNublado, setEstaNublado] = useState(0);
 
+  const [resultado, setResultado] = useState([]);
+  const [existing, setExisting] = useState([]);
   useEffect(() => {
     window.history.replaceState({}, document.title, window.location.pathname);
   }, []);
@@ -62,6 +65,8 @@ function Search({ props }) {
             .then((response) => {
               setEstaNublado(response.data.clouds?.all ?? 0);
               setEstaChovendo(response.data.rain?.["1h"] ?? 0);
+
+              // setEstaChovendo(1)
             })
             .catch((error) => {
               console.error("Erro ao obter localização:", error.message);
@@ -110,12 +115,25 @@ function Search({ props }) {
         )
         .then((response) => {
           const locations = response.data;
-          setSearchResults(locations);
+          setExisting(response.data);
+          console.log(response.data)
+          const filteredLocations = locations.reduce((acc, location) => {
+            if(!acc[location.state]){
+              acc[location.state] = location;
+            }
+            return acc;
+          }, {});
+
+
+          const filteredResults = Object.values(filteredLocations);
+          setSearchResults(filteredResults);
         })
         .catch((error) => {
           console.error("Erro ao buscar localização:", error.message);
         });
+
     }, 300),
+
   ).current;
 
   const handleInputChange = (e) => {
@@ -127,6 +145,19 @@ function Search({ props }) {
 
     // Other logic related to input change if needed
   };
+  let verificando = false;
+
+  const handleResultClick = async (e, location) => {
+    if (location && location.lat !== undefined && location.lon !== undefined) {
+      verificando = true;
+
+      setResultado(location);
+      searchInput(e, location);
+      setSearchResults([]);
+    } else {
+      console.error('localização indefinida');
+    }
+ };
 
   const handleInputBlur = () => {
     // Quando o foco é perdido, se o valor do input for vazio, limpe os resultados
@@ -134,18 +165,27 @@ function Search({ props }) {
       setSearchResults([]);
     }
   };
-  const searchInput = (e) => {
+  let apiUrl;
+  const searchInput = (e, location) => {
+
     const valorCorrente = document.querySelector(".inputCidade").value;
     const inputValueMinusc = valorCorrente.toLowerCase();
     const capitalizedString =
       inputValueMinusc.charAt(0).toUpperCase() + inputValueMinusc.slice(1);
-    e.preventDefault();
+      e.preventDefault();
+
+if (verificando === false) {
+  apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=6e7169fc97f97c75ccd396e1ec444ca0`;
+} else if(verificando === true) {
+  const lat = location.lat
+  const lon = location.lon
+  apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=6e7169fc97f97c75ccd396e1ec444ca0`;
+}
 
     axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=6e7169fc97f97c75ccd396e1ec444ca0&units=metric`,
-      )
+      .get(apiUrl)
       .then((Responsed) => {
+
         const { sys } = Responsed.data;
         if (sys.country !== undefined) {
           const { lon, lat } = Responsed.data.coord;
@@ -187,6 +227,7 @@ function Search({ props }) {
 
                 setSearched(true);
                 setInputValue("");
+                verificando = false;
               }
             });
         } else {
@@ -262,6 +303,7 @@ function Search({ props }) {
       setCloudPosition(getRandomPosition());
       setColors(getColors());
       setFimdou(true);
+      setCurrentPos(Math.floor(Math.random() * 4));
     }
 
     const elementKey = document.querySelector(".cloud");
@@ -297,7 +339,7 @@ function Search({ props }) {
   }, [getWindPosition]);
 
   const getColors01 = useCallback(() => {
-    if (estaNublado > 81) {
+    if (estaNublado > 80) {
       return "#808080";
     }
 
@@ -337,7 +379,7 @@ function Search({ props }) {
       setMaisPosition(getPositionMais);
       setFimdou01(true);
       setColors(getColors01());
-      setCurrentPos(Math.floor(Math.random() * 3));
+
     }
 
     const elementKeyMais = document.querySelector(".div_clouds_mais");
@@ -374,10 +416,10 @@ function Search({ props }) {
     }
   }, [cached]);
   const cloudsWind = () => {
-    if (estaChovendo > 1) {
+    if (estaChovendo >= 0.50) {
       const divWind = [];
 
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 10; i++) {
         divWind.push(
           <div
             key={i}
@@ -390,10 +432,10 @@ function Search({ props }) {
         );
       }
       return divWind;
-    } else {
+    } else if(estaChovendo < 0.50) {
       const divWind = [];
 
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 15; i++) {
         divWind.push(
           <div
             key={i}
@@ -413,7 +455,7 @@ function Search({ props }) {
     const chuva = [];
 
     for (let i = 0; i < currentPos; i++) {
-      let positions = getPositionMais();
+      let positions = getRandomPosition();
       let top = positions.windTop;
       let left = positions.left;
       chuva.push(
@@ -435,10 +477,10 @@ function Search({ props }) {
   };
 
   const clouds = () => {
-    if (estaChovendo > 1) {
+    if (estaChovendo >= 0.50) {
       const chuva = [];
 
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 50; i++) {
         let positions = getPositionMais();
         let top = positions.windTop;
         let left = positions.left;
@@ -461,7 +503,7 @@ function Search({ props }) {
       }
 
       return chuva;
-    } else if (estaChovendo === 0) {
+    } else if (estaChovendo < 0.50) {
       const divClouds = [];
       for (let i = 0; i < 50; i++) {
         let positions = getRandomPosition();
@@ -486,32 +528,9 @@ function Search({ props }) {
   };
 
   const cloudsMais = () => {
-    if (estaChovendo > 1) {
-      const chuva = [];
-
-      for (let i = 0; i < 30; i++) {
-        let positions = getPositionMais();
-        let top = positions.windTop;
-        let left = positions.left;
-        let camadasZ = positions.camadaZ;
-        chuva.push(
-          <div
-            key={i}
-            style={{
-              top: `${top}vh`,
-              left: `${left}vw`,
-              zIndex: `${camadasZ}`,
-              position: "absolute",
-            }}
-            className="div_avo"
-          >
-            <div className="div_pai"></div>
-            <div>{cloudsWind()}</div>
-          </div>,
-        );
-      }
-      return chuva;
-    } else if (estaChovendo <= 1) {
+    if (estaChovendo > 0.50) {
+     <div></div>
+    } else if (estaChovendo <= 0.50) {
       const divClouds = [];
       for (let i = 0; i < 30; i++) {
         let colors = getColors01();
@@ -536,8 +555,9 @@ function Search({ props }) {
       return divClouds;
     }
   };
+
   const shineStars = () => {
-    if (estaChovendo > 1) {
+    if (estaChovendo > 0.50) {
       return null;
     } else {
       let value;
@@ -566,23 +586,11 @@ function Search({ props }) {
     }
   };
 
+
   return (
     <div className={`searchWr ${searched ? "searched" : ""}`}>
       <div className={`Search ${searched ? "searched" : ""}`}>
-        <h2
-          onClick={searched ? hlandeVerifiOpen : () => {}}
-          className={`title_master ${searched ? "searched" : ""}`}
-        >
-          {searched
-            ? `Previsões para ${capitalizedValue}`
-            : "Escreva abaixo o nome da Cidade!"}
-          <p
-            className="era_essa"
-            style={{ display: searched ? "block" : "none" }}
-          >
-            era essa a região que você queria?
-          </p>
-        </h2>
+
         {verifClicked && (
           <div className="overlay" onClick={hlandeVerifiClose}></div>
         )}
@@ -620,6 +628,7 @@ function Search({ props }) {
           </div>
         </CSSTransition>
         <form
+        className={`formulario ${searched ? "searched" : ""}`}
           onSubmit={(e) => {
             e.preventDefault();
             if (searched === true) {
@@ -627,12 +636,23 @@ function Search({ props }) {
             }
           }}
         >
+           <h2
+          onClick={searched ? hlandeVerifiOpen : () => {}}
+          className={`title_master ${searched ? "searched" : ""}`}
+        >
+          {searched
+            ? `Previsões para ${capitalizedValue}`
+            : "Escreva abaixo o nome da Cidade!"}
+          <p
+            className="era_essa"
+            style={{ display: searched ? "block" : "none" }}
+          >
+            era essa a região que você queria?
+          </p>
+        </h2>
           <input
             onChange={handleInputChange}
             onBlur={handleInputBlur}
-            onFocus={() => {
-              setInputValue("");
-            }}
             placeholder={
               searched ? `Pesquisar por mais!` : "Digite o nome da cidade aqui!"
             }
@@ -644,17 +664,26 @@ function Search({ props }) {
             onMouseOver={() => changePlaceholderColor(true)}
             onMouseOut={() => changePlaceholderColor(false)}
           />
-
-          {searchResults.length > 0 && (
+          {searchResults.length > 0 ? (
             <div className="rodape_input">
               <div className="rodape_input_den">
                 {searchResults.map((location, index) => (
-                  <p className="cidades_pesq" key={index}>
-                    {location.name}
-                  </p>
+                  <div onClick={async(e) => await handleResultClick(e,location)} className="cidades_pesq" key={index}>
+                    <p >{location.name}</p> | <div className="bandeiras_rodape">{<Flag sysFlag={location.country} />}</div>
+                    <p >{location.state}</p>
+                  </div>
                 ))}
               </div>
             </div>
+          ) : inputValue !== "" && existing.length === 0 ? (
+              <div className="rodape_input">
+              <div className="rodape_input_den rodape_found">
+              <svg className="svg_not_found" xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 40 40"><path fill="currentColor" d="M20.001 2.683C10.452 2.683 2.684 10.451 2.684 20s7.769 17.317 17.317 17.317S37.316 29.548 37.316 20S29.549 2.683 20.001 2.683m0 33.134c-8.722 0-15.817-7.096-15.817-15.817S11.279 4.183 20.001 4.183c8.721 0 15.815 7.096 15.815 15.817s-7.094 15.817-15.815 15.817"></path><circle cx="15.431" cy="16.424" r="1.044" fill="currentColor"></circle><circle cx="24.569" cy="16.424" r="1.044" fill="currentColor"></circle><path fill="currentColor" d="M24.828 25.312h-9.656a.75.75 0 0 0 0 1.5h9.656a.75.75 0 0 0 0-1.5"></path></svg>
+               <p className="p_found">Cidade não encontrada!</p>
+              </div>
+             </div>
+          ) : (
+            <div></div>
           )}
 
           <button
@@ -678,7 +707,7 @@ function Search({ props }) {
           style={{
             display: searched ? `none` : "flex",
             background:
-              estaChovendo > 1
+              estaChovendo >= 0.50
                 ? "linear-gradient(to bottom, rgba(128, 128, 128, 0.6), rgba(128, 128, 128, 0.4) 50%, rgba(128, 128, 128, 0.24) 75%, transparent 100%)"
                 : estaNublado > 80
                   ? "linear-gradient(to bottom, rgba(169, 169, 169, 0.6), rgba(169, 169, 169, 0.4) 50%, rgba(169, 169, 169, 0.24) 75%, transparent 100%)"
@@ -688,11 +717,11 @@ function Search({ props }) {
         >
           {isDaytime ? (
             <div>
-              <div className={`sun ${estaChovendo > 5 ? "chuva" : ""}`}></div>
+              <div className={`sun ${estaChovendo > 0.50 ? "chuva" : ""}`}></div>
             </div>
           ) : (
             <div>
-              <div className={`moon ${estaChovendo > 5 ? "chuva" : ""}`}></div>
+              <div className={`moon ${estaChovendo > 0.50 ? "chuva" : ""}`}></div>
               {shineStars()}
             </div>
           )}
