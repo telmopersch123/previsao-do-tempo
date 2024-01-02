@@ -359,7 +359,7 @@ function WeatherIcon({
             </span>
             <div className="div_avo00">
               <p className="title_temp_modal">
-                Icones do periodo correspondente da região
+              Ícones do período correspondente da região
               </p>
               <div className="div_pai00">
                 <div
@@ -376,45 +376,45 @@ function WeatherIcon({
                   )}
                 </div>
                 <p className="text_temp_modal">
-                  Cada icone representa o periodo que está a região, o Sol
-                  representa que a região pesquisada esta no periodo Diurno, e a
-                  Lua no Noturno!
+                  Cada ícone representa o período que está a região, o sol
+                  representa que a região pesquisada esta no período diurno, e a
+                  lua no noturno!
                 </p>
               </div>
             </div>
 
             <div className="div_avo01">
               <p className="text_modal_weather">
-                Icones do tempo correspondente para a região
+              Ícones do tempo correspondente para a região
               </p>
               <div className="div_pai01">
                 <div className="div_filhos">
                   <img src={chuva} />
                   <p>
-                    Icone que representa o periodo chuvoso fraco/médio na região
+                  Ícone que representa o período chuvoso fraco/médio na região
                     pesquisada, inclui chuviscos e sereno!
                   </p>
                 </div>
                 <div className="div_filhos">
                   <img src={chuvaForte} />
                   <p>
-                    Icone que representa um periodo chuvoso forte na região
+                  Ícone que representa um período chuvoso forte na região
                     pesquisada, inclui granizos, trovoadas e ventos fortes!
                   </p>
                 </div>
                 <div className="div_filhos">
                   <img src={nublado} />
                   <p>
-                    Icone que representa um tempo nublado na região pesquisada,
+                  Ícone que representa um tempo nublado na região pesquisada,
                     inclui frente fria, tempo fechado e poluição!
                   </p>
                 </div>
                 <div className="div_filhos">
                   <img src={neve} />
                   <p>
-                    Icone que representa um tempo nevoso na região pesquisada,
-                    isso inclui estações de inverno de grande quantidade de neve
-                    que existem em algums regiões do mundo!
+                  Ícone que representa um tempo nevoso na região pesquisada,
+                    isso inclui estações de inverno de abundância de neve
+                    que existem em algumas regiões do mundo!
                   </p>
                 </div>
               </div>

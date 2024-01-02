@@ -23,8 +23,8 @@
 
 body {
 user-select: none;
-  max-width: 100%;
-  height: 100vh;
+  width: 100%;
+  height: auto;
   padding: 0;
   margin: 0;
     background: #1e1933;
@@ -878,8 +878,65 @@ form{
   color: #ffffff9d;
 }
 }
+.casca-error{
+  background-color: #0000005e;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+}
+.alert_error {
+  margin: 10px;
+  position: absolute;
+  background-color: #333333;
+  color: white;
+  margin-bottom: 15px;
+  z-index: 5;
+  width: auto;
+  border-radius: 5px;
+}
+.title_error{
+  border-radius: 5px;
+  padding: 5px;
+  background-color: rgba(255, 0, 0, 0.295);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+.svg_error{
+  width: 50px;
+  height: auto;
+}
+.parag_error{
+  padding: 40px;
+}
+.closebtn {
+  position: absolute;
+  left: 0;
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
+.closebtn:hover {
+  color: black;
+}
 @media screen and (max-width: 400px) {
+  .parag_error{
+    padding: 20px;
+  }
+  .closebtn{
+    left: -10px;
+  }
   .svg_not_found{
     width: 70px;
     height: auto;
@@ -927,7 +984,14 @@ form{
       width: 100%;
   font-size: 5vw;
     }
-    @media screen and (max-width: 300px){
+    @media screen and (max-width: 310px){
+      .title_error{
+        justify-content: flex-start;
+      }
+      .closebtn {
+        position: relative;
+
+      }
       .cidades_pesq>p{
         font-size: 3.5vw;
       }

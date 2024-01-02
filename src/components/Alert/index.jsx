@@ -68,10 +68,10 @@ function Alert({ daily, idProp }) {
                 Com base nas temperaturas dos próximos dias&nbsp;
                 <strong onClick={handleVerif} style={{ cursor: "pointer" }}>
                   <a href={`#${idProp}`}>
-                    (você pode ver na sessão de previsão do tempo)
+                    (Você pode ver na sessão de previsão do tempo)
                   </a>
                 </strong>
-                &nbsp;é basicamente feito a média dos numeros obtidos
+                &nbsp;é basicamente feito a média dos números obtidos
               </p>
             </div>
           </div>

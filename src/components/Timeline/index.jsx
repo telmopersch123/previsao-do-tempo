@@ -178,7 +178,7 @@ const Timeline = ({
 
   useEffect(() => {
     if (temp !== undefined) {
-      setTemperatureDisplay(Celsius ? temp : convertorFahrenheit(temp));
+      setTemperatureDisplay(Celsius ? temp  : convertorFahrenheit(temp));
     }
   }, [Celsius, temp]);
 
@@ -274,31 +274,31 @@ const Timeline = ({
                   onClick={() => changeMapLayer("temp")}
                   className={mapLayer === "temp" ? "active" : ""}
                 >
-                  Temperature
+                  Temperatura
                 </button>
                 <button
                   onClick={() => changeMapLayer("pressure")}
                   className={mapLayer === "pressure" ? "active" : ""}
                 >
-                  Pressure
+                  Pressão atmosférica
                 </button>
                 <button
                   onClick={() => changeMapLayer("wind")}
                   className={mapLayer === "wind" ? "active" : ""}
                 >
-                  Wind Speed
+                  Velocidade do vento
                 </button>
                 <button
                   onClick={() => changeMapLayer("clouds")}
                   className={mapLayer === "clouds" ? "active" : ""}
                 >
-                  Clouds
+                  Nuvens
                 </button>
                 <button
                   onClick={() => changeMapLayer("precipitation")}
                   className={mapLayer === "precipitation" ? "active" : ""}
                 >
-                  Precipitation
+                  Precipitação
                 </button>
               </div>
             </>

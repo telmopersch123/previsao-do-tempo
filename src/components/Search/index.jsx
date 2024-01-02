@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-
+import { createRoot } from "react-dom";
 
 import debounce from "lodash.debounce";
 
@@ -45,9 +45,9 @@ function Search({ props }) {
   const [searchResults, setSearchResults] = useState([]);
   const [estaChovendo, setEstaChovendo] = useState(0);
   const [estaNublado, setEstaNublado] = useState(0);
-
   const [resultado, setResultado] = useState([]);
   const [existing, setExisting] = useState([]);
+  const [verifing, setVerifing] = useState(false);
   useEffect(() => {
     window.history.replaceState({}, document.title, window.location.pathname);
   }, []);
@@ -65,8 +65,6 @@ function Search({ props }) {
             .then((response) => {
               setEstaNublado(response.data.clouds?.all ?? 0);
               setEstaChovendo(response.data.rain?.["1h"] ?? 0);
-
-              // setEstaChovendo(1)
             })
             .catch((error) => {
               console.error("Erro ao obter localização:", error.message);
@@ -79,7 +77,7 @@ function Search({ props }) {
     } else {
       console.error("Geolocalização não é suportada neste navegador");
     }
-  }, []);
+  }, [estaChovendo, estaNublado]);
   const handleVerifValueChange = () => {
     setVerifValue(false);
   };
@@ -116,14 +114,13 @@ function Search({ props }) {
         .then((response) => {
           const locations = response.data;
           setExisting(response.data);
-          console.log(response.data)
+
           const filteredLocations = locations.reduce((acc, location) => {
-            if(!acc[location.state]){
+            if (!acc[location.state]) {
               acc[location.state] = location;
             }
             return acc;
           }, {});
-
 
           const filteredResults = Object.values(filteredLocations);
           setSearchResults(filteredResults);
@@ -131,9 +128,7 @@ function Search({ props }) {
         .catch((error) => {
           console.error("Erro ao buscar localização:", error.message);
         });
-
     }, 300),
-
   ).current;
 
   const handleInputChange = (e) => {
@@ -142,22 +137,20 @@ function Search({ props }) {
     debouncedSearch(value);
     setValorCorrente(value);
     debouncedSearch(value);
-
     // Other logic related to input change if needed
   };
   let verificando = false;
-
   const handleResultClick = async (e, location) => {
     if (location && location.lat !== undefined && location.lon !== undefined) {
       verificando = true;
-
+      setVerifing(true);
       setResultado(location);
       searchInput(e, location);
       setSearchResults([]);
     } else {
-      console.error('localização indefinida');
+      console.error("localização indefinida");
     }
- };
+  };
 
   const handleInputBlur = () => {
     // Quando o foco é perdido, se o valor do input for vazio, limpe os resultados
@@ -165,27 +158,55 @@ function Search({ props }) {
       setSearchResults([]);
     }
   };
-  let apiUrl;
-  const searchInput = (e, location) => {
 
+  let apiUrl;
+  const [erro, setErro] = useState(false);
+  const handleError = (mensagem) => (
+    <>
+      <div className="casca-error" onClick={() => setErro(false)}></div>
+      <div className="alert_error">
+        <div className="title_error">
+          <span className="closebtn" onClick={() => setErro(false)}>
+            &times;
+          </span>
+          <svg
+            className="svg_error"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M12 1c6.075 0 11 4.925 11 11s-4.925 11-11 11S1 18.075 1 12S5.925 1 12 1m-1 13h2V6.5h-2zm2.004 1.5H11v2.004h2.004z"
+            ></path>
+          </svg>
+          <p className="algo_ops">Ops, algo deu errado!</p>
+        </div>
+        <p className="parag_error">{mensagem}</p>
+      </div>
+    </>
+  );
+
+  const Strong = ({ children }) => {
+    return <strong>{children}</strong>;
+  };
+  const searchInput = (e, location) => {
     const valorCorrente = document.querySelector(".inputCidade").value;
     const inputValueMinusc = valorCorrente.toLowerCase();
     const capitalizedString =
       inputValueMinusc.charAt(0).toUpperCase() + inputValueMinusc.slice(1);
-      e.preventDefault();
+    e.preventDefault();
 
-if (verificando === false) {
-  apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=6e7169fc97f97c75ccd396e1ec444ca0`;
-} else if(verificando === true) {
-  const lat = location.lat
-  const lon = location.lon
-  apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=6e7169fc97f97c75ccd396e1ec444ca0`;
-}
+    if (verificando === false) {
+      apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${valorCorrente}&appid=6e7169fc97f97c75ccd396e1ec444ca0&units=metric`;
+    } else if (verificando === true) {
+      const lat = location.lat;
+      const lon = location.lon;
+      apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=6e7169fc97f97c75ccd396e1ec444ca0&units=metric`;
+    }
 
     axios
       .get(apiUrl)
       .then((Responsed) => {
-
         const { sys } = Responsed.data;
         if (sys.country !== undefined) {
           const { lon, lat } = Responsed.data.coord;
@@ -227,17 +248,27 @@ if (verificando === false) {
 
                 setSearched(true);
                 setInputValue("");
+                if (verificando === false) {
+                  setVerifing(false);
+                }
                 verificando = false;
               }
             });
         } else {
-          alert("Valor inserido é um continente ou um nome inválido");
+          setErro(
+            handleError("Valor inserido é um continente ou um nome inválido!"),
+          );
         }
       })
       .catch((error) => {
-        alert(
-          "Ops, Algo deu errado! Atualize a Página Por Favor!",
-          error.message,
+        setErro(
+          handleError(
+            <span>
+              Possivelmente o lugar digitado não existe, talvez o resultado
+              esteja na barra de pesquisa, verifique-a ou &nbsp;
+              <Strong>(Atualize a Página Por Favor!)</Strong>
+            </span>,
+          ),
         );
       });
   };
@@ -379,7 +410,6 @@ if (verificando === false) {
       setMaisPosition(getPositionMais);
       setFimdou01(true);
       setColors(getColors01());
-
     }
 
     const elementKeyMais = document.querySelector(".div_clouds_mais");
@@ -416,7 +446,7 @@ if (verificando === false) {
     }
   }, [cached]);
   const cloudsWind = () => {
-    if (estaChovendo >= 0.50) {
+    if (estaChovendo >= 0.5) {
       const divWind = [];
 
       for (let i = 0; i < 10; i++) {
@@ -432,7 +462,7 @@ if (verificando === false) {
         );
       }
       return divWind;
-    } else if(estaChovendo < 0.50) {
+    } else if (estaChovendo < 0.5) {
       const divWind = [];
 
       for (let i = 0; i < 15; i++) {
@@ -477,7 +507,7 @@ if (verificando === false) {
   };
 
   const clouds = () => {
-    if (estaChovendo >= 0.50) {
+    if (estaChovendo >= 0.5) {
       const chuva = [];
 
       for (let i = 0; i < 50; i++) {
@@ -503,7 +533,7 @@ if (verificando === false) {
       }
 
       return chuva;
-    } else if (estaChovendo < 0.50) {
+    } else if (estaChovendo < 0.5) {
       const divClouds = [];
       for (let i = 0; i < 50; i++) {
         let positions = getRandomPosition();
@@ -528,9 +558,9 @@ if (verificando === false) {
   };
 
   const cloudsMais = () => {
-    if (estaChovendo > 0.50) {
-     <div></div>
-    } else if (estaChovendo <= 0.50) {
+    if (estaChovendo > 0.5) {
+      <div></div>;
+    } else if (estaChovendo <= 0.5) {
       const divClouds = [];
       for (let i = 0; i < 30; i++) {
         let colors = getColors01();
@@ -557,7 +587,7 @@ if (verificando === false) {
   };
 
   const shineStars = () => {
-    if (estaChovendo > 0.50) {
+    if (estaChovendo > 0.5) {
       return null;
     } else {
       let value;
@@ -586,10 +616,10 @@ if (verificando === false) {
     }
   };
 
-
   return (
     <div className={`searchWr ${searched ? "searched" : ""}`}>
       <div className={`Search ${searched ? "searched" : ""}`}>
+        {erro}
 
         {verifClicked && (
           <div className="overlay" onClick={hlandeVerifiClose}></div>
@@ -611,11 +641,11 @@ if (verificando === false) {
 
             <p className="text_regiao">
               Todas as regiões pesquisadas, tanto cidades quanto estados ou
-              paises podem possuir também cidades, estados ou paises diferentes
+              Países podem possuir também cidades, estados ou países diferentes
               com o mesmo nome em diferentes locais! Utilize o mapa para se
               localizar, e caso não achou a sua cidade, perdoa-nos, a API que
               foi utilizada é um serviço gratuito, graças a isso existe
-              limitações, então caso não achou, tente usar cidades mais proxima
+              limitações, então caso não achou, tente usar cidades mais próximas
               da sua, ou o site da{" "}
               <a
                 href="https://openweathermap.org"
@@ -628,7 +658,7 @@ if (verificando === false) {
           </div>
         </CSSTransition>
         <form
-        className={`formulario ${searched ? "searched" : ""}`}
+          className={`formulario ${searched ? "searched" : ""}`}
           onSubmit={(e) => {
             e.preventDefault();
             if (searched === true) {
@@ -636,20 +666,22 @@ if (verificando === false) {
             }
           }}
         >
-           <h2
-          onClick={searched ? hlandeVerifiOpen : () => {}}
-          className={`title_master ${searched ? "searched" : ""}`}
-        >
-          {searched
-            ? `Previsões para ${capitalizedValue}`
-            : "Escreva abaixo o nome da Cidade!"}
-          <p
-            className="era_essa"
-            style={{ display: searched ? "block" : "none" }}
+          <h2
+            onClick={searched ? hlandeVerifiOpen : () => {}}
+            className={`title_master ${searched ? "searched" : ""}`}
           >
-            era essa a região que você queria?
-          </p>
-        </h2>
+            {searched
+              ? `Previsões para ${
+                  verifing === false ? capitalizedValue : resultado.name
+                }`
+              : "Escreva abaixo o nome da Cidade!"}
+            <p
+              className="era_essa"
+              style={{ display: searched ? "block" : "none" }}
+            >
+              era essa a região que você queria?
+            </p>
+          </h2>
           <input
             onChange={handleInputChange}
             onBlur={handleInputBlur}
@@ -668,20 +700,54 @@ if (verificando === false) {
             <div className="rodape_input">
               <div className="rodape_input_den">
                 {searchResults.map((location, index) => (
-                  <div onClick={async(e) => await handleResultClick(e,location)} className="cidades_pesq" key={index}>
-                    <p >{location.name}</p> | <div className="bandeiras_rodape">{<Flag sysFlag={location.country} />}</div>
-                    <p >{location.state}</p>
+                  <div
+                    onClick={async (e) => await handleResultClick(e, location)}
+                    className="cidades_pesq"
+                    key={index}
+                  >
+                    <p>{location.name}</p> |{" "}
+                    <div className="bandeiras_rodape">
+                      {<Flag sysFlag={location.country} />}
+                    </div>
+                    <p>{location.state}</p>
                   </div>
                 ))}
               </div>
             </div>
           ) : inputValue !== "" && existing.length === 0 ? (
-              <div className="rodape_input">
+            <div className="rodape_input">
               <div className="rodape_input_den rodape_found">
-              <svg className="svg_not_found" xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 40 40"><path fill="currentColor" d="M20.001 2.683C10.452 2.683 2.684 10.451 2.684 20s7.769 17.317 17.317 17.317S37.316 29.548 37.316 20S29.549 2.683 20.001 2.683m0 33.134c-8.722 0-15.817-7.096-15.817-15.817S11.279 4.183 20.001 4.183c8.721 0 15.815 7.096 15.815 15.817s-7.094 15.817-15.815 15.817"></path><circle cx="15.431" cy="16.424" r="1.044" fill="currentColor"></circle><circle cx="24.569" cy="16.424" r="1.044" fill="currentColor"></circle><path fill="currentColor" d="M24.828 25.312h-9.656a.75.75 0 0 0 0 1.5h9.656a.75.75 0 0 0 0-1.5"></path></svg>
-               <p className="p_found">Cidade não encontrada!</p>
+                <svg
+                  className="svg_not_found"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="50px"
+                  height="50px"
+                  viewBox="0 0 40 40"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M20.001 2.683C10.452 2.683 2.684 10.451 2.684 20s7.769 17.317 17.317 17.317S37.316 29.548 37.316 20S29.549 2.683 20.001 2.683m0 33.134c-8.722 0-15.817-7.096-15.817-15.817S11.279 4.183 20.001 4.183c8.721 0 15.815 7.096 15.815 15.817s-7.094 15.817-15.815 15.817"
+                  ></path>
+                  <circle
+                    cx="15.431"
+                    cy="16.424"
+                    r="1.044"
+                    fill="currentColor"
+                  ></circle>
+                  <circle
+                    cx="24.569"
+                    cy="16.424"
+                    r="1.044"
+                    fill="currentColor"
+                  ></circle>
+                  <path
+                    fill="currentColor"
+                    d="M24.828 25.312h-9.656a.75.75 0 0 0 0 1.5h9.656a.75.75 0 0 0 0-1.5"
+                  ></path>
+                </svg>
+                <p className="p_found">Cidade não encontrada!</p>
               </div>
-             </div>
+            </div>
           ) : (
             <div></div>
           )}
@@ -707,21 +773,23 @@ if (verificando === false) {
           style={{
             display: searched ? `none` : "flex",
             background:
-              estaChovendo >= 0.50
+              estaChovendo >= 0.5
                 ? "linear-gradient(to bottom, rgba(128, 128, 128, 0.6), rgba(128, 128, 128, 0.4) 50%, rgba(128, 128, 128, 0.24) 75%, transparent 100%)"
                 : estaNublado > 80
-                  ? "linear-gradient(to bottom, rgba(169, 169, 169, 0.6), rgba(169, 169, 169, 0.4) 50%, rgba(169, 169, 169, 0.24) 75%, transparent 100%)"
-                  : "",
+                ? "linear-gradient(to bottom, rgba(169, 169, 169, 0.6), rgba(169, 169, 169, 0.4) 50%, rgba(169, 169, 169, 0.24) 75%, transparent 100%)"
+                : "",
           }}
           className={`animation' ${isDaytime ? "manha" : "noite"}`}
         >
           {isDaytime ? (
             <div>
-              <div className={`sun ${estaChovendo > 0.50 ? "chuva" : ""}`}></div>
+              <div className={`sun ${estaChovendo > 0.5 ? "chuva" : ""}`}></div>
             </div>
           ) : (
             <div>
-              <div className={`moon ${estaChovendo > 0.50 ? "chuva" : ""}`}></div>
+              <div
+                className={`moon ${estaChovendo > 0.5 ? "chuva" : ""}`}
+              ></div>
               {shineStars()}
             </div>
           )}

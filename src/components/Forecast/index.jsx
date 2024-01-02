@@ -267,9 +267,9 @@ const Forecast = ({
               className="alert_text1"
             >
               <p>
-                Cada icone representa o periodo que esta as temperaturas da
-                previsão do tempo, veja as temperatuas para até cinco dias de
-                cada periodo da região pesquisada!
+              Cada ícone representa o período que esta a temperatura da
+                previsão do tempo, veja as temperaturas para até cinco dias de
+                cada período da região pesquisada!
               </p>
             </div>
           </div>

@@ -124,7 +124,7 @@ const AreaChartVal = ({ dailyData, newMomentDay }) => {
                   marginRight: "5px",
                 }}
               ></span>
-              <span>Volume de Chuvas </span>
+              <span>Volume de chuva </span>
               <span style={{ color: "#0A4F6D", fontWeight: "bold" }}>
                 {rain.toFixed(2)}mm
               </span>
@@ -142,7 +142,7 @@ const AreaChartVal = ({ dailyData, newMomentDay }) => {
                   marginRight: "5px",
                 }}
               ></span>
-              {`Probabilidade de Chuva: ${pop.toFixed(1) * 100} %`}
+              {`Probabilidade de chuva: ${pop.toFixed(1) * 100} %`}
             </p>
           )}
           {snow !== undefined && (
@@ -157,7 +157,7 @@ const AreaChartVal = ({ dailyData, newMomentDay }) => {
                   marginRight: "5px",
                 }}
               ></span>
-              <span>Volume de Neves </span>
+              <span>Volume de neve </span>
               <span style={{ color: "#FFFFFF", fontWeight: "bold" }}>
                 {snow.toFixed(2)}mm
               </span>

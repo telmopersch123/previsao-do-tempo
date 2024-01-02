@@ -163,7 +163,7 @@ const MuiLineChart = (prop) => {
                   marginRight: "5px",
                 }}
               ></span>
-              {`Rajada de Vento: ${gust.toFixed(2)} m/s`}
+              {`Rajada de vento: ${gust.toFixed(2)} m/s`}
             </p>
           )}
           <p>
@@ -175,7 +175,7 @@ const MuiLineChart = (prop) => {
             ></span>
             {arrowCharacters[dayIndex] && (
               <span>
-                Direção do Vento: {arrowCharacters[dayIndex].direction}
+                Direção do vento: {arrowCharacters[dayIndex].direction}
               </span>
             )}
           </p>

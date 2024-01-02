@@ -46,11 +46,11 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
 
   function getProbabilidadeNeve(media1) {
     if (media1 >= 50) {
-      return "Probabilidades Altas de Nevar nessa região!";
+      return "Probabilidades altas de Nevar nessa região!";
     } else if (media1 >= 30) {
-      return "Probabilidades Médias de Nevar nessa região!";
+      return "Probabilidades médias de Nevar nessa região!";
     } else if (media1 >= 10) {
-      return "Probabilidades Baixas de Nevar nessa região!";
+      return "Probabilidades baixas de Nevar nessa região!";
     } else {
       // Se media1 for menor que 10, não retorna nada
       return null;
@@ -102,8 +102,8 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
               </span>
               <p className="alert_text0">Alerta do clima!</p>
               <p className="alert_text1 p">
-                As chances de chuva são calculadas com base na previsão de até 5
-                dias da região pesquisada
+              As chances de chuva são calculadas com base na previsão de até 5
+                dias da região pesquisada!
               </p>
               <p className={`alert_text2 ${cor}`}>
                 {media0}% de chances de chover
@@ -120,7 +120,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
                 Com base nas possibilidades dos próximos dias&nbsp;
                 <strong onClick={handleVerifTwo} style={{ cursor: "pointer" }}>
                   <a href={`#${idWind}`} className="text_chuva">
-                    (você pode ver na sessão de gráficos da chuva)
+                    (Você pode ver na sessão de gráficos da chuva)
                   </a>
                 </strong>
                 &nbsp;é basicamente feito a média dos números obtidos
@@ -144,7 +144,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           className={`o_div ${probabilidadeNeve !== null ? "case_snow" : ""}`}
         >
           <img className="chuviscos_gif" src={chuviscos} />
-          <p>Chances altas de Chuva para os proximos dias!</p>
+          <p>Chances altas de Chuva para os próximos dias!</p>
         </div>
         {probabilidadeNeve !== null && (
           <div className="div_neve" style={{ display: "flex" }}>
@@ -166,7 +166,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           className={`o_div ${probabilidadeNeve !== null ? "case_snow" : ""}`}
         >
           <img className="chuviscos_gif" src={chuviscos} />
-          <p>Chances médias de Chuva para os proximos dias!</p>
+          <p>Chances médias de chuva para os próximos dias!</p>
         </div>
         {probabilidadeNeve !== null && (
           <div className="div_neve" style={{ display: "flex" }}>
@@ -188,7 +188,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           className={`o_div ${probabilidadeNeve !== null ? "case_snow" : ""}`}
         >
           <img className="chuviscos_gif" src={chuviscos} />
-          <p>Chances baixas de Chuva para os proximos dias!</p>
+          <p>Chances baixas de chuva para os próximos dias!</p>
         </div>
         {probabilidadeNeve !== null && (
           <div className="div_neve" style={{ display: "flex" }}>
