@@ -146,6 +146,9 @@ color: rgba(198, 238, 253, 0.832);
     .alertBai {
       padding: 5px
     }
+    .o_div{
+      font-size: 3.5vw;
+    }
 
 }
 @media screen and (max-width: 500px) {
@@ -160,7 +163,7 @@ font-size: 4vw;
   width: 100%;
 }
 .o_div{
-  font-size: 2.8vw;
+  font-size: 16px;
 }
 }
 @media screen and (max-width: 300px) {
@@ -168,7 +171,7 @@ font-size: 4vw;
     font-size: 16px;
   }
     .o_div {
-      font-size: 3.5vw;
+      font-size: 16px;
     }
   .alertMed {
     font-size: 5vw;

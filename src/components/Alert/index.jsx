@@ -43,47 +43,49 @@ function Alert({ daily, idProp }) {
 
   const conteinerModal = () => {
     return (
-      <div>
-        {modalVerif && (
-          <div className="overlay" onClick={() => handleVerifiClose()}></div>
-        )}
-        <CSSTransition
-          in={modalVerif}
-          timeout={500}
-          classNames="modal"
-          unmountOnExit
-        >
-          <div className="modal">
-            <div className="alert_avo">
-              <span onClick={handleVerif} className="close">
-                &times;
-              </span>
-              <p className="alert_text0">Alerta do clima!</p>
-              <p className="alert_text1 p">
-                O clima é calculado com base na previsão de até 5 dias da região
-                pesquisada
-              </p>
-              <p className={`alert_text2 ${cor}`}>{media} °C a média</p>
-              <p className="alert_text3 p">
-                Com base nas temperaturas dos próximos dias&nbsp;
-                <strong onClick={handleVerif} style={{ cursor: "pointer" }}>
-                  <a href={`#${idProp}`}>
-                    (Você pode ver na sessão de previsão do tempo)
-                  </a>
-                </strong>
-                &nbsp;é basicamente feito a média dos números obtidos
-              </p>
-            </div>
+      <CSSTransition
+        in={modalVerif}
+        timeout={500}
+        classNames="modal"
+        unmountOnExit
+      >
+        <div className="modal">
+          <div className="alert_avo">
+            <span onClick={handleVerif} className="close">
+              &times;
+            </span>
+            <p className="alert_text0">Alerta do clima!</p>
+            <p className="alert_text1 p">
+              O clima é calculado com base na previsão de até 5 dias da região
+              pesquisada
+            </p>
+            <p className={`alert_text2 ${cor}`}>{media} °C a média</p>
+            <p className="alert_text3 p">
+              Com base nas temperaturas dos próximos dias&nbsp;
+              <strong onClick={handleVerif} style={{ cursor: "pointer" }}>
+                <a href={`#${idProp}`}>
+                  (Você pode ver na sessão de previsão do tempo)
+                </a>
+              </strong>
+              &nbsp;é basicamente feito a média dos números obtidos
+            </p>
           </div>
-        </CSSTransition>
-      </div>
+        </div>
+      </CSSTransition>
     );
   };
 
   let alertaComponente;
   if (media > 35) {
     alertaComponente = (
-      <div>
+      <div style={{ zIndex: "2001" }}>
+        {modalVerif && (
+          <div
+            style={{ zIndex: "1001" }}
+            className="overlay"
+            onClick={() => handleVerifiClose()}
+          ></div>
+        )}
         <div
           onClick={handleVerifiOpen}
           className="alertCaElevado alert"
@@ -98,7 +100,14 @@ function Alert({ daily, idProp }) {
   } else {
     if (media >= 25 && media <= 30) {
       alertaComponente = (
-        <div>
+        <div style={{ zIndex: "2001" }}>
+          {modalVerif && (
+            <div
+              style={{ zIndex: "1001" }}
+              className="overlay"
+              onClick={() => handleVerifiClose()}
+            ></div>
+          )}
           <div
             onClick={handleVerifiOpen}
             className="alertCaModerado alert"
@@ -107,13 +116,21 @@ function Alert({ daily, idProp }) {
             {icone()}
             <p>Alerta! Calor moderado para esta região.</p>
           </div>
-          {conteinerModal()}
+          <div>{conteinerModal()}</div>
         </div>
       );
     } else {
       if (media <= 20 && media >= 15) {
         alertaComponente = (
-          <div>
+          <div style={{ zIndex: "2001" }}>
+            {modalVerif && (
+              <div
+                style={{ zIndex: "1001" }}
+                className="overlay"
+                onClick={() => handleVerifiClose()}
+              ></div>
+            )}
+
             <div
               onClick={handleVerifiOpen}
               className="alertFrModerado alert"
@@ -128,7 +145,14 @@ function Alert({ daily, idProp }) {
       } else {
         if (media <= 15) {
           alertaComponente = (
-            <div>
+            <div style={{ zIndex: "2001" }}>
+              {modalVerif && (
+                <div
+                  style={{ zIndex: "1001" }}
+                  className="overlay"
+                  onClick={() => handleVerifiClose()}
+                ></div>
+              )}
               <div
                 onClick={handleVerifiOpen}
                 className="alertFrElevado alert"
@@ -142,7 +166,14 @@ function Alert({ daily, idProp }) {
           );
         } else {
           alertaComponente = (
-            <div>
+            <div style={{ zIndex: "2001" }}>
+              {modalVerif && (
+                <div
+                  style={{ zIndex: "1001" }}
+                  className="overlay"
+                  onClick={() => handleVerifiClose()}
+                ></div>
+              )}
               <div
                 onClick={handleVerifiOpen}
                 style={{ display: "none" }}

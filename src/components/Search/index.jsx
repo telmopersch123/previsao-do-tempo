@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { createRoot } from "react-dom";
-
 import debounce from "lodash.debounce";
-
 import axios from "axios";
 import { CSSTransition } from "react-transition-group";
 import WeahterIcon from "../WeatherIcon";
@@ -14,11 +11,11 @@ import Graphic from "../Graphic";
 import Alert from "../Alert";
 import Flag from "../Flag";
 import regiao from "../../icones/paises.png";
+import Imagens from "../Imagens";
 
 function Search({ props }) {
   const [verifClicked, setVerifiClicked] = useState(false);
   const [verifValue, setVerifValue] = useState(null);
-
   const [searched, setSearched] = useState(false);
   const [Celsius, setIsCelsius] = useState(true);
   const [temperature, setTemperature] = useState(true);
@@ -48,6 +45,8 @@ function Search({ props }) {
   const [resultado, setResultado] = useState([]);
   const [existing, setExisting] = useState([]);
   const [verifing, setVerifing] = useState(false);
+  const [stringBack, setStringBack] = useState("");
+
   useEffect(() => {
     window.history.replaceState({}, document.title, window.location.pathname);
   }, []);
@@ -94,6 +93,10 @@ function Search({ props }) {
     setDailyData(newDailyData);
     setNewMomentDay(newMoment_day);
     setDaily(newDaily);
+  };
+
+  const handleImagenControl = (newImagen) => {
+    setStringBack(newImagen);
   };
 
   const [inputValue, setInputValue] = useState("");
@@ -236,7 +239,6 @@ function Search({ props }) {
                 setTemperature(weatherData.main.temp);
                 setTimeUpdate1(formatted);
                 setCurrentTimeUpdate(formatted);
-
                 setWeatherData(weatherData);
                 setCloudsData(cloudsData);
                 setRainData(rainData);
@@ -802,6 +804,7 @@ function Search({ props }) {
       {weatherData ? (
         <div className="objects">
           <div className="align-items">
+            <Imagens stringBack={stringBack} />
             <WeahterIcon
               weather={weatherData.weather[0]}
               timeUpdate1={timeUpdate1}
@@ -813,6 +816,7 @@ function Search({ props }) {
               unixSunset={unixSunset}
               convertedDateTime={convertedDateTime}
               currentTimeUpdate={currentTimeUpdate}
+              handleImagenControl={handleImagenControl}
             />
 
             <Button

@@ -4,6 +4,7 @@
   align-items: center;
   gap: 100px;
   margin-bottom: 10vh;
+  z-index: 1;
 }
 /* .cont_title_prev{
   display: flex;

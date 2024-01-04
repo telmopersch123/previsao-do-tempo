@@ -28,6 +28,7 @@ user-select: none;
   padding: 0;
   margin: 0;
     background: #1e1933;
+
 }
 body::-webkit-scrollbar {
   width: 0px;
@@ -325,6 +326,7 @@ form{
 
   border-radius: 10px;
   margin-bottom: 20px;
+  z-index: 1;
 }
 .div_parag_filho{
   margin-top: 1em;
@@ -409,6 +411,7 @@ form{
   margin: 10px 0 10px 10px;
   transition: 0.5s ease-in-out;
   cursor:help;
+  z-index: 1;
 }
 
 .icon-wrapper:hover {
@@ -447,6 +450,7 @@ form{
   border: none;
   cursor: pointer;
   transition: 0.5s ease-in-out;
+  z-index: 1;
 }
 
 .far_cel_button:hover {
@@ -957,6 +961,7 @@ form{
   .icon_temp {
     flex-direction: column;
     flex-wrap: wrap;
+
   }
 
   .far_cel_button {

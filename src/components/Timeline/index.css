@@ -11,6 +11,7 @@
   background-color: #dfdfdf30;
   margin: 20px 0px 20px 0px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.589);
+  z-index: 1;
 }
 .layer-escolher{
     background-color: white;
@@ -88,6 +89,7 @@
 .map-container {
   width: 70vw;
   height: 800px;
+
 }
 .numbers-bar {
   display: flex;
