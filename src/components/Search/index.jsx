@@ -803,22 +803,23 @@ function Search({ props }) {
 
       {weatherData ? (
         <div className="objects">
+          <Imagens stringBack={stringBack} />
           <div className="align-items">
-            <Imagens stringBack={stringBack} />
-            <WeahterIcon
-              weather={weatherData.weather[0]}
-              timeUpdate1={timeUpdate1}
-              setClasses={setBackGroundClass}
-              cloudsData={cloudsData}
-              rainData={rainData}
-              snowData={snowData}
-              unixSunrise={unixSunrise}
-              unixSunset={unixSunset}
-              convertedDateTime={convertedDateTime}
-              currentTimeUpdate={currentTimeUpdate}
-              handleImagenControl={handleImagenControl}
-            />
-
+            <div className="prox_div">
+              <WeahterIcon
+                weather={weatherData.weather[0]}
+                timeUpdate1={timeUpdate1}
+                setClasses={setBackGroundClass}
+                cloudsData={cloudsData}
+                rainData={rainData}
+                snowData={snowData}
+                unixSunrise={unixSunrise}
+                unixSunset={unixSunset}
+                convertedDateTime={convertedDateTime}
+                currentTimeUpdate={currentTimeUpdate}
+                handleImagenControl={handleImagenControl}
+              />
+            </div>
             <Button
               Celsius={Celsius}
               onTemperatureConversion={handleTemperatureConversion}

@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import moment from "moment";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
+
 import temperAlta from "../../icones/temperatura-alta.png";
 import temperBaixa from "../../icones/temperatura-baixa.png";
 import iconeManha from "../../icones/sol_manha.gif";
 import iconeTarde from "../../icones/sol_tarde.gif";
 import iconeLua from "../../icones/lua_noite.gif";
 import AlertaChuva from "../AlertaChuva";
-
+import i18n from 'i18next';
 import solMaEfeito from "../../icones/sol_manha.gif";
 import solTarEfeito from "../../icones/sol_tarde.gif";
 import luaEfeito from "../../icones/lua_noite.gif";
@@ -36,6 +37,150 @@ const Forecast = ({
     onVerifChange(verifValue);
   };
 
+  const translateWeatherDescription = (description) => {
+    return fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodeURIComponent(
+        description
+      )}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const translatedDescription = data[0][0][0];
+        return translatedDescription;
+      })
+      .catch((error) => {
+        console.error('Erro ao traduzir:', error);
+        return description; // Retorna a descrição original em caso de erro
+      });
+  };
+
+  const WeatherDescription = ({ description }) => {
+    const [translatedDescription, setTranslatedDescription] = useState(null);
+
+    useEffect(() => {
+      // Verifica se a descrição já está traduzida no cache local
+      const cachedTranslation = localStorage.getItem(description);
+
+      if (cachedTranslation) {
+        setTranslatedDescription(cachedTranslation);
+      } else {
+        // Se não estiver no cache, realiza a tradução
+        fetch(
+          `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodeURIComponent(
+            description
+          )}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            const translatedDescription = data[0][0][0];
+            setTranslatedDescription(translatedDescription);
+
+            // Armazena a tradução no cache local
+            localStorage.setItem(description, translatedDescription);
+          })
+          .catch((error) => {
+            console.error('Erro ao traduzir:', error);
+            setTranslatedDescription(description); // Retorna a descrição original em caso de erro
+          });
+      }
+    }, [description]);
+
+    if (translatedDescription === null) {
+      // Aguarde até que a tradução esteja concluída
+      return null;
+    }
+    let icone;
+    let period;
+    if(newMomentDay === "noite"){
+      period = "n"
+    }else{
+      period = "d"
+    }
+    if (
+      description === "thunderstorm with light rain" ||
+      description === "thunderstorm with rain" ||
+      description === "thunderstorm with heavy rain" ||
+      description === "light thunderstorm" ||
+      description === "thunderstorm" ||
+      description === "heavy thunderstorm" ||
+      description === "ragged thunderstorm" ||
+      description === "thunderstorm with light drizzle" ||
+      description === "thunderstorm with drizzle" ||
+      description === "thunderstorm with heavy drizzle"
+    ) {
+      icone = "https://openweathermap.org/img/wn/11d@2x.png"
+    }else if (
+    description === "light intensity drizzle" ||
+    description === "drizzle" ||
+    description === "heavy intensity drizzle" ||
+    description === "light intensity drizzle rain" ||
+    description === "drizzle rain" ||
+    description === "heavy intensity drizzle rain" ||
+    description === "shower rain and drizzle" ||
+    description === "heavy shower rain and drizzle" ||
+    description === "shower drizzle" ||
+    description === "light intensity shower rain" ||
+    description === "shower rain" ||
+    description === "heavy intensity shower rain" ||
+    description === "ragged shower rain"
+    ) {
+      icone = "https://openweathermap.org/img/wn/09d@2x.png"
+
+    } else if (
+      description === "mist" ||
+      description === "smoke" ||
+      description === "haze" ||
+      description === "sand/dust whirls" ||
+      description === "fog" ||
+      description === "sand" ||
+      description === "dust" ||
+      description === "volcanic ash" ||
+      description === "squalls" ||
+      description === "tornado"
+    ) {
+      icone = "https://openweathermap.org/img/wn/50d@2x.png"
+    } else if (
+      description === "light snow" ||
+      description === "snow" ||
+      description === "heavy snow" ||
+      description === "sleet" ||
+      description === "light shower sleet" ||
+      description === "shower sleet" ||
+      description === "light rain and snow" ||
+      description === "rain and snow" ||
+      description === "light shower snow" ||
+      description === "shower snow" ||
+      description === "heavy shower snow" ||
+      description === "freezing rain"
+    ) {
+      icone = "https://openweathermap.org/img/wn/13d@2x.png"
+    } else if (  description === "light rain" ||
+    description === "moderate rain" ||
+    description === "heavy intensity rain" ||
+    description === "very heavy rain" ||
+    description === "extreme rain"){
+      icone = `https://openweathermap.org/img/wn/10${period}@2x.png`
+    } else if (description === "clear sky"){
+      icone = `https://openweathermap.org/img/wn/01${period}@2x.png`
+    } else if(description === "few clouds"){
+      icone = `https://openweathermap.org/img/wn/02${period}@2x.png`
+    } else if(description === "scattered clouds"){
+      icone = "https://openweathermap.org/img/wn/03d@2x.png"
+    }else if(description === "broken clouds" || description === "broken clouds" || description === "overcast clouds"){
+      icone = "https://openweathermap.org/img/wn/04d@2x.png"
+    }
+
+    return (
+      <p className="humidade_prev">
+        <img
+          className="icone_prox"
+          src={icone}
+          alt="Velocidade do vento"
+        />
+        {translatedDescription}
+      </p>
+    );
+  };
   useEffect(() => {
     axios
       .get(
@@ -211,7 +356,6 @@ const Forecast = ({
   const handleVerifClose = () => {
     setModalVerif(false);
   };
-
   return (
     <div id={idProp} className="forecast">
       <div className="div_fore_title_weather">
@@ -263,11 +407,11 @@ const Forecast = ({
               <img className="icones_period lua" src={luaEfeito}></img>
             </div>
             <div
-              style={{ marginLeft: "10px", marginRight: "10pxnpm" }}
+              style={{ marginLeft: "10px", marginRight: "10px" }}
               className="alert_text1"
             >
               <p>
-              Cada ícone representa o período que esta a temperatura da
+                Cada ícone representa o período que esta a temperatura da
                 previsão do tempo, veja as temperaturas para até cinco dias de
                 cada período da região pesquisada!
               </p>
@@ -324,6 +468,28 @@ const Forecast = ({
                       {getTemperature(item.main.temp_min - 2, Celsius)}°
                       {Celsius ? "C" : "F"}
                     </p>
+
+                    <div className="componentes_prev">
+                    <p className="humidade_prev">
+                      <img
+                        className="icone_prox humi"
+                        src={"https://cdn-icons-png.flaticon.com/512/2828/2828802.png"}
+                        alt="Velocidade do vento"
+                      />
+                      {item.main.humidity}% de humidade
+                    </p>
+                     <WeatherDescription description={item.weather[0].description} />
+                    <p className="humidade_prev">
+                      <img
+                        className="icone_prox sensasao"
+                        src={"https://cdn-icons-png.flaticon.com/512/3653/3653255.png"}
+                        alt="Velocidade do vento"
+                      />
+
+                       Sensação de {getTemperature(item.main.feels_like, Celsius)}°
+                       {Celsius ? " Celsius" : " Fahrenheit"}
+                    </p>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -355,6 +521,27 @@ const Forecast = ({
                       {getTemperature(item.main.temp_min - 5, Celsius)}°
                       {Celsius ? "C" : "F"}
                     </p>
+                    <div className="componentes_prev">
+                    <p className="humidade_prev">
+                      <img
+                        className="icone_prox humi"
+                        src={"https://cdn-icons-png.flaticon.com/512/2828/2828802.png"}
+                        alt="Velocidade do vento"
+                      />
+                      {item.main.humidity}% de humidade
+                    </p>
+                     <WeatherDescription description={item.weather[0].description} />
+                    <p className="humidade_prev">
+                      <img
+                        className="icone_prox sensasao"
+                        src={"https://cdn-icons-png.flaticon.com/512/3653/3653255.png"}
+                        alt="Velocidade do vento"
+                      />
+
+                       Sensação de {getTemperature(item.main.feels_like, Celsius)}°
+                       {Celsius ? " Celsius" : " Fahrenheit"}
+                    </p>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -386,6 +573,27 @@ const Forecast = ({
                       {getTemperature(item.main.temp_min - 5, Celsius)}°
                       {Celsius ? "C" : "F"}
                     </p>
+                    <div className="componentes_prev">
+                    <p className="humidade_prev">
+                      <img
+                        className="icone_prox humi"
+                        src={"https://cdn-icons-png.flaticon.com/512/2828/2828802.png"}
+                        alt="Velocidade do vento"
+                      />
+                      {item.main.humidity}% de humidade
+                    </p>
+                     <WeatherDescription description={item.weather[0].description} />
+                    <p className="humidade_prev">
+                      <img
+                        className="icone_prox sensasao"
+                        src={"https://cdn-icons-png.flaticon.com/512/3653/3653255.png"}
+                        alt="Velocidade do vento"
+                      />
+
+                       Sensação de {getTemperature(item.main.feels_like, Celsius)}°
+                       {Celsius ? " Celsius" : " Fahrenheit"}
+                    </p>
+                    </div>
                   </div>
                 ))
               ) : (

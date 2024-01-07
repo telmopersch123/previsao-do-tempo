@@ -78,10 +78,10 @@ function Alert({ daily, idProp }) {
   let alertaComponente;
   if (media > 35) {
     alertaComponente = (
-      <div style={{ zIndex: "2001" }}>
+      <div style={{ zIndex: "2" }}>
         {modalVerif && (
           <div
-            style={{ zIndex: "1001" }}
+            style={{ zIndex: "2" }}
             className="overlay"
             onClick={() => handleVerifiClose()}
           ></div>
@@ -100,7 +100,7 @@ function Alert({ daily, idProp }) {
   } else {
     if (media >= 25 && media <= 30) {
       alertaComponente = (
-        <div style={{ zIndex: "2001" }}>
+        <div style={{ zIndex: "2" }}>
           {modalVerif && (
             <div
               style={{ zIndex: "1001" }}
@@ -122,7 +122,7 @@ function Alert({ daily, idProp }) {
     } else {
       if (media <= 20 && media >= 15) {
         alertaComponente = (
-          <div style={{ zIndex: "2001" }}>
+          <div style={{ zIndex: "2" }}>
             {modalVerif && (
               <div
                 style={{ zIndex: "1001" }}
@@ -145,7 +145,7 @@ function Alert({ daily, idProp }) {
       } else {
         if (media <= 15) {
           alertaComponente = (
-            <div style={{ zIndex: "2001" }}>
+            <div style={{ zIndex: "2" }}>
               {modalVerif && (
                 <div
                   style={{ zIndex: "1001" }}
@@ -166,7 +166,7 @@ function Alert({ daily, idProp }) {
           );
         } else {
           alertaComponente = (
-            <div style={{ zIndex: "2001" }}>
+            <div style={{ zIndex: "2" }}>
               {modalVerif && (
                 <div
                   style={{ zIndex: "1001" }}

@@ -12,13 +12,15 @@
   align-items: center;
   justify-content: center;
   margin-top: 40vh;
+
 }
 .formulario.searched {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 00vh;
+  margin-top: 0;
+  margin-bottom: 10vh;
 }
 
 body {
@@ -62,7 +64,7 @@ body::-webkit-scrollbar-track {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: linear-gradient(38deg, #3c3250, #2d2642, #1e1933, #1d435c, #0f0d25);
+  background: #1e1933;
   background-size: 300% 300%;
   animation: gradient-animation 25s ease infinite;
 }
@@ -174,6 +176,7 @@ body::-webkit-scrollbar-track {
   height: auto;
   text-align: center;
   border-radius: 0px 0px 10px 10px;
+  z-index: 2;
 }
 .rodape_input_den {
   display: flex;
@@ -286,11 +289,9 @@ form{
 .align-items {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
   align-self: baseline;
-  gap: 2rem;
-  width: 100%;
+  width: auto;
 }
 
 .align-text-icon {
@@ -397,6 +398,7 @@ form{
   align-items: center;
   flex-direction: row;
   width: 100%;
+  gap: 10px;
 }
 
 .icon-wrapper {
@@ -450,7 +452,9 @@ form{
   border: none;
   cursor: pointer;
   transition: 0.5s ease-in-out;
-  z-index: 1;
+  z-index: 2;
+  position: absolute;
+  right: 0;
 }
 
 .far_cel_button:hover {
@@ -773,19 +777,7 @@ form{
                                   }
                                 }
 
-/*
-@media screen and (min-width: 2100px) {
 
-  .searchWr {
-      justify-content: flex-start;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      background: #1e1933;
-      background-size: 300% 300%;
-      animation: gradient-animation 25s ease infinite;
-    }
-} */
 @media screen and (max-width: 1050px) {
   .icon-wrapper {
     width: auto;
@@ -801,6 +793,12 @@ form{
         }
 }
 @media screen and (max-width: 986px) {
+  .icon-wrapper.icon2 {
+    margin-left: 10px;
+  }
+  .far_cel_button{
+    position: relative;
+  }
   .div_parag {
       width: 95%;
       font-size: 3vw;
@@ -817,6 +815,58 @@ form{
   font-size: 3vw;
   color: #ffffff9d;
 }
+}
+@media screen and (max-width: 650px){
+  .icon-wrapper.icon2 {
+    margin-left: 0px;
+  }
+  .formulario.searched{
+    background-color: #ffffff29;
+    z-index: 2;
+    padding: 2em;
+    border-radius: 10px;
+    margin: 0;
+  }
+  .far_cel_button{
+    background-color: #ffffff29;
+
+  }
+  .title_master.searched{
+    z-index: 2;
+    background-color: #ffffff29;
+    color: rgba(255, 255, 255, 0.479);
+    text-shadow: 0 0 7px rgba(0, 0, 0, 0.144);
+    font-weight: bold;
+  }
+  .align-items{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .prox_div{
+    background-color: #ffffff29;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+    width: 90%;
+    border-radius: 10px;
+    z-index: 2;
+  }
+  .align-items {
+    /* display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: baseline;
+    width: auto; */
+    align-self: center;
+  }
+  .inputCidade{
+    background-color: #ffffff29;
+  }
+  .inputCidade.searched::placeholder{
+    color: rgba(0, 0, 0, 0.267);
+  }
 }
 @media screen and (max-width: 550px){
   .rodape_found{
@@ -970,7 +1020,7 @@ form{
     margin: 0px;
   }
 
-  .far_cel_button>img {
+  .far_cel_button>div>img {
     width: 50px;
     padding: 5px;
     height: auto;

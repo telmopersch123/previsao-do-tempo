@@ -31,6 +31,7 @@ function WeatherIcon({
 
   const Situacao_clima = () => {
     let situacao;
+    let climate;
     switch (weather.description) {
       case "few clouds":
         situacao = <p>Limpo com poucas nuvens!</p>;
@@ -39,9 +40,9 @@ function WeatherIcon({
           convertedDateTime >= unixSunrise &&
           convertedDateTime < unixSunset
         ) {
-          setStringBack("limpo_dia");
+          climate = "limpo_dia";
         } else {
-          setStringBack("limpo_noite");
+          climate = "limpo_noite";
         }
 
         break;
@@ -51,9 +52,9 @@ function WeatherIcon({
           convertedDateTime >= unixSunrise &&
           convertedDateTime < unixSunset
         ) {
-          setStringBack("quebradas_dia");
+          climate = "quebradas_dia";
         } else {
-          setStringBack("quebradas_noite");
+          climate = "quebradas_noite";
         }
         break;
       case "scattered clouds":
@@ -62,18 +63,18 @@ function WeatherIcon({
           convertedDateTime >= unixSunrise &&
           convertedDateTime < unixSunset
         ) {
-          setStringBack("dispersas_dia");
+          climate = "dispersas_dia";
         } else {
-          setStringBack("dispersas_noite");
+          climate = "dispersas_noite";
         }
         break;
       case "mist":
         situacao = <p>Lugar com Nevoeiro!</p>;
-        setStringBack("nublado_period");
+        climate = "nublado_period";
         break;
       case "smoke":
         situacao = <p>Lugar afumaçado!</p>;
-        setStringBack("nublado_period");
+        climate = "nublado_period";
         break;
       case "clear sky":
         situacao = <p>Céu Limpo!</p>;
@@ -81,13 +82,14 @@ function WeatherIcon({
           convertedDateTime >= unixSunrise &&
           convertedDateTime < unixSunset
         ) {
-          setStringBack("limpo_dia");
+          climate = "limpo_dia";
         } else {
-          setStringBack("limpo_noite");
+          climate = "limpo_noite";
         }
         break;
       default:
     }
+    setStringBack(climate);
     return situacao;
   };
   const PeriodoDoDia_icone = () => {
@@ -165,63 +167,50 @@ function WeatherIcon({
   };
   const Wind_situation = () => {
     let situation;
-    if (snowData === undefined) {
-      setStringBack("chuva_period");
-      switch (weather.description) {
-        case "heavy intensity shower rain" ||
-          "heavy intensity rain" ||
-          "very heavy rain" ||
-          "extreme rain":
-          setIcon(chuvaForte);
-          situation = (
-            <p>
-              <span className="Title_Icon">Chuva Forte!</span>
-              {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
-            </p>
-          );
-          break;
-        case "light intensity drizzle":
-          setIcon(chuva);
-          situation = (
-            <p>
-              <span className="Title_Icon">Garoa!</span>
-              {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
-            </p>
-          );
-          break;
-        default:
-          setIcon(chuva);
-          situation = (
-            <p>
-              <span className="Title_Icon">Chuva!</span>
-              {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
-            </p>
-          );
-          break;
-      }
-      return situation;
-    } else {
-      setStringBack("neve_period");
-      switch (snowData) {
-        case snowData !== undefined:
-          setIcon(neve);
-          situation = (
-            <div className="description-text">
-              <img
-                className={`icones neve`}
-                src={neve}
-                alt={weather.description}
-              />
-              <p>
-                <span className="Title_Icon">Nevando!</span>
-                {` nessa região com ${snowData["1h"]}mm de volume de neve`}
-              </p>
-            </div>
-          );
-          break;
-        default:
-      }
+    setStringBack("chuva_period");
+    switch (weather.description) {
+      case "heavy intensity shower rain" ||
+        "heavy intensity rain" ||
+        "very heavy rain" ||
+        "extreme rain":
+        setIcon(chuvaForte);
+        situation = (
+          <p>
+            <span className="Title_Icon">Chuva Forte!</span>
+            {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
+          </p>
+        );
+        break;
+      case "light intensity drizzle":
+        setIcon(chuva);
+        situation = (
+          <p>
+            <span className="Title_Icon">Garoa!</span>
+            {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
+          </p>
+        );
+        break;
+      case "snow":
+        setStringBack("neve_period");
+        setIcon(neve);
+        situation = (
+          <p>
+            <span className="Title_Icon">Nevando!</span>
+            {` nessa região com ${snowData["1h"]}mm de volume de neve`}
+          </p>
+        );
+        break;
+      default:
+        setIcon(chuva);
+        situation = (
+          <p>
+            <span className="Title_Icon">Chuva!</span>
+            {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
+          </p>
+        );
+        break;
     }
+    return situation;
   };
   const handleDivClick = () => {
     setMostrarModal(true);

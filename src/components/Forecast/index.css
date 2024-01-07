@@ -6,14 +6,6 @@
   margin-bottom: 10vh;
   z-index: 1;
 }
-/* .cont_title_prev{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  width: 100%;
-} */
 .organized_chuvas{
   display: flex;
   flex-direction: column-reverse;
@@ -89,26 +81,30 @@
 }
 .separator-day{
 display: flex;
+
 justify-content: center;
 gap: 30px;
 flex-wrap: wrap;
 font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 font-weight: 300;
 order: 2;
+width: 70%;
 }
 .forecast-day{
   display: flex;
+
   flex-direction: row;
   align-items: center;
-  gap: 15px;
+  justify-content: space-between;
+
   height: 7.5em;
-  border-radius: 10em;
-  width: auto;
+  border-radius: 30px;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.293);
-
   background-size: 200% 200%;
   animation: gradient-animation  25s ease infinite;
+  width: 100%;
+
 }
 @keyframes gradient-animation {
   0% {
@@ -126,16 +122,20 @@ order: 2;
 .data_div_forecast{
   background-color: rgba(0, 0, 0, 0.517);
   border-radius: 100px;
-  padding: 10px 25px 10px 25px;
+  padding: 15px 25px 25px 25px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.235);
-
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20%;
 }
 .data_forecast{
   display: flex;
   flex-direction: column;
-  padding: 0px;
+
   align-items: center;
-  font-size: 12px;
+  font-size: 16px;
+  font-weight: bold;
   text-align: center;
   margin: 0;
   color: rgb(255, 255, 255);
@@ -144,10 +144,12 @@ order: 2;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.657);
 }
 .forecast-day > div > div > p{
-  font-size: 14px;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-weight: bold;
-  color: rgba(0, 0, 0, 0.837);
+  font-size: 25px;
+
+ font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 900;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 0 5px rgb(0, 0, 0);
 }
 .Morning_forecast {
   text-align: center;
@@ -167,26 +169,86 @@ order: 2;
   flex-direction: column;
   gap: 10px;
 }
+.temp_forecast{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+
+}
+.componentes_prev{
+  font-size: 15px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+   font-weight: 900;
+   color: rgb(255, 255, 255);
+   text-shadow: 0 0 5px rgb(0, 0, 0);
+  display: flex;
+  gap: 50px;
+  margin-right: 50px;
+}
+.componentes_prev>p{
+  transition: 0.5s ease;
+}
+.componentes_prev>p:hover{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.651);
+  font-size: 18px;
+}
+.humidade_prev{
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.212);
+  padding: 10px;
+  width: 200px;
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.445);
+  transition: 0.1s ease
+}
+.icone_prox{
+  width: 80px;
+}
+.sensasao{
+  width: 35px;
+  margin: 0px 15px 0px 15px;
+}
+.humi{
+  width: 40px;
+  margin: 0px 5px 0px 5px;
+}
 .temp_forecast_max{
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: rgba(202, 202, 202, 0.451);
-    padding: 15px 15px 15px 15px;
-    border-radius: 100px;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.451);
+    height: 120px;
+    width: 110px;
+    border-radius: 0px 30px 30px 0px;
     float: left;
     margin: 0px 10px 0 0;
-    box-shadow: 0 0 7px rgba(0, 0, 0, 0.365);
+    box-shadow: -4px 0px 10px rgba(0, 0, 0, 0.288);
+    margin-right: -10px;
+    transition: 1s ease-out;
+
 }
 .temp_forecast_min{
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: rgba(202, 202, 202, 0.451);
-    padding: 15px 15px 15px 15px;
-    border-radius: 100px;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.451);
+    height: 120px;
+    width: 110px;
+    border-radius: 30px 0px 0px 30px;
     float: right;
-    box-shadow: 0 0 7px rgba(0, 0, 0, 0.365);
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.185);
+
+    transition: 1s ease-out;
+
+}
+.temp_forecast_max:hover{
+  background-color: rgba(255, 0, 0, 0.451);
+}
+.temp_forecast_min:hover{
+  background-color: rgba(0, 162, 255, 0.451);
 }
 .icone_temp{
   width: 20px;

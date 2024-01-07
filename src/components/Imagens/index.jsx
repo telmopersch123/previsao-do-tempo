@@ -19,76 +19,113 @@ const Imagens = ({ stringBack }) => {
   }, [stringBack]);
 
   return (
-    <div key={key}>
+    <div key={key} className="video-container">
       {(() => {
         switch (stringBack) {
           case "limpo_dia":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={limpo_dia} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={limpo_dia} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           case "quebradas_dia":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={quebrado_dia} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={quebrado_dia} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           case "dispersas_dia":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={disperso_dia} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={disperso_dia} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           case "limpo_noite":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={limpo_noite} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={limpo_noite} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           case "quebradas_noite":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={quebrado_noite} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={quebrado_noite} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           case "dispersas_noite":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={disperso_noite} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={disperso_noite} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           case "chuva_period":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={chuva_rend} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={chuva_rend} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           case "nublado_period":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={nublado_rend} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={nublado_rend} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           case "neve_period":
             return (
-              <video className="imagem_paisagem" autoPlay loop muted>
-                <source src={neve_red} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
+              <div className="video-conteiner">
+                <div className="liner-top"></div>
+                <video className="imagem_paisagem" autoPlay loop muted>
+                  <source src={neve_red} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div className="liner-bottom">&nbsp;</div>
+              </div>
             );
           default:
             return null;
         }
       })()}
+      <div className="gradient-overlay"></div>
     </div>
   );
 };
