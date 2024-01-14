@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import moment from "moment";
+import _ from "lodash";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
-
+import Snowflakes from "./Snow";
 import temperAlta from "../../icones/temperatura-alta.png";
 import temperBaixa from "../../icones/temperatura-baixa.png";
 import iconeManha from "../../icones/sol_manha.gif";
 import iconeTarde from "../../icones/sol_tarde.gif";
 import iconeLua from "../../icones/lua_noite.gif";
 import AlertaChuva from "../AlertaChuva";
-import i18n from 'i18next';
 import solMaEfeito from "../../icones/sol_manha.gif";
 import solTarEfeito from "../../icones/sol_tarde.gif";
 import luaEfeito from "../../icones/lua_noite.gif";
@@ -32,31 +32,46 @@ const Forecast = ({
   const [dailyData00, setDailyData] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
   const [modalVerif, setModalVerif] = useState(false);
+  const textos = ["Manhã", "Tarde", "Noite"];
+  const [cliques, setCliques] = useState(0);
+  let dados_manha = null;
+  let dados_tarde = null;
+  let dados_noite = null;
+  let fundoManha = null;
+  let fundoTarde = null;
+  let fundoNoite = null;
+  let fundoGroundManha = null;
+  let fundoGroundTarde = null;
+  let fundoGroundNoite = null;
 
+  const trocarTexto = () => {
+    setCliques((cliques + 1) % textos.length);
+  };
+  useEffect(() => {
+    switch (textos[cliques]) {
+      case "Manhã":
+        setNewMomentDay("manha");
+        break;
+      case "Tarde":
+        setNewMomentDay("tarde");
+        break;
+      case "Noite":
+        setNewMomentDay("noite");
+        break;
+      default:
+        break;
+    }
+    onNewMomentDayChange(newMomentDay);
+  }, [cliques, textos]);
   const handleVerifChange = (verifValue) => {
     onVerifChange(verifValue);
   };
-
-  const translateWeatherDescription = (description) => {
-    return fetch(
-      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodeURIComponent(
-        description
-      )}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const translatedDescription = data[0][0][0];
-        return translatedDescription;
-      })
-      .catch((error) => {
-        console.error('Erro ao traduzir:', error);
-        return description; // Retorna a descrição original em caso de erro
-      });
-  };
-
   const WeatherDescription = ({ description }) => {
     const [translatedDescription, setTranslatedDescription] = useState(null);
-
+    let visibleWe = false;
+    let visibleSn = false;
+    let icone = "";
+    let period = "";
     useEffect(() => {
       // Verifica se a descrição já está traduzida no cache local
       const cachedTranslation = localStorage.getItem(description);
@@ -67,8 +82,8 @@ const Forecast = ({
         // Se não estiver no cache, realiza a tradução
         fetch(
           `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodeURIComponent(
-            description
-          )}`
+            description,
+          )}`,
         )
           .then((response) => response.json())
           .then((data) => {
@@ -79,7 +94,7 @@ const Forecast = ({
             localStorage.setItem(description, translatedDescription);
           })
           .catch((error) => {
-            console.error('Erro ao traduzir:', error);
+            console.error("Erro ao traduzir:", error);
             setTranslatedDescription(description); // Retorna a descrição original em caso de erro
           });
       }
@@ -89,12 +104,10 @@ const Forecast = ({
       // Aguarde até que a tradução esteja concluída
       return null;
     }
-    let icone;
-    let period;
-    if(newMomentDay === "noite"){
-      period = "n"
-    }else{
-      period = "d"
+    if (newMomentDay === "noite") {
+      period = "n";
+    } else {
+      period = "d";
     }
     if (
       description === "thunderstorm with light rain" ||
@@ -108,24 +121,27 @@ const Forecast = ({
       description === "thunderstorm with drizzle" ||
       description === "thunderstorm with heavy drizzle"
     ) {
-      icone = "https://openweathermap.org/img/wn/11d@2x.png"
-    }else if (
-    description === "light intensity drizzle" ||
-    description === "drizzle" ||
-    description === "heavy intensity drizzle" ||
-    description === "light intensity drizzle rain" ||
-    description === "drizzle rain" ||
-    description === "heavy intensity drizzle rain" ||
-    description === "shower rain and drizzle" ||
-    description === "heavy shower rain and drizzle" ||
-    description === "shower drizzle" ||
-    description === "light intensity shower rain" ||
-    description === "shower rain" ||
-    description === "heavy intensity shower rain" ||
-    description === "ragged shower rain"
+      visibleSn = false;
+      visibleWe = true;
+      icone = "https://openweathermap.org/img/wn/11d@2x.png";
+    } else if (
+      description === "light intensity drizzle" ||
+      description === "drizzle" ||
+      description === "heavy intensity drizzle" ||
+      description === "light intensity drizzle rain" ||
+      description === "drizzle rain" ||
+      description === "heavy intensity drizzle rain" ||
+      description === "shower rain and drizzle" ||
+      description === "heavy shower rain and drizzle" ||
+      description === "shower drizzle" ||
+      description === "light intensity shower rain" ||
+      description === "shower rain" ||
+      description === "heavy intensity shower rain" ||
+      description === "ragged shower rain"
     ) {
-      icone = "https://openweathermap.org/img/wn/09d@2x.png"
-
+      visibleSn = false;
+      visibleWe = true;
+      icone = "https://openweathermap.org/img/wn/09d@2x.png";
     } else if (
       description === "mist" ||
       description === "smoke" ||
@@ -138,7 +154,9 @@ const Forecast = ({
       description === "squalls" ||
       description === "tornado"
     ) {
-      icone = "https://openweathermap.org/img/wn/50d@2x.png"
+      visibleSn = false;
+      visibleWe = false;
+      icone = "https://openweathermap.org/img/wn/50d@2x.png";
     } else if (
       description === "light snow" ||
       description === "snow" ||
@@ -153,34 +171,91 @@ const Forecast = ({
       description === "heavy shower snow" ||
       description === "freezing rain"
     ) {
-      icone = "https://openweathermap.org/img/wn/13d@2x.png"
-    } else if (  description === "light rain" ||
-    description === "moderate rain" ||
-    description === "heavy intensity rain" ||
-    description === "very heavy rain" ||
-    description === "extreme rain"){
-      icone = `https://openweathermap.org/img/wn/10${period}@2x.png`
-    } else if (description === "clear sky"){
-      icone = `https://openweathermap.org/img/wn/01${period}@2x.png`
-    } else if(description === "few clouds"){
-      icone = `https://openweathermap.org/img/wn/02${period}@2x.png`
-    } else if(description === "scattered clouds"){
-      icone = "https://openweathermap.org/img/wn/03d@2x.png"
-    }else if(description === "broken clouds" || description === "broken clouds" || description === "overcast clouds"){
-      icone = "https://openweathermap.org/img/wn/04d@2x.png"
+      visibleSn = true;
+      visibleWe = false;
+      icone = "https://openweathermap.org/img/wn/13d@2x.png";
+    } else if (
+      description === "light rain" ||
+      description === "moderate rain" ||
+      description === "heavy intensity rain" ||
+      description === "very heavy rain" ||
+      description === "extreme rain"
+    ) {
+      visibleSn = false;
+      visibleWe = true;
+      icone = `https://openweathermap.org/img/wn/10${period}@2x.png`;
+    } else if (description === "clear sky") {
+      visibleWe = false;
+      visibleSn = false;
+      icone = `https://openweathermap.org/img/wn/01${period}@2x.png`;
+    } else if (description === "few clouds") {
+      visibleWe = false;
+      visibleSn = false;
+      icone = `https://openweathermap.org/img/wn/02${period}@2x.png`;
+    } else if (description === "scattered clouds") {
+      visibleWe = false;
+      visibleSn = false;
+      icone = "https://openweathermap.org/img/wn/03d@2x.png";
+    } else if (
+      description === "broken clouds" ||
+      description === "broken clouds" ||
+      description === "overcast clouds"
+    ) {
+      visibleWe = false;
+      visibleSn = false;
+      icone = "https://openweathermap.org/img/wn/04d@2x.png";
     }
 
     return (
-      <p className="humidade_prev">
-        <img
-          className="icone_prox"
-          src={icone}
-          alt="Velocidade do vento"
+      <div className="div_weather">
+        <p className="humidade_prev">
+          <img className="icone_prox" src={icone} alt="Velocidade do vento" />
+          {translatedDescription}
+        </p>
+        <div
+          className="weather_prev"
+          style={{ display: visibleWe ? "block" : "none" }}
+        >
+          {[...Array(50)].map((_, index) => (
+            <div
+              key={index}
+              style={{ left: calcularValorDinamico() }}
+              className="rain_prev"
+            ></div>
+          ))}
+        </div>
+
+        <Snowflakes
+          calcularValorDinamico={calcularValorDinamico}
+          visibleSn={visibleSn}
         />
-        {translatedDescription}
-      </p>
+      </div>
     );
   };
+  const [tamanhoTela, setTamanhoTela] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => {
+      setTamanhoTela(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
+
+  const calcularValorDinamico = () => {
+    if (tamanhoTela >= 1195) {
+      return `${Math.random() * 300}px`;
+    } else {
+      return `${Math.random() * (20 + 80)}vw`;
+    }
+  };
+
+  // const generateRandomLeft = () => `${Math.random() * 250}px`;
+  const [dailyForecastArray, setDailyForecastArray] = useState([]);
+  const forecastSliceRef = useRef();
   useEffect(() => {
     axios
       .get(
@@ -202,6 +277,7 @@ const Forecast = ({
                 night: [],
               };
             }
+
             if (moment(item.dt_txt).format("HH:mm") === "09:00") {
               result[date].morning.push(item);
             } else if (moment(item.dt_txt).format("HH:mm") === "12:00") {
@@ -211,28 +287,34 @@ const Forecast = ({
             }
             return result;
           }, {});
-          const dailyForecastArray = Object.values(filteredForecast);
-          const currentTime = moment().format("HH:mm");
-          const isDaytime = moment(currentTime, "HH:mm").isBetween(
-            moment("07:00", "HH:mm"),
-            moment("17:00", "HH:mm"),
-            undefined,
-            "(]",
-          );
-          let forecastSlice;
+          setDailyForecastArray(Object.values(filteredForecast));
 
-          if (isDaytime === true) {
-            forecastSlice = dailyForecastArray.slice(1, 6);
-          } else {
-            if (isDaytime === false)
-              forecastSlice = dailyForecastArray.slice(0, 5);
-          }
+          // const currentTime = moment().format("HH:mm");
+          // const isDaytime = moment(currentTime, "HH:mm").isBetween(
+          //   moment("07:00", "HH:mm"),
+          //   moment("17:00", "HH:mm"),
+          //   undefined,
+          //   "(]",
+          // );
 
-          setDailyForecast(forecastSlice);
-          onDailyDataChange(forecastSlice);
-          onNewMomentDayChange(newMomentDay);
-          setDailyData(dailyData);
-          onDaily(daily);
+          // if (isDaytime === true) {
+          //   forecastSlice = dailyForecastArray.slice(1, 6);
+          // } else {
+          //   if (isDaytime === false)
+          //     forecastSlice = dailyForecastArray.slice(1, 6);
+          // }
+          // let forecastSlice;
+          // if (newMomentDay === "manha") {
+          //   forecastSlice = dailyForecastArray.slice(1, 6);
+          // } else if (newMomentDay === "tarde") {
+          //   forecastSlice = dailyForecastArray.slice(1, 6);
+          // } else {
+          //   forecastSlice = dailyForecastArray.slice(0, 5);
+          // }
+          // setDailyForecast(forecastSlice);
+          // onDailyDataChange(dailyForecastArray.slice(1, 6));
+          // setDailyData(dailyData);
+          // onDaily(daily);
         } else {
           alert("Ops!, algo deu errado!");
         }
@@ -241,37 +323,17 @@ const Forecast = ({
         console.error("Erro ao buscar dados de previsão:", error);
       });
   }, [lat, lon]);
-  const textos = ["Manhã", "Tarde", "Noite"];
-  const [cliques, setCliques] = useState(0);
-  let dados_manha = null;
-  let dados_tarde = null;
-  let dados_noite = null;
-  let fundoManha = null;
-  let fundoTarde = null;
-  let fundoNoite = null;
-  let fundoGroundManha = null;
-  let fundoGroundTarde = null;
-  let fundoGroundNoite = null;
-  const trocarTexto = () => {
-    setCliques((cliques + 1) % textos.length);
-  };
   useEffect(() => {
-    switch (textos[cliques]) {
-      case "Manhã":
-        setNewMomentDay("manha");
-        break;
-      case "Tarde":
-        setNewMomentDay("tarde");
-        break;
-      case "Noite":
-        setNewMomentDay("noite");
-        break;
-      default:
-        break;
+    if (newMomentDay === "manha") {
+      forecastSliceRef.current = dailyForecastArray.slice(1, 6);
+    } else if (newMomentDay === "tarde") {
+      forecastSliceRef.current = dailyForecastArray.slice(1, 6);
+    } else {
+      forecastSliceRef.current = dailyForecastArray.slice(0, 5);
     }
-    onNewMomentDayChange(newMomentDay);
-  }, [cliques, textos]);
-
+    setDailyForecast(forecastSliceRef.current);
+    onDailyDataChange(forecastSliceRef.current);
+  }, [dailyForecastArray, newMomentDay]);
   const mudarFundo = () => {
     switch (textos[cliques]) {
       case "Manhã":
@@ -356,6 +418,7 @@ const Forecast = ({
   const handleVerifClose = () => {
     setModalVerif(false);
   };
+
   return (
     <div id={idProp} className="forecast">
       <div className="div_fore_title_weather">
@@ -435,60 +498,88 @@ const Forecast = ({
             className="forecast-day"
             style={Object.assign({}, fundoManha, fundoNoite, fundoTarde)}
           >
-            <div className="data_div_forecast zoom-animate">
-              {moment(day.date)
-                .format("DD/MM/YY")
-                .split("/")
-                .map((segment, i) => (
-                  <p key={i} className="data_forecast">
-                    {segment}
-                  </p>
-                ))}
-              {""}
+            {/* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */}
+            <div
+              className={`${
+                textos[cliques] === "Tarde"
+                  ? "Pixel_tarde all"
+                  : "" || textos[cliques] === "Noite"
+                  ? "Pixel_noite all"
+                  : "" || textos[cliques] === "Manhã"
+                  ? "Pixel_manha all"
+                  : ""
+              }`}
+            >
+              <div className="data_div_forecast zoom-animate">
+                {moment(day.date)
+                  .format("DD/MM/YY")
+                  .split("/")
+                  .map((segment, i) => (
+                    <p key={i} className="data_forecast">
+                      {segment}
+                    </p>
+                  ))}
+                {""}
+              </div>
             </div>
-            <div className="Morning_forecast" style={dados_manha}>
+
+            {/* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */}
+            <div className="Morning_forecast fore" style={dados_manha}>
               {Array.isArray(day.morning) && day.morning.length > 0 ? (
                 day.morning.map((item, i) => (
                   <div key={i} className="temp_forecast">
-                    <p className="temp_forecast_max">
-                      <img
-                        className="icone_temp"
-                        src={temperAlta}
-                        alt="Temperatura Alta"
-                      />
-                      {getTemperature(item.main.temp_max, Celsius)}°
-                      {Celsius ? "C" : "F"}
-                    </p>
-                    <p className="temp_forecast_min">
-                      <img
-                        className="icone_temp"
-                        src={temperBaixa}
-                        alt="Temperatura Baixa"
-                      />
-                      {getTemperature(item.main.temp_min - 2, Celsius)}°
-                      {Celsius ? "C" : "F"}
-                    </p>
-
+                    <div className="temp_forecast_true">
+                      <p className="temp_forecast_max">
+                        <img
+                          className="icone_temp"
+                          src={temperAlta}
+                          alt="Temperatura Alta"
+                        />
+                        {getTemperature(item.main.temp_max, Celsius)}°
+                        {Celsius ? "C" : "F"}
+                      </p>
+                      <p className="temp_forecast_min">
+                        <img
+                          className="icone_temp"
+                          src={temperBaixa}
+                          alt="Temperatura Baixa"
+                        />
+                        {getTemperature(item.main.temp_min - 2, Celsius)}°
+                        {Celsius ? "C" : "F"}
+                      </p>
+                    </div>
                     <div className="componentes_prev">
-                    <p className="humidade_prev">
-                      <img
-                        className="icone_prox humi"
-                        src={"https://cdn-icons-png.flaticon.com/512/2828/2828802.png"}
-                        alt="Velocidade do vento"
+                      <p className="humidade_prev">
+                        <img
+                          className="icone_prox humi"
+                          src={
+                            "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                          }
+                          alt="Velocidade do vento"
+                        />
+                        <span>{item.main.humidity}% de umidade</span>
+                      </p>
+                      <WeatherDescription
+                        description={item.weather[0].description}
                       />
-                      {item.main.humidity}% de humidade
-                    </p>
-                     <WeatherDescription description={item.weather[0].description} />
-                    <p className="humidade_prev">
-                      <img
-                        className="icone_prox sensasao"
-                        src={"https://cdn-icons-png.flaticon.com/512/3653/3653255.png"}
-                        alt="Velocidade do vento"
-                      />
-
-                       Sensação de {getTemperature(item.main.feels_like, Celsius)}°
-                       {Celsius ? " Celsius" : " Fahrenheit"}
-                    </p>
+                      <p className="humidade_prev">
+                        <img
+                          className="icone_prox sensasao"
+                          src={
+                            "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                          }
+                          alt="Velocidade do vento"
+                        />
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <p> Sensação de </p>
+                          <span>
+                            {getTemperature(item.main.feels_like, Celsius)}°
+                            Graus {Celsius ? "Celsius" : "Fahrenheit"}
+                          </span>
+                        </div>
+                      </p>
                     </div>
                   </div>
                 ))
@@ -499,48 +590,62 @@ const Forecast = ({
               )}
             </div>
 
-            <div className="Afternoon_forecast" style={dados_tarde}>
+            <div className="Afternoon_forecast fore" style={dados_tarde}>
               {Array.isArray(day.afternoon) && day.afternoon.length > 0 ? (
                 day.afternoon.map((item, i) => (
                   <div key={i} className="temp_forecast">
-                    <p className="temp_forecast_max">
-                      <img
-                        className="icone_temp"
-                        src={temperAlta}
-                        alt="Temperatura Alta"
-                      />
-                      {getTemperature(item.main.temp_max, Celsius)}°
-                      {Celsius ? "C" : "F"}
-                    </p>
-                    <p className="temp_forecast_min">
-                      <img
-                        className="icone_temp"
-                        src={temperBaixa}
-                        alt="Temperatura Baixa"
-                      />
-                      {getTemperature(item.main.temp_min - 5, Celsius)}°
-                      {Celsius ? "C" : "F"}
-                    </p>
+                    <div className="temp_forecast_true">
+                      <p className="temp_forecast_max">
+                        <img
+                          className="icone_temp"
+                          src={temperAlta}
+                          alt="Temperatura Alta"
+                        />
+                        {getTemperature(item.main.temp_max, Celsius)}°
+                        {Celsius ? "C" : "F"}
+                      </p>
+                      <p className="temp_forecast_min">
+                        <img
+                          className="icone_temp"
+                          src={temperBaixa}
+                          alt="Temperatura Baixa"
+                        />
+                        {getTemperature(item.main.temp_min - 5, Celsius)}°
+                        {Celsius ? "C" : "F"}
+                      </p>
+                    </div>
                     <div className="componentes_prev">
-                    <p className="humidade_prev">
-                      <img
-                        className="icone_prox humi"
-                        src={"https://cdn-icons-png.flaticon.com/512/2828/2828802.png"}
-                        alt="Velocidade do vento"
+                      <p className="humidade_prev">
+                        <img
+                          className="icone_prox humi"
+                          src={
+                            "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                          }
+                          alt="Velocidade do vento"
+                        />
+                        <span>{item.main.humidity}% de umidade</span>
+                      </p>
+                      <WeatherDescription
+                        description={item.weather[0].description}
                       />
-                      {item.main.humidity}% de humidade
-                    </p>
-                     <WeatherDescription description={item.weather[0].description} />
-                    <p className="humidade_prev">
-                      <img
-                        className="icone_prox sensasao"
-                        src={"https://cdn-icons-png.flaticon.com/512/3653/3653255.png"}
-                        alt="Velocidade do vento"
-                      />
-
-                       Sensação de {getTemperature(item.main.feels_like, Celsius)}°
-                       {Celsius ? " Celsius" : " Fahrenheit"}
-                    </p>
+                      <p className="humidade_prev">
+                        <img
+                          className="icone_prox sensasao"
+                          src={
+                            "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                          }
+                          alt="Velocidade do vento"
+                        />
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <p> Sensação de </p>
+                          <span>
+                            {getTemperature(item.main.feels_like, Celsius)}°
+                            Graus {Celsius ? "Celsius" : "Fahrenheit"}
+                          </span>
+                        </div>
+                      </p>
                     </div>
                   </div>
                 ))
@@ -551,48 +656,62 @@ const Forecast = ({
               )}
             </div>
 
-            <div className="Night_forecast" style={dados_noite}>
+            <div className="Night_forecast fore" style={dados_noite}>
               {Array.isArray(day.night) && day.night.length > 0 ? (
                 day.night.map((item, i) => (
                   <div key={i} className="temp_forecast">
-                    <p className="temp_forecast_max">
-                      <img
-                        className="icone_temp"
-                        src={temperAlta}
-                        alt="Temperatura Alta"
-                      />
-                      {getTemperature(item.main.temp_max, Celsius)}°
-                      {Celsius ? "C" : "F"}
-                    </p>
-                    <p className="temp_forecast_min">
-                      <img
-                        className="icone_temp"
-                        src={temperBaixa}
-                        alt="Temperatura Baixa"
-                      />
-                      {getTemperature(item.main.temp_min - 5, Celsius)}°
-                      {Celsius ? "C" : "F"}
-                    </p>
+                    <div className="temp_forecast_true">
+                      <p className="temp_forecast_max">
+                        <img
+                          className="icone_temp"
+                          src={temperAlta}
+                          alt="Temperatura Alta"
+                        />
+                        {getTemperature(item.main.temp_max, Celsius)}°
+                        {Celsius ? "C" : "F"}
+                      </p>
+                      <p className="temp_forecast_min">
+                        <img
+                          className="icone_temp"
+                          src={temperBaixa}
+                          alt="Temperatura Baixa"
+                        />
+                        {getTemperature(item.main.temp_min - 5, Celsius)}°
+                        {Celsius ? "C" : "F"}
+                      </p>
+                    </div>
                     <div className="componentes_prev">
-                    <p className="humidade_prev">
-                      <img
-                        className="icone_prox humi"
-                        src={"https://cdn-icons-png.flaticon.com/512/2828/2828802.png"}
-                        alt="Velocidade do vento"
+                      <p className="humidade_prev">
+                        <img
+                          className="icone_prox humi"
+                          src={
+                            "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                          }
+                          alt="Velocidade do vento"
+                        />
+                        <span>{item.main.humidity}% de umidade</span>
+                      </p>
+                      <WeatherDescription
+                        description={item.weather[0].description}
                       />
-                      {item.main.humidity}% de humidade
-                    </p>
-                     <WeatherDescription description={item.weather[0].description} />
-                    <p className="humidade_prev">
-                      <img
-                        className="icone_prox sensasao"
-                        src={"https://cdn-icons-png.flaticon.com/512/3653/3653255.png"}
-                        alt="Velocidade do vento"
-                      />
-
-                       Sensação de {getTemperature(item.main.feels_like, Celsius)}°
-                       {Celsius ? " Celsius" : " Fahrenheit"}
-                    </p>
+                      <p className="humidade_prev">
+                        <img
+                          className="icone_prox sensasao"
+                          src={
+                            "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                          }
+                          alt="Velocidade do vento"
+                        />
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <p> Sensação de </p>
+                          <span>
+                            {getTemperature(item.main.feels_like, Celsius)}°
+                            Graus {Celsius ? "Celsius" : "Fahrenheit"}
+                          </span>
+                        </div>
+                      </p>
                     </div>
                   </div>
                 ))

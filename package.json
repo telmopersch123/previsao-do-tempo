@@ -24,6 +24,7 @@
     "https-browserify": "^1.0.0",
     "i18next": "^23.7.16",
     "leaflet": "^1.9.4",
+    "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.4",
     "ol": "^8.1.0",

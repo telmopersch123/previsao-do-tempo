@@ -165,50 +165,52 @@ function WeatherIcon({
     }
     return situation;
   };
+
   const Wind_situation = () => {
     let situation;
     setStringBack("chuva_period");
-    switch (weather.description) {
-      case "heavy intensity shower rain" ||
-        "heavy intensity rain" ||
-        "very heavy rain" ||
-        "extreme rain":
-        setIcon(chuvaForte);
-        situation = (
-          <p>
-            <span className="Title_Icon">Chuva Forte!</span>
-            {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
-          </p>
-        );
-        break;
-      case "light intensity drizzle":
-        setIcon(chuva);
-        situation = (
-          <p>
-            <span className="Title_Icon">Garoa!</span>
-            {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
-          </p>
-        );
-        break;
-      case "snow":
-        setStringBack("neve_period");
-        setIcon(neve);
-        situation = (
-          <p>
-            <span className="Title_Icon">Nevando!</span>
-            {` nessa região com ${snowData["1h"]}mm de volume de neve`}
-          </p>
-        );
-        break;
-      default:
-        setIcon(chuva);
-        situation = (
-          <p>
-            <span className="Title_Icon">Chuva!</span>
-            {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
-          </p>
-        );
-        break;
+    if (rainData !== undefined) {
+      switch (weather.description) {
+        case "heavy intensity shower rain" ||
+          "heavy intensity rain" ||
+          "very heavy rain" ||
+          "extreme rain":
+          setIcon(chuvaForte);
+          situation = (
+            <p>
+              <span className="Title_Icon">Chuva Forte!</span>
+              {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
+            </p>
+          );
+          break;
+        case "light intensity drizzle":
+          setIcon(chuva);
+          situation = (
+            <p>
+              <span className="Title_Icon">Garoa!</span>
+              {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
+            </p>
+          );
+          break;
+        default:
+          setIcon(chuva);
+          situation = (
+            <p>
+              <span className="Title_Icon">Chuva!</span>
+              {` com ${rainData["1h"]}mm de Volume de Chuva na última 1 Hora!`}
+            </p>
+          );
+          break;
+      }
+    } else {
+      setStringBack("neve_period");
+      setIcon(neve);
+      situation = (
+        <p>
+          <span className="Title_Icon">Nevando!</span>
+          {` nessa região com ${snowData["1h"]}mm de volume de neve`}
+        </p>
+      );
     }
     return situation;
   };

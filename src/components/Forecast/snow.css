@@ -1,0 +1,207 @@
+.anima_snow {
+  position: absolute;
+  width: 210px; /* Ajuste conforme necessário */
+  height: 120px; /* Ajuste conforme necessário */
+  background: transparent; /* Fundo transparente */
+  overflow: hidden;
+  left: 13%;
+  margin-top: -110px;
+  pointer-events: none; /* Para permitir a interação com os elementos abaixo */
+  z-index: 0;
+  border-radius: 30px;
+}
+
+.anima_snow_filho {
+  width: 5px;
+  height: 5px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 2px rgb(255, 255, 255);
+  opacity: 70%;
+  border-radius: 100px;
+  position: absolute;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.anima_snow_filho.group1 {
+  animation: snoww1 5s linear infinite;
+}
+
+.anima_snow_filho.group2 {
+  animation: snoww2 7s linear infinite;
+}
+
+.anima_snow_filho.group3 {
+  animation: snoww3 3s linear infinite;
+}
+
+@keyframes snoww1 {
+  0% {
+    transform: translateY(-200px);
+  }
+  100% {
+    transform: translateY(120px);
+  }
+}
+
+@keyframes snoww2 {
+  0% {
+    transform: translateY(-300px);
+  }
+  100% {
+    transform: translateY(120px);
+  }
+}
+
+@keyframes snoww3 {
+  0% {
+    transform: translateY(-250px);
+  }
+  100% {
+    transform: translateY(120px);
+  }
+}
+@media screen and (max-width: 1900px){
+  .anima_snow {
+    /* position: absolute;
+    width: 210px;
+    height: 120px;
+    background: transparent;
+    overflow: hidden;
+    left: 18.5%;
+    margin-top: -110px;
+    pointer-events: none;  */
+    left: 12%;
+    height: 395px;
+    margin-top: -247px;
+    position: absolute;
+    width: 20vw;
+
+  }
+  @keyframes snoww1 {
+    0% {
+      transform: translateY(-300px);
+    }
+    100% {
+      transform: translateY(400px);
+    }
+  }
+
+  @keyframes snoww2 {
+    0% {
+      transform: translateY(-300px);
+    }
+    100% {
+      transform: translateY(400px);
+    }
+  }
+
+  @keyframes snoww3 {
+    0% {
+      transform: translateY(-300px);
+    }
+    100% {
+      transform: translateY(400px);
+    }
+  }
+}
+@media screen and (max-width: 1400px){
+  .anima_snow {
+    width: 15vw;
+
+  }
+}
+@media screen and (max-width: 1190px){
+  .anima_snow {
+    border-radius: 30px;
+    left: 10vw;
+    height: 250px;
+    width: 80vw;
+    margin-top: -500px;
+  }
+
+  .anima_snow_filho.group1 {
+    animation: snoww1 4s linear infinite;
+  }
+
+  .anima_snow_filho.group2 {
+    animation: snoww2 5s linear infinite;
+  }
+
+  .anima_snow_filho.group3 {
+    animation: snoww3 6s linear infinite;
+  }
+  @keyframes snoww1 {
+    0% {
+      transform: translateY(-700px);
+    }
+    100% {
+      transform: translateY(300px);
+    }
+  }
+
+  @keyframes snoww2 {
+    0% {
+      transform: translateY(-700px);
+    }
+    100% {
+      transform: translateY(400px);
+    }
+  }
+
+  @keyframes snoww3 {
+    0% {
+      transform: translateY(-700px);
+    }
+    100% {
+      transform: translateY(500px);
+    }
+  }
+}
+@media screen and (max-width: 1000px){
+}
+@media screen  and (max-width: 700px) {
+  .anima_snow_filho.group1 {
+    animation: snoww1 5s linear infinite;
+  }
+
+  .anima_snow_filho.group2 {
+    animation: snoww2 3s linear infinite;
+  }
+
+  .anima_snow_filho.group3 {
+    animation: snoww3 6s linear infinite;
+  }
+  @keyframes snoww1 {
+    0% {
+      transform: translateY(-700px);
+    }
+    100% {
+      transform: translateY(300px);
+    }
+  }
+
+  @keyframes snoww2 {
+    0% {
+      transform: translateY(-700px);
+    }
+    100% {
+      transform: translateY(400px);
+    }
+  }
+
+  @keyframes snoww3 {
+    0% {
+      transform: translateY(-700px);
+    }
+    100% {
+      transform: translateY(500px);
+    }
+  }
+}
+@media screen  and (max-width: 500px) {
+  .anima_snow{
+    margin-top: -480px;
+  }
+}
+

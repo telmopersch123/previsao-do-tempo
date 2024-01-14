@@ -114,8 +114,8 @@ const scaleDetailsMap = {
 const Timeline = ({
   timeUpdate1,
   sys,
-  weather,
-  name,
+  // weather,
+  // name,
   temp,
   Celsius,
   lat,
@@ -124,7 +124,6 @@ const Timeline = ({
   const [sysFlag, setSysFlag] = useState("");
   useEffect(() => {
     setSysFlag(sys);
-
   }, [sys]);
 
   const [detailsOfc, setDetailsOfc] = useState({});
@@ -178,7 +177,7 @@ const Timeline = ({
 
   useEffect(() => {
     if (temp !== undefined) {
-      setTemperatureDisplay(Celsius ? temp  : convertorFahrenheit(temp));
+      setTemperatureDisplay(Celsius ? temp : convertorFahrenheit(temp));
     }
   }, [Celsius, temp]);
 
