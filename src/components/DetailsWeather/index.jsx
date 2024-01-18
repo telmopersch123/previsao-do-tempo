@@ -1,4 +1,3 @@
-
 import FeatherIcon from "feather-icons-react";
 import { convertorFahrenheit } from "../Conv";
 import "../../App.css";

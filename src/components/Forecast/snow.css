@@ -1,10 +1,10 @@
 .anima_snow {
   position: absolute;
-  width: 210px; /* Ajuste conforme necessário */
+  width: 300px; /* Ajuste conforme necessário */
   height: 120px; /* Ajuste conforme necessário */
   background: transparent; /* Fundo transparente */
   overflow: hidden;
-  left: 13%;
+  left: 0;
   margin-top: -110px;
   pointer-events: none; /* Para permitir a interação com os elementos abaixo */
   z-index: 0;
@@ -71,7 +71,6 @@
     left: 18.5%;
     margin-top: -110px;
     pointer-events: none;  */
-    left: 12%;
     height: 395px;
     margin-top: -247px;
     position: absolute;
@@ -105,18 +104,11 @@
     }
   }
 }
-@media screen and (max-width: 1400px){
-  .anima_snow {
-    width: 15vw;
-
-  }
-}
 @media screen and (max-width: 1190px){
   .anima_snow {
     border-radius: 30px;
-    left: 10vw;
     height: 250px;
-    width: 80vw;
+    width: 75vw;
     margin-top: -500px;
   }
 
@@ -158,8 +150,7 @@
     }
   }
 }
-@media screen and (max-width: 1000px){
-}
+
 @media screen  and (max-width: 700px) {
   .anima_snow_filho.group1 {
     animation: snoww1 5s linear infinite;
