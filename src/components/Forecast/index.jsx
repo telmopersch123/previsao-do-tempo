@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import moment from "moment";
@@ -35,7 +35,8 @@ const Forecast = ({
   const [dailyData00, setDailyData] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
   const [modalVerif, setModalVerif] = useState(false);
-  const textos = ["Manhã", "Tarde", "Noite"];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const textos = useMemo(() => ["Manhã", "Tarde", "Noite"]);
   const [cliques, setCliques] = useState(0);
   let dados_manha = null;
   let dados_tarde = null;
