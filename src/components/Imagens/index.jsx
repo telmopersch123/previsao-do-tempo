@@ -13,13 +13,24 @@ import chuva_rend from "./videos_site/chuva_rend.mp4";
 
 const Imagens = ({ stringBack }) => {
   const [key, setKey] = useState(0);
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+  };
 
+  const handleDragStart = (e) => {
+    e.preventDefault();
+  };
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
   }, [stringBack]);
 
   return (
-    <div key={key} className="video-container">
+    <div
+      onContextMenu={handleContextMenu}
+      onDragStart={handleDragStart}
+      key={key}
+      className="video-container"
+    >
       {(() => {
         switch (stringBack) {
           case "limpo_dia":

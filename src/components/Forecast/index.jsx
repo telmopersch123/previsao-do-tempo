@@ -304,12 +304,16 @@ const Forecast = ({
     if (currentHoutd >= 7 && currentHoutd < 18) {
       if (newMomentDay != "noite") {
         novoForecastSlice = dailyForecastArray.slice(1, 6);
+        console.log("entrou");
         if (currentHoutd >= 17) {
           novoForecastSlice = dailyForecastArray.slice(0, 5);
+          console.log("entrou");
         }
       } else {
         novoForecastSlice = dailyForecastArray.slice(0, 5);
       }
+    } else {
+      novoForecastSlice = dailyForecastArray.slice(0, 5);
     }
 
     if (!arraysSaoIguais(novoForecastSlice, forecastSliceRef.current)) {
