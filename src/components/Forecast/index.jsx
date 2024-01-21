@@ -97,7 +97,7 @@ const Forecast = ({
             // Verifica se a nova tradução é diferente da atual
             if (newTranslatedDescription !== translatedDescription) {
               setTranslatedDescription(newTranslatedDescription);
-              setNuevo(newTranslatedDescription);
+              // setNuevo(newTranslatedDescription);
               // Armazena a tradução no cache local
               localStorage.setItem(description, newTranslatedDescription);
             }
