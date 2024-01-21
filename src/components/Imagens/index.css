@@ -1,7 +1,7 @@
-.imagem_paisagem{
+.imagem_paisagem {
   width: 100%;
 }
-.video-conteiner{
+.video-conteiner {
   position: absolute;
   z-index: 0;
   width: 100vw;
@@ -9,55 +9,57 @@
   transform: translate(-50%, 0%);
   top: 17.5em;
 }
-.liner-top{
-  background: linear-gradient(180deg,
-  #1e1933 0%,
-  #1e1933 25%,
-  #1e1933 50%,
-  #1e1933 50%,
-  #1e1933ef 60%,
-  #1e1933de 65%,
-  #1e1933bd 75%,
-  #1e19335e 90%,
-  #1e193300 100%
-);
-position: absolute;
-width: 101%;
-height: 150px;
-margin: 0;
-margin-left: -1px;
+.liner-top {
+  background: linear-gradient(
+    180deg,
+    #1e1933 0%,
+    #1e1933 25%,
+    #1e1933 50%,
+    #1e1933 50%,
+    #1e1933ef 60%,
+    #1e1933de 65%,
+    #1e1933bd 75%,
+    #1e19335e 90%,
+    #1e193300 100%
+  );
+  position: absolute;
+  width: 101%;
+  height: 150px;
+  margin-top: -30px;
+  margin-left: -1px;
 }
-.liner-bottom{
-  background: linear-gradient(0deg,
-  #1e1933 0%,
-  #1e1933 25%,
-  #1e1933 50%,
-  #1e1933 50%,
-  #1e1933ef 60%,
-  #1e1933de 65%,
-  #1e1933bd 75%,
-  #1e19335e 90%,
-  #1e193300 100%
-);
-position: relative;
-width: 101%;
-height: 100px;
-margin-top: -90px;
-margin-left: -1px;
+.liner-bottom {
+  background: linear-gradient(
+    0deg,
+    #1e1933 0%,
+    #1e1933 25%,
+    #1e1933 50%,
+    #1e1933 50%,
+    #1e1933ef 60%,
+    #1e1933de 65%,
+    #1e1933bd 75%,
+    #1e19335e 90%,
+    #1e193300 100%
+  );
+  position: relative;
+  width: 101%;
+  height: 100px;
+  margin-top: -90px;
+  margin-left: -1px;
 }
-body{
+body {
   overflow-x: hidden;
 }
-@media screen and (min-width: 2800px){
-
-  .imagem_paisagem{
+@media screen and (min-width: 2800px) {
+  .imagem_paisagem {
     display: none;
   }
 }
 
-@media screen and (max-width: 650px){
-  .video-conteiner{
-    width: 450vw;
-    top: 10em
+@media screen and (max-width: 650px) {
+  .video-conteiner {
+    width: 100vw;
+    height: 500px;
+    top: 10em;
   }
 }
