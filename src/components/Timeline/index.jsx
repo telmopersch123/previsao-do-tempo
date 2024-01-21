@@ -140,7 +140,7 @@ const Timeline = ({
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=5&appid=944362047ea30b04b99466aff4f5887e`,
+          `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=5&appid=944362047ea30b04b99466aff4f5887e`,
         );
 
         const details = response.data[0];
