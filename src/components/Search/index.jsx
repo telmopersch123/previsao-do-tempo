@@ -14,6 +14,7 @@ import regiao from "../../icones/paises.png";
 import Imagens from "../Imagens";
 
 function Search({ props }) {
+  const [loading, setLoading] = useState(false);
   const [verifClicked, setVerifiClicked] = useState(false);
   const [verifValue, setVerifValue] = useState(null);
   const [searched, setSearched] = useState(false);
@@ -89,10 +90,15 @@ function Search({ props }) {
     setIsCelsius(newCelsius);
   };
 
-  const handleDailyDataChange = (newDailyData, newMoment_day, newDaily) => {
+  const handleDailyDataChange = (newDailyData) => {
     setDailyData(newDailyData);
-    setNewMomentDay(newMoment_day);
+  };
+  const hlandeAlertaChuva = (newDaily) => {
     setDaily(newDaily);
+  };
+
+  const handleMoment = (newMomentDay) => {
+    setNewMomentDay(newMomentDay);
   };
 
   const handleImagenControl = (newImagen) => {
@@ -193,6 +199,7 @@ function Search({ props }) {
     return <strong>{children}</strong>;
   };
   const searchInput = (e, location) => {
+    setLoading(true);
     const valorCorrente = document.querySelector(".inputCidade").value;
     const inputValueMinusc = valorCorrente.toLowerCase();
     const capitalizedString =
@@ -250,6 +257,7 @@ function Search({ props }) {
 
                 setSearched(true);
                 setInputValue("");
+                setLoading(false);
                 if (verificando === false) {
                   setVerifing(false);
                 }
@@ -263,6 +271,7 @@ function Search({ props }) {
         }
       })
       .catch((error) => {
+        setLoading(false);
         setErro(
           handleError(
             <span>
@@ -618,8 +627,36 @@ function Search({ props }) {
     }
   };
 
+  const [pontos, setPontos] = useState("");
+  const [segundosPassados, setSegundosPassados] = useState(0);
+  useEffect(() => {
+    if (loading) {
+      const intervalId = setInterval(() => {
+        setPontos((prevValor) => (prevValor += "."));
+
+        setSegundosPassados(segundosPassados + 1);
+
+        if (segundosPassados >= 3) {
+          setSegundosPassados(0);
+          setPontos("");
+        }
+      }, 500);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [segundosPassados, loading]);
+
   return (
     <div className={`searchWr ${searched ? "searched" : ""}`}>
+      {loading && (
+        <div className="loading-spinner">
+          <p className="loading_text">Estamos trabalhando nisso{pontos}</p>
+          <span className="loader"></span>
+        </div>
+      )}
+
       <div className={`Search ${searched ? "searched" : ""}`}>
         {erro}
 
@@ -769,8 +806,6 @@ function Search({ props }) {
           </button>
         </form>
 
-        {/* <div className={`alert_fuso ${searched ? "searched" : ""}`}></div> */}
-
         <div
           style={{
             display: searched ? `none` : "flex",
@@ -859,10 +894,8 @@ function Search({ props }) {
             daily={daily}
             newMomentDay={newMomentDay}
             onDailyDataChange={handleDailyDataChange}
-            onNewMomentDayChange={(newMomentDay) =>
-              setNewMomentDay(newMomentDay)
-            }
-            onDaily={(newDaily) => setDaily(newDaily)}
+            onAlertTemp={hlandeAlertaChuva}
+            onNewMomentDayChange={handleMoment}
             onVerifChange={handleVerifChangeFromForecast}
           />
           <Graphic

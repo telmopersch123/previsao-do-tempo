@@ -196,10 +196,7 @@ text-align: center;
     gap: 10px;
     margin-bottom: 20px;
   }
-  .far_cel_button{
-    margin: 0;
-    margin-right: 10px;
-  }
+
   .icon_temp{
     gap: 10px;
   }
@@ -214,10 +211,6 @@ text-align: center;
 }
 .title_master.searched{
   width: 100%;
-}
-.far_cel_button{
-  width: 90%;
-  margin: 0;
 }
 .icon-wrapper{
   width: 90%;

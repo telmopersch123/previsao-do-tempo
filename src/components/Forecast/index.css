@@ -2,32 +2,60 @@
   display : flex;
   flex-direction: column;
   align-items: center;
-  gap: 100px;
+  align-self: center;
+  gap: 10px;
   margin-bottom: 10vh;
   z-index: 1;
   overflow: hidden;
+  background-color: #dfdfdf30;
+  padding: 30px;
+  width: 95%;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.589);
+}
+.div_forecast{
+  display : flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  gap: 10px;
+  z-index: 1;
+  overflow: hidden;
+  background-color: #dfdfdf30;
+  padding: 30px;
+  width: 103%;
+  margin-bottom: -30px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.589);
+  border-radius: 30px 30px 0px 0px;
 }
 .organized_chuvas{
+  margin-top: -30px;
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 110%;
   height: auto;
   margin-bottom: 20px;
+  background-color: #dfdfdf30;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.589);
+  border-radius: 10px;
 }
 .div_fore_title_weather{
   position: absolute;
   display: flex;
   flex-direction: row;
   align-items: center;
-  left: 0;
+  left: 3vw;
+  margin-top: -20px;
 }
 .title_weather_fore {
   color: white;
   font-size: 14px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.677);
+  box-shadow: 5px 0 10px rgba(0, 0, 0, 0.288);
   background-color: #717171;
   padding: 8px 8px 8px 10px;
   border-radius: 0 10em 10em 0;
@@ -51,8 +79,9 @@
     width: 4em;
     height: 4em;
     border-radius: 10em;
-    margin-left: 10px;
+    margin-left: 0px;
     transition: 0.5s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.488);
 }
 .div_botao_fore_troc_extern:hover {
   background-color: #8a8a8a;
@@ -82,19 +111,26 @@
 }
 .carrosel{
   display: flex;
+  z-index: 2;
+
+  padding: 10px;
 }
 .separator-day{
 display: flex;
-
+background-color: #dfdfdf30;
+box-shadow: 10px 10px 10px #dfdfdf30,-10px 10px 10px #dfdfdf30;
+border-radius: 100px;
 justify-content: center;
 gap: 30px;
 flex-wrap: wrap;
 font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 font-weight: 300;
 order: 2;
-width: 80%;
-z-index: -1;
+width: 100%;
+padding: 20px;
+z-index: 2;
 }
+
 .forecast-day{
   display: flex;
 
@@ -116,7 +152,15 @@ z-index: -1;
   padding: 7px 10px 7px 10px;
   border-radius: 10em;
   background-color: #dfdfdf30;
-  margin-bottom: -90px;
+  margin-bottom: 0px;
+
+}
+.Div_seta_extern{
+  background-color: #dfdfdf30;
+  padding: 40px 10px 20px 10px;
+  margin-bottom: -10px;
+  border-radius: 100% 100% 0% 0%;
+  z-index: 1;
 }
 .Div_seta > div {
 
@@ -459,6 +503,22 @@ z-index: -1;
 .alert_text1:hover{
 background-color: rgba(202, 202, 202, 0.200);
 }
+.seta{
+  user-select: none;
+  position: absolute;
+  opacity: 75%;
+  width: 45px;
+  background-color: #dfdfdf80;
+  padding: 10px;
+  border-radius: 100px;
+  transition: width 0.2s ease-in-out;
+}
+.seta:hover{
+  width: 50px;
+}
+.ant{
+  transform: rotate(180deg);
+}
 
 @media screen and (max-width: 1900px){
   .anima_snow {
@@ -662,7 +722,9 @@ background-color: rgba(202, 202, 202, 0.200);
   }
 }
 @media screen and (max-width: 1190px){
-
+  .div_fore_title_weather{
+    left: 3.5vw;
+  }
   .forecast-day{
     display: flex;
     flex-direction: column;
@@ -713,7 +775,27 @@ background-color: rgba(202, 202, 202, 0.200);
     border-radius: 0px 0px 30px 50px;
 }
 }
-
+@media screen and (max-width: 900px){
+  .separator-day{
+    padding: 40px;
+  }
+}
+@media screen and (max-width: 660px){
+  .div_fore_title_weather{
+    left: 5vw;
+  }
+  .organized_chuvas{
+    margin-top: -20px;
+  }
+  .div_fore_title_weather{
+    margin-top: -10px;
+  }
+  .separator-day{
+    width: auto;
+    margin-bottom: -30px;
+    border-radius: 10px;
+  }
+}
 @media screen and (max-width: 575px) {
 
         .data_div_forecast{
@@ -725,6 +807,10 @@ background-color: rgba(202, 202, 202, 0.200);
 
 }
 @media screen and (max-width: 500px) {
+  .div_forecast{
+    margin-bottom: 0px;
+    border-radius: 10px;
+  }
   .weather_prev {
     margin-top: -480px;
   }
@@ -766,6 +852,7 @@ background-color: rgba(202, 202, 202, 0.200);
     left: 0;
   }
 .div_fore_title_weather {
+left: 0;
 display: flex;
 align-items: center;
 justify-content: center;
@@ -775,7 +862,8 @@ padding: 2px;
 order: 3;
 background-color: #dfdfdf30;
 border-radius: 10px;
-width: 95%;
+width: 100%;
+
 }
 .title_weather_fore{
 background-color: #dfdfdf30;
@@ -784,7 +872,7 @@ border-radius: 10px;
 padding: 15px;
 margin: 5px;
 font-size: 25px;
-
+margin-left: 30px;
 }
 .div_botao_fore_troc{
 background-color: #dfdfdf30;
@@ -839,16 +927,88 @@ font-size: 4vw;
   .humidade_prev{
     width: 70vw;
   }
+  .title_weather_fore{
+    margin-left: 40px;
+    }
 }
 @media screen and (max-width: 360px) {
   .humidade_prev{
     width: 69vw;
   }
+  .title_weather_fore{
+    margin-left: 50px;
+    }
 }
 @media screen and (max-width: 320px) {
   .humidade_prev{
     width: 67vw;
   }
+}
+@media screen and (max-width: 300px) {
+  .title_weather_fore{
+    margin-left: 0px;
+    width: 100%;
+    text-align: center;
+    margin: 10px 0px 0px 0px;
+    }
+    .div_fore_title_weather {
+      /* left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-top: 20px;
+      padding: 2px;
+      order: 3;
+      background-color: #dfdfdf30;
+      border-radius: 10px;
+      width: 100%; */
+      margin: 0;
+      flex-direction: column;
+      height: auto;
+      padding: 10px;
+      }
+      .div_botao_fore_troc{
+        /* background-color: #dfdfdf30;
+        box-shadow: 2px 0 7px rgba(0, 0, 0, 0.33);
+        position: absolute;
+
+        border-radius: 10px;
+        padding: 17.5px 12px 17.5px 12px;
+
+        height: auto;
+        width: auto;
+        margin: 0;
+        left: 0; */
+        width: 100%;
+        position: relative;
+        }
+        .botao_fore_troc{
+          width: 60px;
+          height: 60px;
+        /* width: 0;
+          height: auto;
+          border-radius: 100px;
+          border-color: transparent;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.262);
+          background-size: 110% !important;
+          padding: 18.5px;
+          cursor: pointer; */
+          position: relative;
+        }
+        .div_botao_fore_troc_extern {
+          width: 100%;
+          /* background-color: #dfdfdf30;
+          box-shadow: 2px 0 7px rgba(0, 0, 0, 0.33);
+          position: absolute;
+          border-radius: 10px;
+          padding: 0;
+          height: auto;
+          width: auto;
+          margin: 0;
+          left: 0; */
+          position: relative;
+        }
 }
 @media screen and (max-width: 280px) {
   .humidade_prev{

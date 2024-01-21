@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
 * {
   padding: 0;
   margin: 0;
@@ -439,6 +440,9 @@ form{
 }
 
 .far_cel_button {
+  width: 100px;
+
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -453,8 +457,9 @@ form{
   cursor: pointer;
   transition: 0.5s ease-in-out;
   z-index: 2;
-  position: absolute;
+  position: fixed;
   right: 0;
+  bottom: 0;
 }
 
 .far_cel_button:hover {
@@ -533,8 +538,55 @@ form{
   padding: 5px;
 
 }
-
-
+.loading-spinner {
+  position: absolute;
+  height: 100px;
+  color: #ffffff; /* Set text color */
+  z-index: 2001;
+  background-color: #000000be;
+  width: 100%;
+  height: 150vh;
+  display: flex;
+  justify-content: center;
+}
+.loading_text{
+  font-size: 18px;
+  position: absolute;
+  top: 20%;
+  font-family: 'Archivo Black', sans-serif;
+}
+.loader {
+  position: absolute;
+  top: 23%;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 4px solid #FFF;
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border-bottom: 4px solid #FF3D00;
+  border-left: 4px solid transparent;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
                                 .animation {
                                   opacity: 100%;
@@ -796,9 +848,6 @@ form{
   .icon-wrapper.icon2 {
     margin-left: 10px;
   }
-  .far_cel_button{
-    position: relative;
-  }
   .div_parag {
       width: 95%;
       font-size: 3vw;
@@ -825,11 +874,6 @@ form{
     z-index: 2;
     padding: 2em;
     border-radius: 10px;
-    margin: 0;
-  }
-  .far_cel_button{
-    background-color: #ffffff29;
-
   }
   .title_master.searched{
     z-index: 2;
@@ -838,27 +882,18 @@ form{
     text-shadow: 0 0 7px rgba(0, 0, 0, 0.144);
     font-weight: bold;
   }
-  .align-items{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
   .prox_div{
     background-color: #ffffff29;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2em;
-    width: 90%;
+    padding: 1em;
+    width: auto;
     border-radius: 10px;
     z-index: 2;
   }
   .align-items {
-    /* display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-self: baseline;
-    width: auto; */
+
     align-self: center;
   }
   .inputCidade{
@@ -881,8 +916,21 @@ form{
   .cidades_pesq>p{
     font-size: 3vw;
   }
+  .prox_div{
+    margin: 0px 10px;
+  }
+  .formulario.searched{
+      margin: 0px 10px;
+      padding: 1.5em;
+  }
 }
 @media screen and (max-width: 450px) {
+
+  .far_cel_button{
+    width: 0px;
+    height: 0px;
+    padding: 40px;
+  }
   .cidades_pesq{
     width: 109%;
     border-radius: 0;
@@ -1014,19 +1062,6 @@ form{
 
   }
 
-  .far_cel_button {
-    width: 90%;
-    height: auto;
-    margin: 0px;
-  }
-
-  .far_cel_button>div>img {
-    width: 50px;
-    padding: 5px;
-    height: auto;
-    opacity: 0.5;
-  }
-
   .align-items {
     flex-direction: column;
     flex-wrap: wrap;
@@ -1054,4 +1089,9 @@ form{
         margin-top: 47vh;
       }
     }
+}
+@media screen and (max-width: 300px) {
+  .loading_text{
+    font-size: 14px;
+  }
 }

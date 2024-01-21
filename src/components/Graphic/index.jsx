@@ -195,10 +195,10 @@ const Graphic = ({
       prevChart === "barChart"
         ? "lineChart"
         : prevChart === "lineChart"
-          ? "pieChart"
-          : prevChart === "pieChart"
-            ? "radialChart"
-            : "barChart",
+        ? "pieChart"
+        : prevChart === "pieChart"
+        ? "radialChart"
+        : "barChart",
     );
   };
   useEffect(() => {

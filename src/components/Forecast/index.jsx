@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import moment from "moment";
@@ -17,6 +23,7 @@ import solMaEfeito from "../../icones/sol_manha.gif";
 import solTarEfeito from "../../icones/sol_tarde.gif";
 import luaEfeito from "../../icones/lua_noite.gif";
 import relogioEfeito from "../../icones/espere.gif";
+import seta from "../../icones/seta-para-a-direita.png";
 const Forecast = ({
   lat,
   lon,
@@ -26,6 +33,7 @@ const Forecast = ({
   onVerifChange,
   idProp,
   idWind,
+  onAlertTemp,
 }) => {
   const [daily, setDaily] = useState([]);
   const [dailyForecast, setDailyForecast] = useState([]);
@@ -62,21 +70,23 @@ const Forecast = ({
         break;
     }
     onNewMomentDayChange(newMomentDay);
-  }, [cliques, textos]);
+  }, [cliques, textos, newMomentDay, onNewMomentDayChange]);
   const handleVerifChange = (verifValue) => {
     onVerifChange(verifValue);
   };
+
   const WeatherDescription = ({ description }) => {
-    const [translatedDescription, setTranslatedDescription] = useState(null);
+    const [translatedDescription, setTranslatedDescription] = useState(false);
+
     let visibleWe = false;
     let visibleSn = false;
     let icone = "";
-    let period = "";
+    let period = newMomentDay === "noite" ? "n" : "d";
     useEffect(() => {
       // Verifica se a descrição já está traduzida no cache local
       const cachedTranslation = localStorage.getItem(description);
 
-      if (cachedTranslation) {
+      if (cachedTranslation && cachedTranslation !== translatedDescription) {
         setTranslatedDescription(cachedTranslation);
       } else {
         // Se não estiver no cache, realiza a tradução
@@ -87,28 +97,22 @@ const Forecast = ({
         )
           .then((response) => response.json())
           .then((data) => {
-            const translatedDescription = data[0][0][0];
-            setTranslatedDescription(translatedDescription);
-
-            // Armazena a tradução no cache local
-            localStorage.setItem(description, translatedDescription);
+            const newTranslatedDescription = data[0][0][0];
+            // Verifica se a nova tradução é diferente da atual
+            if (newTranslatedDescription !== translatedDescription) {
+              setTranslatedDescription(newTranslatedDescription);
+              setNuevo(newTranslatedDescription);
+              // Armazena a tradução no cache local
+              localStorage.setItem(description, newTranslatedDescription);
+            }
           })
           .catch((error) => {
             console.error("Erro ao traduzir:", error);
             setTranslatedDescription(description); // Retorna a descrição original em caso de erro
           });
       }
-    }, [description]);
+    }, [description, translatedDescription]);
 
-    if (translatedDescription === null) {
-      // Aguarde até que a tradução esteja concluída
-      return null;
-    }
-    if (newMomentDay === "noite") {
-      period = "n";
-    } else {
-      period = "d";
-    }
     if (
       description === "thunderstorm with light rain" ||
       description === "thunderstorm with rain" ||
@@ -267,6 +271,7 @@ const Forecast = ({
           const daily = response.data.list;
           setDaily(daily);
           setDailyData(response.data.list);
+          onAlertTemp(response.data.list);
           const filteredForecast = dailyData.reduce((result, item) => {
             const date = moment(item.dt_txt).format("YYYY-MM-DD");
             if (!result[date]) {
@@ -287,11 +292,6 @@ const Forecast = ({
             }
             return result;
           }, {});
-
-          if (currentHoutd >= 7 && currentHoutd < 18) {
-            forecastSliceRef.current = dailyForecastArray.slice(0, 6);
-          }
-
           setDailyForecastArray(Object.values(filteredForecast));
         } else {
           alert("Ops!, algo deu errado!");
@@ -303,20 +303,29 @@ const Forecast = ({
   }, [lat, lon, currentHoutd]);
 
   useEffect(() => {
-    if (currentHoutd >= 18)
+    let novoForecastSlice;
+    if (currentHoutd >= 7 && currentHoutd < 18) {
       if (newMomentDay === "manha") {
-        forecastSliceRef.current = dailyForecastArray.slice(0, 5);
-      } else {
-        if (newMomentDay === "tarde") {
-          forecastSliceRef.current = dailyForecastArray.slice(0, 5);
-        } else {
-          forecastSliceRef.current = dailyForecastArray.slice(0, 5);
+        novoForecastSlice = dailyForecastArray.slice(0, 6);
+        if (currentHoutd >= 17) {
+          novoForecastSlice = dailyForecastArray.slice(0, 5);
         }
       }
+    } else {
+      novoForecastSlice = dailyForecastArray.slice(0, 5);
+    }
 
-    setDailyForecast(forecastSliceRef.current);
-    onDailyDataChange(forecastSliceRef.current);
-  }, [dailyForecastArray, newMomentDay, currentHoutd]);
+    if (!arraysSaoIguais(novoForecastSlice, forecastSliceRef.current)) {
+      forecastSliceRef.current = novoForecastSlice;
+      setDailyForecast(novoForecastSlice);
+      onDailyDataChange(novoForecastSlice);
+    }
+  }, [dailyForecastArray, newMomentDay, currentHoutd, onDailyDataChange]);
+
+  function arraysSaoIguais(arr1, arr2) {
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
+  }
+
   const mudarFundo = () => {
     switch (textos[cliques]) {
       case "Manhã":
@@ -359,7 +368,7 @@ const Forecast = ({
           backgroundSize: "200% 200%",
         };
         fundoGroundNoite = {
-          background: "#00003350",
+          background: "#47487a90",
         };
         return iconeLua;
       default:
@@ -409,53 +418,31 @@ const Forecast = ({
       prevIndex === 0 - 2 ? dailyForecast.length + 1 : prevIndex - 2,
     );
   };
-
   const handleNextDay = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === dailyForecast.length + 1 ? 0 - 2 : prevIndex + 2,
     );
   };
 
-  const [isHover00, setIsHover1] = useState(false);
-
-  const handleMouseLeave00 = () => {
-    setIsHover1(false);
-  };
-  const handleMouseEnter00 = () => {
-    setIsHover1(true);
-  };
-
-  const [isHover01, setIsHover0] = useState(false);
-  const handleMouseLeave01 = () => {
-    setIsHover0(false);
-  };
-  const handleMouseEnter01 = () => {
-    setIsHover0(true);
-  };
   const handleDragStart = (e) => {
     e.preventDefault();
   };
-
-  const [startX, setStartX] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [mouseFormat, setMouseFormat] = useState(false);
+  let startX = false;
+  let isDragging = false;
   const carrosselRef = useRef(null);
 
   const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.pageX);
+    isDragging = true;
+    startX = e.pageX;
   };
-
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-    setMouseFormat(true);
     const deltaX = e.pageX - startX;
     carrosselRef.current.style.transform = `translateX(${deltaX}px)`;
   };
 
   const handleMouseUp = (e) => {
-    setIsDragging(false);
-    setMouseFormat(false);
+    isDragging = false;
     const deltaX = e.pageX - startX;
 
     // Define um limite para o movimento
@@ -480,10 +467,9 @@ const Forecast = ({
   };
 
   const handleTouchStart = (e) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX);
+    isDragging = true;
+    startX = e.touches[0].pageX;
   };
-
   const handleTouchMove = (e) => {
     if (!isDragging) return;
 
@@ -494,7 +480,7 @@ const Forecast = ({
   const handleTouchEnd = (e) => {
     if (!isDragging) return;
 
-    setIsDragging(false);
+    isDragging = false;
     const deltaX = e.changedTouches[0].pageX - startX;
 
     // Define um limite para o movimento
@@ -514,11 +500,13 @@ const Forecast = ({
       carrosselRef.current.style.transform = "translateX(0)";
     }
   };
+
   return (
     <div id={idProp} className="forecast">
       <div className="div_fore_title_weather">
         <div className="div_botao_fore_troc_extern">
           <div
+            onClick={trocarTexto}
             style={Object.assign(
               {},
               {
@@ -530,7 +518,6 @@ const Forecast = ({
             className="div_botao_fore_troc"
           >
             <button
-              onClick={trocarTexto}
               className="botao_fore_troc"
               type="button"
               style={botaoStyle}
@@ -587,319 +574,312 @@ const Forecast = ({
         />
       </div>
 
-      <div className="Div_seta">
-        <div>
-          <div>
-            <img
-              onDragStart={handleDragStart}
-              style={{
-                position: "absolute",
-                opacity: "75%",
-                width: isHover01 ? "50px" : "45px",
-                backgroundColor: "#dfdfdf80",
-                padding: "10px",
-                borderRadius: "100px",
-                transition:
-                  "transform 0.1s ease-in-out, width 0.1s ease-in-out",
-              }}
-              src={"https://cdn-icons-png.flaticon.com/512/6270/6270148.png"}
-              alt="anterior"
-              onClick={handleNextDay}
-              onMouseEnter={handleMouseEnter01}
-              onMouseLeave={handleMouseLeave01}
-            />
-          </div>
-          <div>
-            <img
-              onDragStart={handleDragStart}
-              style={{
-                userSelect: "none",
-                position: "absolute",
-                opacity: "75%",
-                width: isHover00 ? "50px" : "45px",
-                backgroundColor: "#dfdfdf80",
-                padding: "10px",
-                borderRadius: "100px",
-                transform: "rotate(180deg)",
-                transition:
-                  "transform 0.1s ease-in-out, width 0.1s ease-in-out",
-              }}
-              src={"https://cdn-icons-png.flaticon.com/512/6270/6270148.png"}
-              alt="proximo"
-              onClick={handlePrevDay}
-              onMouseEnter={handleMouseEnter00}
-              onMouseLeave={handleMouseLeave00}
-            />
+      <div className="div_forecast">
+        <div className="Div_seta_extern">
+          <div className="Div_seta">
+            <div>
+              <div>
+                <img
+                  className="seta prox"
+                  onDragStart={handleDragStart}
+                  src={seta}
+                  alt="proximo"
+                  onClick={handleNextDay}
+                />
+              </div>
+              <div>
+                <img
+                  className="seta ant"
+                  onDragStart={handleDragStart}
+                  src={seta}
+                  alt="anterior"
+                  onClick={handlePrevDay}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div onDragStart={handleDragStart} className="separator-day">
         <div
-          ref={carrosselRef}
-          className="carrosel"
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          style={{ cursor: mouseFormat ? "grabbing" : "grab" }}
+          style={{ cursor: "grab" }}
+          onDragStart={handleDragStart}
+          className="separator-day"
         >
-          {Array.isArray(dailyForecast) &&
-            dailyForecast.length >= 0 &&
-            dailyForecast.map((day, index) => (
-              <div
-                key={index}
-                className="forecast-day"
-                style={{
-                  transform: `translateX(${(index - currentIndex) * 100}%)`,
-                  transition: "transform 0.5s ease-in-out",
-                  ...fundoManha, // Aplica os estilos condicionais
-                  ...fundoNoite,
-                  ...fundoTarde,
-                }}
-              >
+          <div
+            ref={carrosselRef}
+            className="carrosel"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {Array.isArray(dailyForecast) &&
+              dailyForecast.length >= 0 &&
+              dailyForecast.map((day, index) => (
                 <div
-                  className={`${
-                    textos[cliques] === "Tarde"
-                      ? "Pixel_tarde all"
-                      : "" || textos[cliques] === "Noite"
-                      ? "Pixel_noite all"
-                      : "" || textos[cliques] === "Manhã"
-                      ? "Pixel_manha all"
-                      : ""
-                  }`}
+                  key={index}
+                  className="forecast-day"
+                  style={{
+                    transform: `translateX(${(index - currentIndex) * 100}%)`,
+                    transition: "transform 0.5s ease-in-out",
+                    ...fundoManha, // Aplica os estilos condicionais
+                    ...fundoNoite,
+                    ...fundoTarde,
+                  }}
                 >
-                  <div className="data_div_forecast zoom-animate">
-                    {moment(day.date)
-                      .format("DD/MM/YY")
-                      .split("/")
-                      .map((segment, i) => (
-                        <p key={i} className="data_forecast">
-                          {segment}
-                        </p>
-                      ))}
-                    {""}
+                  <div
+                    className={`${
+                      textos[cliques] === "Tarde"
+                        ? "Pixel_tarde all"
+                        : "" || textos[cliques] === "Noite"
+                        ? "Pixel_noite all"
+                        : "" || textos[cliques] === "Manhã"
+                        ? "Pixel_manha all"
+                        : ""
+                    }`}
+                  >
+                    <div className="data_div_forecast zoom-animate">
+                      {moment(day.date)
+                        .format("DD/MM/YY")
+                        .split("/")
+                        .map((segment, i) => (
+                          <p key={i} className="data_forecast">
+                            {segment}
+                          </p>
+                        ))}
+                      {""}
+                    </div>
+                  </div>
+
+                  <div className="Morning_forecast fore" style={dados_manha}>
+                    {Array.isArray(day.morning) && day.morning.length > 0 ? (
+                      day.morning.map((item, i) => (
+                        <div key={i} className="temp_forecast">
+                          <div className="temp_forecast_true">
+                            <p className="temp_forecast_max">
+                              <img
+                                className="icone_temp"
+                                src={temperAlta}
+                                alt="Temperatura Alta"
+                              />
+                              {getTemperature(item.main.temp_max, Celsius)}°
+                              {Celsius ? "C" : "F"}
+                            </p>
+                            <p className="temp_forecast_min">
+                              <img
+                                className="icone_temp"
+                                src={temperBaixa}
+                                alt="Temperatura Baixa"
+                              />
+                              {getTemperature(item.main.temp_min - 2, Celsius)}°
+                              {Celsius ? "C" : "F"}
+                            </p>
+                          </div>
+                          <div className="componentes_prev">
+                            <p className="humidade_prev">
+                              <img
+                                className="icone_prox humi"
+                                src={
+                                  "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                                }
+                                alt="Velocidade do vento"
+                              />
+                              <span>{item.main.humidity}% de umidade</span>
+                            </p>
+                            <WeatherDescription
+                              description={item.weather[0].description}
+                            />
+                            <p className="humidade_prev">
+                              <img
+                                className="icone_prox sensasao"
+                                src={
+                                  "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                                }
+                                alt="Velocidade do vento"
+                              />
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <p> Sensação de </p>
+                                <span>
+                                  {getTemperature(
+                                    item.main.feels_like,
+                                    Celsius,
+                                  )}
+                                  ° Graus {Celsius ? "Celsius" : "Fahrenheit"}
+                                </span>
+                              </div>
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p
+                        style={{ color: "#8B0000" }}
+                        className="temp_forecast_max"
+                      >
+                        Valores Indisponíveis
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="Afternoon_forecast fore" style={dados_tarde}>
+                    {Array.isArray(day.afternoon) &&
+                    day.afternoon.length > 0 ? (
+                      day.afternoon.map((item, i) => (
+                        <div key={i} className="temp_forecast">
+                          <div className="temp_forecast_true">
+                            <p className="temp_forecast_max">
+                              <img
+                                className="icone_temp"
+                                src={temperAlta}
+                                alt="Temperatura Alta"
+                              />
+                              {getTemperature(item.main.temp_max, Celsius)}°
+                              {Celsius ? "C" : "F"}
+                            </p>
+                            <p className="temp_forecast_min">
+                              <img
+                                className="icone_temp"
+                                src={temperBaixa}
+                                alt="Temperatura Baixa"
+                              />
+                              {getTemperature(item.main.temp_min - 5, Celsius)}°
+                              {Celsius ? "C" : "F"}
+                            </p>
+                          </div>
+                          <div className="componentes_prev">
+                            <p className="humidade_prev">
+                              <img
+                                className="icone_prox humi"
+                                src={
+                                  "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                                }
+                                alt="Velocidade do vento"
+                              />
+                              <span>{item.main.humidity}% de umidade</span>
+                            </p>
+                            <WeatherDescription
+                              description={item.weather[0].description}
+                            />
+                            <p className="humidade_prev">
+                              <img
+                                className="icone_prox sensasao"
+                                src={
+                                  "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                                }
+                                alt="Velocidade do vento"
+                              />
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <p> Sensação de </p>
+                                <span>
+                                  {getTemperature(
+                                    item.main.feels_like,
+                                    Celsius,
+                                  )}
+                                  ° Graus {Celsius ? "Celsius" : "Fahrenheit"}
+                                </span>
+                              </div>
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p
+                        style={{ color: "#8B0000" }}
+                        className="temp_forecast_max"
+                      >
+                        Valores Indisponíveis
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="Night_forecast fore" style={dados_noite}>
+                    {Array.isArray(day.night) && day.night.length > 0 ? (
+                      day.night.map((item, i) => (
+                        <div key={i} className="temp_forecast">
+                          <div className="temp_forecast_true">
+                            <p className="temp_forecast_max">
+                              <img
+                                className="icone_temp"
+                                src={temperAlta}
+                                alt="Temperatura Alta"
+                              />
+                              {getTemperature(item.main.temp_max, Celsius)}°
+                              {Celsius ? "C" : "F"}
+                            </p>
+                            <p className="temp_forecast_min">
+                              <img
+                                className="icone_temp"
+                                src={temperBaixa}
+                                alt="Temperatura Baixa"
+                              />
+                              {getTemperature(item.main.temp_min - 5, Celsius)}°
+                              {Celsius ? "C" : "F"}
+                            </p>
+                          </div>
+                          <div className="componentes_prev">
+                            <p className="humidade_prev">
+                              <img
+                                className="icone_prox humi"
+                                src={
+                                  "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                                }
+                                alt="Velocidade do vento"
+                              />
+                              <span>{item.main.humidity}% de umidade</span>
+                            </p>
+                            <WeatherDescription
+                              description={item.weather[0].description}
+                            />
+                            <p className="humidade_prev">
+                              <img
+                                className="icone_prox sensasao"
+                                src={
+                                  "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                                }
+                                alt="Velocidade do vento"
+                              />
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <p> Sensação de </p>
+                                <span>
+                                  {getTemperature(
+                                    item.main.feels_like,
+                                    Celsius,
+                                  )}
+                                  ° Graus {Celsius ? "Celsius" : "Fahrenheit"}
+                                </span>
+                              </div>
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p
+                        style={{ color: "#8B0000" }}
+                        className="temp_forecast_max"
+                      >
+                        Valores Indisponíveis
+                      </p>
+                    )}
                   </div>
                 </div>
-
-                <div className="Morning_forecast fore" style={dados_manha}>
-                  {Array.isArray(day.morning) && day.morning.length > 0 ? (
-                    day.morning.map((item, i) => (
-                      <div key={i} className="temp_forecast">
-                        <div className="temp_forecast_true">
-                          <p className="temp_forecast_max">
-                            <img
-                              className="icone_temp"
-                              src={temperAlta}
-                              alt="Temperatura Alta"
-                            />
-                            {getTemperature(item.main.temp_max, Celsius)}°
-                            {Celsius ? "C" : "F"}
-                          </p>
-                          <p className="temp_forecast_min">
-                            <img
-                              className="icone_temp"
-                              src={temperBaixa}
-                              alt="Temperatura Baixa"
-                            />
-                            {getTemperature(item.main.temp_min - 2, Celsius)}°
-                            {Celsius ? "C" : "F"}
-                          </p>
-                        </div>
-                        <div className="componentes_prev">
-                          <p className="humidade_prev">
-                            <img
-                              className="icone_prox humi"
-                              src={
-                                "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
-                              }
-                              alt="Velocidade do vento"
-                            />
-                            <span>{item.main.humidity}% de umidade</span>
-                          </p>
-                          <WeatherDescription
-                            description={item.weather[0].description}
-                          />
-                          <p className="humidade_prev">
-                            <img
-                              className="icone_prox sensasao"
-                              src={
-                                "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
-                              }
-                              alt="Velocidade do vento"
-                            />
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                            >
-                              <p> Sensação de </p>
-                              <span>
-                                {getTemperature(item.main.feels_like, Celsius)}°
-                                Graus {Celsius ? "Celsius" : "Fahrenheit"}
-                              </span>
-                            </div>
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p
-                      style={{ color: "#8B0000" }}
-                      className="temp_forecast_max"
-                    >
-                      Valores Indisponíveis
-                    </p>
-                  )}
-                </div>
-
-                <div className="Afternoon_forecast fore" style={dados_tarde}>
-                  {Array.isArray(day.afternoon) && day.afternoon.length > 0 ? (
-                    day.afternoon.map((item, i) => (
-                      <div key={i} className="temp_forecast">
-                        <div className="temp_forecast_true">
-                          <p className="temp_forecast_max">
-                            <img
-                              className="icone_temp"
-                              src={temperAlta}
-                              alt="Temperatura Alta"
-                            />
-                            {getTemperature(item.main.temp_max, Celsius)}°
-                            {Celsius ? "C" : "F"}
-                          </p>
-                          <p className="temp_forecast_min">
-                            <img
-                              className="icone_temp"
-                              src={temperBaixa}
-                              alt="Temperatura Baixa"
-                            />
-                            {getTemperature(item.main.temp_min - 5, Celsius)}°
-                            {Celsius ? "C" : "F"}
-                          </p>
-                        </div>
-                        <div className="componentes_prev">
-                          <p className="humidade_prev">
-                            <img
-                              className="icone_prox humi"
-                              src={
-                                "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
-                              }
-                              alt="Velocidade do vento"
-                            />
-                            <span>{item.main.humidity}% de umidade</span>
-                          </p>
-                          <WeatherDescription
-                            description={item.weather[0].description}
-                          />
-                          <p className="humidade_prev">
-                            <img
-                              className="icone_prox sensasao"
-                              src={
-                                "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
-                              }
-                              alt="Velocidade do vento"
-                            />
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                            >
-                              <p> Sensação de </p>
-                              <span>
-                                {getTemperature(item.main.feels_like, Celsius)}°
-                                Graus {Celsius ? "Celsius" : "Fahrenheit"}
-                              </span>
-                            </div>
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p
-                      style={{ color: "#8B0000" }}
-                      className="temp_forecast_max"
-                    >
-                      Valores Indisponíveis
-                    </p>
-                  )}
-                </div>
-
-                <div className="Night_forecast fore" style={dados_noite}>
-                  {Array.isArray(day.night) && day.night.length > 0 ? (
-                    day.night.map((item, i) => (
-                      <div key={i} className="temp_forecast">
-                        <div className="temp_forecast_true">
-                          <p className="temp_forecast_max">
-                            <img
-                              className="icone_temp"
-                              src={temperAlta}
-                              alt="Temperatura Alta"
-                            />
-                            {getTemperature(item.main.temp_max, Celsius)}°
-                            {Celsius ? "C" : "F"}
-                          </p>
-                          <p className="temp_forecast_min">
-                            <img
-                              className="icone_temp"
-                              src={temperBaixa}
-                              alt="Temperatura Baixa"
-                            />
-                            {getTemperature(item.main.temp_min - 5, Celsius)}°
-                            {Celsius ? "C" : "F"}
-                          </p>
-                        </div>
-                        <div className="componentes_prev">
-                          <p className="humidade_prev">
-                            <img
-                              className="icone_prox humi"
-                              src={
-                                "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
-                              }
-                              alt="Velocidade do vento"
-                            />
-                            <span>{item.main.humidity}% de umidade</span>
-                          </p>
-                          <WeatherDescription
-                            description={item.weather[0].description}
-                          />
-                          <p className="humidade_prev">
-                            <img
-                              className="icone_prox sensasao"
-                              src={
-                                "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
-                              }
-                              alt="Velocidade do vento"
-                            />
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                            >
-                              <p> Sensação de </p>
-                              <span>
-                                {getTemperature(item.main.feels_like, Celsius)}°
-                                Graus {Celsius ? "Celsius" : "Fahrenheit"}
-                              </span>
-                            </div>
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p
-                      style={{ color: "#8B0000" }}
-                      className="temp_forecast_max"
-                    >
-                      Valores Indisponíveis
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
       </div>
     </div>

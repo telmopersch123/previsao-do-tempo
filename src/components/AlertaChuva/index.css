@@ -5,7 +5,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    text-align: center;
+
     color: rgb(255, 255, 255);
     margin: auto;
     padding: 5px;
@@ -14,6 +14,7 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
     position: relative;
     cursor: help;
+    font-size: 20px;
 }
 .o_div{
   display: flex;
@@ -145,9 +146,6 @@ color: rgba(198, 238, 253, 0.832);
 
     .alertBai {
       padding: 5px
-    }
-    .o_div{
-      font-size: 3.5vw;
     }
 
 }
