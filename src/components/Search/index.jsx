@@ -118,7 +118,7 @@ function Search({ props }) {
       }
       axios
         .get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+          `https://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
         )
         .then((response) => {
           const locations = response.data;
