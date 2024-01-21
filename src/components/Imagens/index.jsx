@@ -36,6 +36,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={limpo_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
@@ -54,6 +56,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={quebrado_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
@@ -72,6 +76,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={disperso_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
@@ -90,6 +96,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={limpo_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
@@ -108,6 +116,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={quebrado_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
@@ -126,6 +136,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={disperso_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
@@ -144,6 +156,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={chuva_rend} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
@@ -162,6 +176,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={nublado_rend} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
@@ -180,6 +196,8 @@ const Imagens = ({ stringBack }) => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  controls
                 >
                   <source src={neve_red} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
