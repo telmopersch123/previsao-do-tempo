@@ -29,7 +29,7 @@
   position: absolute;
   width: 101%;
   height: 150px;
-  margin-top: -30px;
+  margin-top: -80px;
   margin-left: -1px;
 }
 .liner-bottom {
@@ -48,7 +48,7 @@
   position: relative;
   width: 101%;
   height: 100px;
-  margin-top: -90px;
+  margin-top: -50px;
   margin-left: -1px;
 }
 body {
@@ -77,8 +77,8 @@ body {
 
 @media screen and (max-width: 650px) {
   .video-conteiner {
-    width: 300vw;
-    height: 500px;
+    width: 100vw;
+    height: 1000px;
     top: 10em;
   }
 }
