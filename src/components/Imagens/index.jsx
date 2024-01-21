@@ -29,6 +29,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
@@ -46,6 +47,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
@@ -63,6 +65,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
@@ -80,6 +83,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
@@ -97,6 +101,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
@@ -114,6 +119,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
@@ -131,6 +137,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
@@ -148,6 +155,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
@@ -165,6 +173,7 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
+                <div id="video-overlay"></div>
                 <video
                   style={{ objectFit: "cover" }}
                   className="imagem_paisagem"
