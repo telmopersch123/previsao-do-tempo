@@ -309,7 +309,11 @@ function WeatherIcon({
   return (
     <div className="icon_temp">
       {mostrarModal && (
-        <div className="overlay" onClick={handleModalClose}></div>
+        <div
+          style={{ zIndex: "1001" }}
+          className="overlay"
+          onClick={handleModalClose}
+        ></div>
       )}
 
       <CSSTransition
@@ -319,7 +323,7 @@ function WeatherIcon({
         classNames="modal"
         unmountOnExit
       >
-        <div ref={transitionRef} className="modal">
+        <div style={{ zIndex: "2001" }} ref={transitionRef} className="modal">
           <div className="modal-content">
             <span className="close" onClick={handleSpanClick}>
               &times;

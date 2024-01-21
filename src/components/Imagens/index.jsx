@@ -13,23 +13,15 @@ import chuva_rend from "./videos_site/chuva_rend.mp4";
 
 const Imagens = ({ stringBack }) => {
   const [key, setKey] = useState(0);
-  const handleContextMenu = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDragStart = (e) => {
-    e.preventDefault();
-  };
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
   }, [stringBack]);
 
   return (
     <div
-      onContextMenu={handleContextMenu}
-      onDragStart={handleDragStart}
       key={key}
       className="video-container"
+      style={{ pointerEvents: "none" }}
     >
       {(() => {
         switch (stringBack) {
@@ -37,7 +29,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={limpo_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -48,7 +46,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={quebrado_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -59,7 +63,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={disperso_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -70,7 +80,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={limpo_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -81,7 +97,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={quebrado_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -92,7 +114,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={disperso_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -103,7 +131,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={chuva_rend} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -114,7 +148,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={nublado_rend} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -125,7 +165,13 @@ const Imagens = ({ stringBack }) => {
             return (
               <div className="video-conteiner">
                 <div className="liner-top"></div>
-                <video className="imagem_paisagem" autoPlay loop muted>
+                <video
+                  style={{ objectFit: "cover" }}
+                  className="imagem_paisagem"
+                  autoPlay
+                  loop
+                  muted
+                >
                   <source src={neve_red} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>

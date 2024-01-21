@@ -1,4 +1,4 @@
-.alert{
+.alert {
   width: 50%;
   display: flex;
   justify-content: center;
@@ -13,118 +13,115 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
   font-size: 25px;
   cursor: help;
+  z-index: 1;
 }
 .alertFrElevado {
-  background-color: rgba(0, 208, 255, 0.500);
+  background-color: rgba(0, 208, 255, 0.5);
   padding: 5px;
-
 }
 
 .alertFrModerado {
-  background-color: rgba(138, 219, 254, 0.500);
+  background-color: rgba(138, 219, 254, 0.5);
   padding: 5px;
 }
 
 .alertCaElevado {
-  background-color: rgba(255, 0, 0, 0.500);
+  background-color: rgba(255, 0, 0, 0.5);
   width: 50vw;
   padding: 5px;
 }
 
 .alertCaModerado {
-  background-color: rgba(250, 250, 112, 0.500);
+  background-color: rgba(250, 250, 112, 0.5);
   padding: 5px;
-
 }
-.img_alert{
+.img_alert {
   width: 40px;
   height: auto;
   fill: #ffc048;
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.366));
 }
 
-.alert_avo{
+.alert_avo {
   width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    background-color: rgb(79, 80, 80);
-    border-radius: 10px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: rgb(79, 80, 80);
+  border-radius: 10px;
 }
-.alert_text0{
+.alert_text0 {
   text-align: center;
-    width: 100%;
-    padding: 5px 0px 5px 0px;
-    background-color: rgba(240, 248, 255, 0.208);
-    border-radius: 7px 7px 0px 0px;
+  width: 100%;
+  padding: 5px 0px 5px 0px;
+  background-color: rgba(240, 248, 255, 0.208);
+  border-radius: 7px 7px 0px 0px;
 }
 .alert_text1 {
-    text-align: center;
-      width: auto;
-      padding: 5px;
-      border-radius: 10px;
-      font-size: 16px;
-      background-color: rgba(240, 248, 255, 0.100);
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
-      margin: 5px 0px 10px 0px;
-      transition: 0.2s ease-in-out;
+  text-align: center;
+  width: auto;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: rgba(240, 248, 255, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
+  margin: 5px 0px 10px 0px;
+  transition: 0.2s ease-in-out;
 }
-.p:hover{
-    background-color: rgba(240, 248, 255, 0.159);
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.438);
+.p:hover {
+  background-color: rgba(240, 248, 255, 0.159);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.438);
 }
 .alert_text2 {
-    text-align: center;
-      width: auto;
-      padding: 20px;
-      border-radius: 100px;
-      font-size: 25px;
-      font-weight: bold;
-      background-color: rgba(240, 248, 255, 0.100);
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
-      margin: 5px 0px 10px 0px;
-      transition: 0.2s ease-in-out;
+  text-align: center;
+  width: auto;
+  padding: 20px;
+  border-radius: 100px;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: rgba(240, 248, 255, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
+  margin: 5px 0px 10px 0px;
+  transition: 0.2s ease-in-out;
 }
-.alert_text2.calor{
-color: rgb(253, 191, 191);
+.alert_text2.calor {
+  color: rgb(253, 191, 191);
 }
 .alert_text2.frio {
-color: rgb(191, 242, 253);
-
+  color: rgb(191, 242, 253);
 }
-.alert_text2:hover{
+.alert_text2:hover {
   font-size: calc(25px + 3%);
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.549);
   text-shadow: 0 0 2px rgba(255, 255, 255, 0.668);
 }
 .alert_text3 {
-    text-align: center;
-      width: 85%;
-      padding: 5px;
-      border-radius: 10px;
-      font-size: 16px;
-      background-color: rgba(240, 248, 255, 0.100);
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
-      margin: 5px 0px 10px 0px;
-      transition: 0.2s ease-in-out;
+  text-align: center;
+  width: 85%;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: rgba(240, 248, 255, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.307);
+  margin: 5px 0px 10px 0px;
+  transition: 0.2s ease-in-out;
 }
-strong{
+strong {
   color: rgb(255, 255, 255);
   transition: 0.2s ease-in-out;
 }
-strong:hover{
+strong:hover {
   text-shadow: 0 0 5px rgba(241, 161, 40, 0.717);
 }
 @media screen and (max-width: 1110px) {
-  .alert{
+  .alert {
     font-size: 2vw;
   }
 }
-@media screen and (max-width: 800px){
-  .alert{
+@media screen and (max-width: 800px) {
+  .alert {
     font-size: 2.8vw;
   }
 }
@@ -134,7 +131,7 @@ strong:hover{
     width: auto;
     width: 95%;
   }
-  .alertCaElevado{
+  .alertCaElevado {
     width: 100%;
   }
 }
@@ -144,15 +141,14 @@ strong:hover{
     font-size: 3.5vw;
   }
   .alertCaElevado {
-      margin-top: 0px;
-    }
+    margin-top: 0px;
+  }
 }
 
-@media screen and (max-width: 300px){
+@media screen and (max-width: 300px) {
   .alertFrElevado {
     background-color: rgba(0, 208, 255);
     padding: 5px;
-
   }
 
   .alertFrModerado {
@@ -169,6 +165,5 @@ strong:hover{
   .alertCaModerado {
     background-color: rgba(250, 250, 112);
     padding: 5px;
-
   }
 }

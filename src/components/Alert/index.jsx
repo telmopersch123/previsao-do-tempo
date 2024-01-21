@@ -79,112 +79,108 @@ const Alert = forwardRef(({ daily, idProp }, ref) => {
 
   let alertaComponente;
   if (media > 35) {
-    alertaComponente = (
-      <div style={{ zIndex: "1" }}>
+    alertaComponente = [
+      <div
+        key="div1"
+        onClick={handleVerifiOpen}
+        className="alertCaElevado alert"
+        role="alert"
+      >
+        {icone()}
+        <p>Alerta! Calor elevado para esta região.</p>
+      </div>,
+      <div style={{ zIndex: "2001" }} key="div2">
         {modalVerif && (
-          <div
-            style={{ zIndex: "1001" }}
-            className="overlay"
-            onClick={() => handleVerifiClose()}
-          ></div>
+          <div className="overlay" onClick={() => handleVerifiClose()}></div>
         )}
+        {conteinerModal()}
+      </div>,
+    ];
+  } else {
+    if (media >= 25 && media <= 30) {
+      alertaComponente = [
         <div
+          key="div1"
           onClick={handleVerifiOpen}
-          className="alertCaElevado alert"
+          className="alertCaModerado alert"
           role="alert"
         >
           {icone()}
-          <p>Alerta! Calor elevado para esta região.</p>
-        </div>
-        {conteinerModal()}
-      </div>
-    );
-  } else {
-    if (media >= 25 && media <= 30) {
-      alertaComponente = (
-        <div style={{ zIndex: "1" }}>
+          <p>Alerta! Calor moderado para esta região.</p>
+        </div>,
+
+        <div style={{ zIndex: "2001" }} key="div2">
           {modalVerif && (
-            <div
-              style={{ zIndex: "1001" }}
-              className="overlay"
-              onClick={() => handleVerifiClose()}
-            ></div>
+            <div className="overlay" onClick={() => handleVerifiClose()}></div>
           )}
+          {conteinerModal()}
+        </div>,
+      ];
+    } else {
+      if (media <= 20 && media >= 15) {
+        alertaComponente = [
           <div
+            key="div1"
             onClick={handleVerifiOpen}
-            className="alertCaModerado alert"
+            className="alertFrModerado alert"
             role="alert"
           >
             {icone()}
-            <p>Alerta! Calor moderado para esta região.</p>
-          </div>
-          <div>{conteinerModal()}</div>
-        </div>
-      );
-    } else {
-      if (media <= 20 && media >= 15) {
-        alertaComponente = (
-          <div style={{ zIndex: "1" }}>
+            <p>Alerta! Frio Moderado para esta região.</p>
+          </div>,
+
+          <div style={{ zIndex: "2001" }} key="div2">
             {modalVerif && (
               <div
-                style={{ zIndex: "1001" }}
                 className="overlay"
                 onClick={() => handleVerifiClose()}
               ></div>
             )}
-
+            {conteinerModal()}
+          </div>,
+        ];
+      } else {
+        if (media <= 15) {
+          alertaComponente = [
             <div
+              key="div1"
               onClick={handleVerifiOpen}
-              className="alertFrModerado alert"
+              className="alertFrElevado alert"
               role="alert"
             >
               {icone()}
-              <p>Alerta! Frio Moderado para esta região.</p>
-            </div>
-            {conteinerModal()}
-          </div>
-        );
-      } else {
-        if (media <= 15) {
-          alertaComponente = (
-            <div style={{ zIndex: "1" }}>
+              <p>Alerta! Frio elevado para esta região.</p>
+            </div>,
+
+            <div style={{ zIndex: "2001" }} key="div2">
               {modalVerif && (
                 <div
-                  style={{ zIndex: "1001" }}
                   className="overlay"
                   onClick={() => handleVerifiClose()}
                 ></div>
               )}
-              <div
-                onClick={handleVerifiOpen}
-                className="alertFrElevado alert"
-                role="alert"
-              >
-                {icone()}
-                <p>Alerta! Frio elevado para esta região.</p>
-              </div>
               {conteinerModal()}
-            </div>
-          );
+            </div>,
+          ];
         } else {
-          alertaComponente = (
-            <div style={{ zIndex: "1" }}>
+          alertaComponente = [
+            <div
+              key="div1"
+              onClick={handleVerifiOpen}
+              style={{ display: "none" }}
+              className="alert"
+              role="alert"
+            ></div>,
+            <div style={{ zIndex: "2001" }} key="div2">
               {modalVerif && (
                 <div
-                  style={{ zIndex: "1001" }}
                   className="overlay"
                   onClick={() => handleVerifiClose()}
                 ></div>
               )}
-              <div
-                onClick={handleVerifiOpen}
-                style={{ display: "none" }}
-                className="alert"
-                role="alert"
-              ></div>
               {conteinerModal()}
-            </div>
-          );
+            </div>,
+          ];
         }
       }
     }

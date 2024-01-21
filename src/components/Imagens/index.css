@@ -58,7 +58,7 @@ body {
 
 @media screen and (max-width: 650px) {
   .video-conteiner {
-    width: 100vw;
+    width: 300vw;
     height: 500px;
     top: 10em;
   }
