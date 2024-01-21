@@ -2,7 +2,12 @@
   width: 100%;
   overflow-x: hidden;
   pointer-events: none;
+  outline: none; /* Remove a borda de foco padrão ao clicar nos controles */
 }
+.imagem_paisagem::-webkit-media-controls {
+  display: none !important;
+}
+
 .video-conteiner {
   position: absolute;
   z-index: 0;
