@@ -728,7 +728,6 @@ function Search({ props }) {
               searched ? `Pesquisar por mais!` : "Digite o nome da cidade aqui!"
             }
             className={`inputCidade ${searched ? "searched" : ""}`}
-            name="searchInp"
             type="text"
             value={inputValue}
             autoComplete="off"
