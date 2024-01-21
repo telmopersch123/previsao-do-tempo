@@ -65,6 +65,7 @@ body::-webkit-scrollbar-track {
   background: #1e1933;
   background-size: 300% 300%;
   animation: gradient-animation 25s ease infinite;
+  overflow-x: hidden;
 }
 
 .Search {

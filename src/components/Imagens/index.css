@@ -1,5 +1,6 @@
 .imagem_paisagem {
   width: 100%;
+  overflow-x: hidden;
 }
 .video-conteiner {
   position: absolute;
@@ -8,6 +9,7 @@
   left: 50%;
   transform: translate(-50%, 0%);
   top: 17.5em;
+  overflow-x: hidden;
 }
 .liner-top {
   background: linear-gradient(
