@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  forwardRef,
+} from "react";
 import { CSSTransition } from "react-transition-group";
-import axios from "axios";
 import solLimpo from "../../icones/sol.gif";
 import luaLimpa from "../../icones/lua.gif";
 import chuva from "../../icones/chuva.gif";
@@ -11,7 +16,6 @@ import "./index.css";
 
 function WeatherIcon({
   weather,
-  setClasses,
   cloudsData,
   rainData,
   snowData,
@@ -20,79 +24,90 @@ function WeatherIcon({
   convertedDateTime,
   handleImagenControl,
 }) {
+  const transitionRef = useRef(null);
+  const [climate, setclimate] = useState(false);
+  const [situacao_clima, setSituacao_clima] = useState(false);
   const [exibirPeriodo, setExibirPeriodo] = useState(true);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [stringBack, setStringBack] = useState("");
-  const [icon, setIcon] = useState(false);
+  const [icon, setIcon] = useState("");
+
   useEffect(() => {
-    // Chame handleImagenControl aqui para evitar o loop infinito
     handleImagenControl(stringBack);
   }, [stringBack, handleImagenControl]);
 
-  const Situacao_clima = () => {
-    let situacao;
-    let climate;
+  useEffect(() => {
+    const stringBack = climate;
+    setStringBack(stringBack);
+  }, [climate, setStringBack]);
+
+  const Situacao_clima = useCallback(() => {
+    let newSituacao;
     switch (weather.description) {
       case "few clouds":
-        situacao = <p>Limpo com poucas nuvens!</p>;
-
+        newSituacao = <p>Limpo com poucas nuvens!</p>;
         if (
           convertedDateTime >= unixSunrise &&
           convertedDateTime < unixSunset
         ) {
-          climate = "limpo_dia";
+          setclimate("limpo_dia");
         } else {
-          climate = "limpo_noite";
+          setclimate("limpo_noite");
         }
 
         break;
       case "broken clouds":
-        situacao = <p>Limpo com nuvens quebradas!</p>;
+        newSituacao = <p>Limpo com nuvens quebradas!</p>;
         if (
           convertedDateTime >= unixSunrise &&
           convertedDateTime < unixSunset
         ) {
-          climate = "quebradas_dia";
+          setclimate("quebradas_dia");
         } else {
-          climate = "quebradas_noite";
+          setclimate("quebradas_noite");
         }
         break;
       case "scattered clouds":
-        situacao = <p>Limpo com nuvens dispersas!</p>;
+        newSituacao = <p>Limpo com nuvens dispersas!</p>;
         if (
           convertedDateTime >= unixSunrise &&
           convertedDateTime < unixSunset
         ) {
-          climate = "dispersas_dia";
+          setclimate("dispersas_dia");
         } else {
-          climate = "dispersas_noite";
+          setclimate("dispersas_noite");
         }
         break;
       case "mist":
-        situacao = <p>Lugar com Nevoeiro!</p>;
-        climate = "nublado_period";
+        newSituacao = <p>Lugar com Nevoeiro!</p>;
+        setclimate("nublado_period");
         break;
       case "smoke":
-        situacao = <p>Lugar afumaçado!</p>;
-        climate = "nublado_period";
+        newSituacao = <p>Lugar afumaçado!</p>;
+        setclimate("nublado_period");
         break;
       case "clear sky":
-        situacao = <p>Céu Limpo!</p>;
+        newSituacao = <p>Céu Limpo!</p>;
         if (
           convertedDateTime >= unixSunrise &&
           convertedDateTime < unixSunset
         ) {
-          climate = "limpo_dia";
+          setclimate("limpo_dia");
         } else {
-          climate = "limpo_noite";
+          setclimate("limpo_noite");
         }
         break;
       default:
     }
-    setStringBack(climate);
-    return situacao;
-  };
-  const PeriodoDoDia_icone = () => {
+    return newSituacao;
+  }, [convertedDateTime, unixSunrise, unixSunset, weather]);
+
+  useEffect(() => {
+    const climateValue = Situacao_clima();
+    setSituacao_clima(climateValue);
+  }, [convertedDateTime, unixSunrise, unixSunset, weather, Situacao_clima]);
+
+  const PeriodoDoDia_icone = useCallback(() => {
     if (convertedDateTime >= unixSunrise && convertedDateTime < unixSunset) {
       return (
         <div
@@ -101,7 +116,7 @@ function WeatherIcon({
           className={`icon-wrapper icon2`}
         >
           <img className={`icones`} src={solLimpo} alt={weather.description} />
-          <div>{Situacao_clima()}</div>
+          <div>{situacao_clima}</div>
         </div>
       );
     } else {
@@ -112,15 +127,14 @@ function WeatherIcon({
           className={`icon-wrapper icon2`}
         >
           <img className={`icones`} src={luaLimpa} alt={weather.description} />
-          <div>{Situacao_clima()}</div>
+          <div>{situacao_clima}</div>
         </div>
       );
     }
-  };
+  }, [convertedDateTime, situacao_clima, unixSunrise, unixSunset, weather]);
 
-  const Weather_situation = () => {
+  const Weather_situation = useCallback(() => {
     let situation;
-    setStringBack("nublado_period");
     switch (weather.description) {
       case "smoke":
         situation = (
@@ -164,18 +178,74 @@ function WeatherIcon({
         break;
     }
     return situation;
-  };
+  }, [cloudsData, weather]);
 
-  const Wind_situation = () => {
+  useEffect(() => {
+    switch (weather.description) {
+      case "smoke":
+        setclimate("nublado_period");
+        break;
+      case "mist":
+        setclimate("nublado_period");
+        break;
+      case "sand":
+        setclimate("nublado_period");
+        break;
+      case "tornado":
+        setclimate("nublado_period");
+        break;
+      case "broken clouds":
+        setclimate("nublado_period");
+        break;
+      case "overcast clouds":
+        setclimate("nublado_period");
+        break;
+    }
+  }, [weather.description]);
+  useEffect(() => {
+    switch (weather.description) {
+      case "heavy intensity shower rain":
+        setclimate("chuva_period");
+        setIcon(chuvaForte);
+        break;
+      case "heavy intensity rain":
+        setclimate("chuva_period");
+        setIcon(chuvaForte);
+        break;
+      case "very heavy rain":
+        setclimate("chuva_period");
+        setIcon(chuvaForte);
+        break;
+      case "light intensity drizzle":
+        setclimate("chuva_period");
+        setIcon(chuva);
+        break;
+      case "extreme rain":
+        setclimate("chuva_period");
+        setIcon(chuvaForte);
+        break;
+      default:
+        if (snowData !== undefined) {
+          setclimate("neve_period");
+          setIcon(neve);
+        } else {
+          if (rainData !== undefined) {
+            setclimate("chuva_period");
+            setIcon(chuva);
+          }
+        }
+        break;
+    }
+  }, [weather.description, snowData, rainData]);
+  const Wind_situation = useCallback(() => {
     let situation;
-    setStringBack("chuva_period");
+
     if (rainData !== undefined) {
       switch (weather.description) {
         case "heavy intensity shower rain" ||
           "heavy intensity rain" ||
           "very heavy rain" ||
           "extreme rain":
-          setIcon(chuvaForte);
           situation = (
             <p>
               <span className="Title_Icon">Chuva Forte!</span>
@@ -184,7 +254,6 @@ function WeatherIcon({
           );
           break;
         case "light intensity drizzle":
-          setIcon(chuva);
           situation = (
             <p>
               <span className="Title_Icon">Garoa!</span>
@@ -193,7 +262,6 @@ function WeatherIcon({
           );
           break;
         default:
-          setIcon(chuva);
           situation = (
             <p>
               <span className="Title_Icon">Chuva!</span>
@@ -203,8 +271,6 @@ function WeatherIcon({
           break;
       }
     } else {
-      setStringBack("neve_period");
-      setIcon(neve);
       situation = (
         <p>
           <span className="Title_Icon">Nevando!</span>
@@ -213,14 +279,15 @@ function WeatherIcon({
       );
     }
     return situation;
-  };
+  }, [rainData, snowData, weather]);
+
   const handleDivClick = () => {
     setMostrarModal(true);
   };
   const handleModalClose = () => {
     setMostrarModal(false);
   };
-  // Use uma função para lidar com o clique no span para evitar a propagação do evento
+
   const handleSpanClick = (e) => {
     e.stopPropagation(); // Impede que o evento se propague para a div
     handleModalClose(); // Chama a função para fechar o modal
@@ -246,12 +313,13 @@ function WeatherIcon({
       )}
 
       <CSSTransition
+        nodeRef={transitionRef}
         in={mostrarModal}
         timeout={500}
         classNames="modal"
         unmountOnExit
       >
-        <div className="modal">
+        <div ref={transitionRef} className="modal">
           <div className="modal-content">
             <span className="close" onClick={handleSpanClick}>
               &times;

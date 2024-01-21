@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createRoot } from "react-dom/client";
+
 import { useSpring, animated } from "react-spring";
 import moment from "moment";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
-import ReactDOM from "react-dom";
 import axios from "axios";
 
 import Flag from "../Flag";
@@ -241,7 +242,7 @@ const Timeline = ({
       temperatureControl.onAdd = function (map) {
         const scaleDetails = <ScaleDetails mapLayer={mapLayer} />;
         const div = L.DomUtil.create("div", "custom-legend");
-        ReactDOM.createRoot(div).render(scaleDetails);
+        createRoot(div).render(scaleDetails);
         return div;
       };
       openStreetMapLayer.addTo(map);
@@ -319,9 +320,7 @@ const Timeline = ({
         <p className="time_class">{formattedTime}</p>
 
         <div className="div_p_flags">
-          <p className="p_flags">
-            <Flag sysFlag={sysFlag} />
-          </p>
+          <Flag sysFlag={sysFlag} />
           <p>{sys}</p>
         </div>
 

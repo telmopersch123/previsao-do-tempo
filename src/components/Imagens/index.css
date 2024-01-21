@@ -22,9 +22,10 @@
   #1e193300 100%
 );
 position: absolute;
-width: 100%;
+width: 101%;
 height: 150px;
-margin-top: -50px;
+margin: 0;
+margin-left: -1px;
 }
 .liner-bottom{
   background: linear-gradient(0deg,
@@ -39,21 +40,22 @@ margin-top: -50px;
   #1e193300 100%
 );
 position: relative;
-width: 100%;
+width: 101%;
 height: 100px;
-margin-top: -70px;
+margin-top: -90px;
+margin-left: -1px;
 }
-
+body{
+  overflow-x: hidden;
+}
 @media screen and (min-width: 2800px){
+
   .imagem_paisagem{
     display: none;
   }
 }
 
 @media screen and (max-width: 650px){
-  body{
-    overflow-x: hidden;
-  }
   .video-conteiner{
     width: 450vw;
     top: 10em

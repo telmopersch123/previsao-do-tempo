@@ -30,7 +30,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={limpo_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           case "quebradas_dia":
@@ -41,7 +41,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={quebrado_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           case "dispersas_dia":
@@ -52,7 +52,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={disperso_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           case "limpo_noite":
@@ -63,7 +63,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={limpo_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           case "quebradas_noite":
@@ -74,7 +74,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={quebrado_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           case "dispersas_noite":
@@ -85,7 +85,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={disperso_noite} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           case "chuva_period":
@@ -96,7 +96,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={chuva_rend} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           case "nublado_period":
@@ -107,7 +107,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={nublado_rend} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           case "neve_period":
@@ -118,7 +118,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={neve_red} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom">&nbsp;</div>
+                <div className="liner-bottom"></div>
               </div>
             );
           default:

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, forwardRef } from "react";
 import "./index.css";
 import { CSSTransition } from "react-transition-group";
 import { icone } from "./icone.jsx";
-function Alert({ daily, idProp }) {
+const Alert = forwardRef(({ daily, idProp }, ref) => {
   const [modalVerif, setModalVerifi] = useState(false);
+  const transitionRef = useRef(null);
   if (!daily) {
     return null;
   }
@@ -44,12 +45,13 @@ function Alert({ daily, idProp }) {
   const conteinerModal = () => {
     return (
       <CSSTransition
+        nodeRef={transitionRef}
         in={modalVerif}
         timeout={500}
         classNames="modal"
         unmountOnExit
       >
-        <div className="modal">
+        <div ref={transitionRef} className="modal">
           <div className="alert_avo">
             <span onClick={handleVerif} className="close">
               &times;
@@ -190,10 +192,10 @@ function Alert({ daily, idProp }) {
   }
 
   return (
-    <div className="alert" role="alert">
+    <div ref={ref} className="alert" role="alert">
       {alertaComponente}
     </div>
   );
-}
-
+});
+Alert.displayName = "Alert";
 export default Alert;

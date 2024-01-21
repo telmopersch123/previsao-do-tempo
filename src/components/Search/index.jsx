@@ -678,7 +678,7 @@ function Search({ props }) {
               <img className="foto_regiao" src={regiao} alt="regiao?" />
             </div>
 
-            <p className="text_regiao">
+            <span className="text_regiao">
               Todas as regiões pesquisadas, tanto cidades quanto estados ou
               Países podem possuir também cidades, estados ou países diferentes
               com o mesmo nome em diferentes locais! Utilize o mapa para se
@@ -693,7 +693,7 @@ function Search({ props }) {
               >
                 OpenWeaterMaps
               </a>
-            </p>
+            </span>
           </div>
         </CSSTransition>
         <form

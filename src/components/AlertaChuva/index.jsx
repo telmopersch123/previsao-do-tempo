@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, forwardRef } from "react";
 import "./index.css";
 import chuviscos from "../../icones/chuvisco.gif";
 import neve from "../../icones/neve.gif";
 import { CSSTransition } from "react-transition-group";
 function AlertaChuva({ daily, idWind, onVerifChange }) {
+  const transitionRef = useRef(null);
   const [modalVerif, setModalVerif] = useState(false);
   const [verifSnow, setVerifSnow] = useState(false);
   if (!daily) {
@@ -81,6 +82,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
       <div>
         {/* Seu código anterior */}
         <CSSTransition
+          nodeRef={transitionRef}
           in={modalVerif}
           timeout={500}
           classNames="overlay"
@@ -90,19 +92,20 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           <div className="overlay"></div>
         </CSSTransition>
         <CSSTransition
+          nodeRef={transitionRef}
           in={modalVerif}
           timeout={500}
           classNames="modal"
           unmountOnExit
         >
-          <div className="modal">
+          <div ref={transitionRef} className="modal">
             <div className="alert_avo">
               <span onClick={handleVerif} className="close">
                 &times;
               </span>
               <p className="alert_text0">Alerta do clima!</p>
               <p className="alert_text1 p">
-              As chances de chuva são calculadas com base na previsão de até 5
+                As chances de chuva são calculadas com base na previsão de até 5
                 dias da região pesquisada!
               </p>
               <p className={`alert_text2 ${cor}`}>

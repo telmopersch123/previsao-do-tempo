@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import moment from "moment";
@@ -35,6 +29,7 @@ const Forecast = ({
   idWind,
   onAlertTemp,
 }) => {
+  const transitionRef = useRef(null);
   const [daily, setDaily] = useState([]);
   const [dailyForecast, setDailyForecast] = useState([]);
   const [dailyData00, setDailyData] = useState([]);
@@ -305,14 +300,14 @@ const Forecast = ({
   useEffect(() => {
     let novoForecastSlice;
     if (currentHoutd >= 7 && currentHoutd < 18) {
-      if (newMomentDay === "manha") {
-        novoForecastSlice = dailyForecastArray.slice(0, 6);
+      if (newMomentDay != "noite") {
+        novoForecastSlice = dailyForecastArray.slice(1, 6);
         if (currentHoutd >= 17) {
           novoForecastSlice = dailyForecastArray.slice(0, 5);
         }
+      } else {
+        novoForecastSlice = dailyForecastArray.slice(0, 5);
       }
-    } else {
-      novoForecastSlice = dailyForecastArray.slice(0, 5);
     }
 
     if (!arraysSaoIguais(novoForecastSlice, forecastSliceRef.current)) {
@@ -530,12 +525,13 @@ const Forecast = ({
       </div>
       {modalVerif && <div onClick={handleVerifClose} className="overlay"></div>}
       <CSSTransition
+        nodeRef={transitionRef}
         in={modalVerif}
         timeout={500}
         classNames="modal"
         unmountOnExit
       >
-        <div className="modal">
+        <div ref={transitionRef} className="modal">
           <div className="alert_avo">
             <span onClick={handleVerifClose} className="close">
               &times;
@@ -698,13 +694,13 @@ const Forecast = ({
                                 }
                                 alt="Velocidade do vento"
                               />
-                              <div
+                              <span
                                 style={{
                                   display: "flex",
                                   flexDirection: "column",
                                 }}
                               >
-                                <p> Sensação de </p>
+                                <span> Sensação de </span>
                                 <span>
                                   {getTemperature(
                                     item.main.feels_like,
@@ -712,7 +708,7 @@ const Forecast = ({
                                   )}
                                   ° Graus {Celsius ? "Celsius" : "Fahrenheit"}
                                 </span>
-                              </div>
+                              </span>
                             </p>
                           </div>
                         </div>
@@ -774,13 +770,13 @@ const Forecast = ({
                                 }
                                 alt="Velocidade do vento"
                               />
-                              <div
+                              <span
                                 style={{
                                   display: "flex",
                                   flexDirection: "column",
                                 }}
                               >
-                                <p> Sensação de </p>
+                                <span> Sensação de </span>
                                 <span>
                                   {getTemperature(
                                     item.main.feels_like,
@@ -788,7 +784,7 @@ const Forecast = ({
                                   )}
                                   ° Graus {Celsius ? "Celsius" : "Fahrenheit"}
                                 </span>
-                              </div>
+                              </span>
                             </p>
                           </div>
                         </div>
@@ -849,13 +845,13 @@ const Forecast = ({
                                 }
                                 alt="Velocidade do vento"
                               />
-                              <div
+                              <span
                                 style={{
                                   display: "flex",
                                   flexDirection: "column",
                                 }}
                               >
-                                <p> Sensação de </p>
+                                <span> Sensação de </span>
                                 <span>
                                   {getTemperature(
                                     item.main.feels_like,
@@ -863,7 +859,7 @@ const Forecast = ({
                                   )}
                                   ° Graus {Celsius ? "Celsius" : "Fahrenheit"}
                                 </span>
-                              </div>
+                              </span>
                             </p>
                           </div>
                         </div>

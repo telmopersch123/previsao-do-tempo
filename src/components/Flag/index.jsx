@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
 function Flag({ sysFlag }) {
-  const [country, setCountry] = useState(null);
+  const [country, setCountry] = useState(false);
   useEffect(() => {
     const fetchCountry = async () => {
       try {

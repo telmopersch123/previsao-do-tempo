@@ -52,7 +52,7 @@ const DetailsWeather = ({
                 : "dados_ind"
             }
           >
-            <p>
+            <span>
               {" "}
               {`Temperatura Máxima de`}{" "}
               <span
@@ -61,8 +61,8 @@ const DetailsWeather = ({
                 {(temperaturaMax + 2).toFixed(0)}
                 {Celsius ? "°C" : "°F"}
               </span>{" "}
-            </p>
-            <p>
+            </span>
+            <span>
               {" "}
               {`Temperatura Minima de`}{" "}
               <span
@@ -71,7 +71,7 @@ const DetailsWeather = ({
                 {temperaturaMin.toFixed(0)}
                 {Celsius ? "°C" : "°F"}
               </span>{" "}
-            </p>
+            </span>
           </p>
         ) : (
           <p>
@@ -202,7 +202,7 @@ const DetailsWeather = ({
               <FeatherIcon className="icon_set" icon="arrow-down-right" />
             </div>
           ) : (
-            `Error:404`
+            `não tem direção do vento`
           )}
         </div>
       </div>
