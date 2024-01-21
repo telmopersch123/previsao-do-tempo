@@ -296,6 +296,7 @@ const Forecast = ({
       .catch((error) => {
         console.error("Erro ao buscar dados de previsão:", error);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lat, lon, currentHoutd]);
 
   useEffect(() => {
