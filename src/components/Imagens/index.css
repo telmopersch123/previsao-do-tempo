@@ -89,14 +89,17 @@ body {
   .video-conteiner {
     width: 100%;
     top: 14em;
+    pointer-events: none;
   }
   body {
     overflow-x: hidden;
   }
   .imagem_paisagem {
     overflow-x: hidden;
+    pointer-events: none;
   }
   .video-conteiner {
     overflow-x: hidden;
+    pointer-events: none;
   }
 }
