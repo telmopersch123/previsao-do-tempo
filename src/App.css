@@ -384,6 +384,7 @@ form {
   flex-direction: row;
   width: 100%;
   gap: 10px;
+  z-index: 5;
 }
 
 .icon-wrapper {
@@ -398,7 +399,7 @@ form {
   margin: 10px 0 10px 10px;
   transition: 0.5s ease-in-out;
   cursor: help;
-  z-index: 1;
+  z-index: 3;
 }
 
 .icon-wrapper:hover {
@@ -880,7 +881,7 @@ form {
     padding: 1em;
     width: auto;
     border-radius: 10px;
-    z-index: 2;
+    z-index: 3;
   }
   .align-items {
     align-self: center;

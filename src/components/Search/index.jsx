@@ -837,7 +837,6 @@ function Search({ props }) {
 
       {weatherData ? (
         <div className="objects">
-          <Imagens stringBack={stringBack} />
           <div className="align-items">
             <div className="prox_div">
               <WeahterIcon
@@ -859,7 +858,7 @@ function Search({ props }) {
               onTemperatureConversion={handleTemperatureConversion}
             />
           </div>
-
+          <Imagens stringBack={stringBack} />
           <Alert idProp={idDoComponente} daily={daily} />
 
           <Timeline

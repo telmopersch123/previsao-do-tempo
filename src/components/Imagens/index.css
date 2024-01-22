@@ -88,7 +88,7 @@ body {
 @media screen and (max-width: 650px) {
   .video-conteiner {
     width: 100%;
-    top: 14em;
+    margin-top: 90px;
     pointer-events: none;
   }
   body {
@@ -101,5 +101,12 @@ body {
   .video-conteiner {
     overflow-x: hidden;
     pointer-events: none;
+  }
+}
+@media screen and (max-width: 550px) {
+  .video-conteiner {
+    width: 100vw;
+    height: auto;
+    margin-top: 20px;
   }
 }
