@@ -141,6 +141,9 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
             <p className="p_snow">{probabilidadeNeve}</p>
           </div>
         )}
+      </div>,
+      <div style={{ zIndex: "2001" }} key="div2">
+        {modalVerif && <div onClick={handleVerif} className="overlay"></div>}
         {conteinerModal()}
       </div>,
     ];
@@ -172,8 +175,9 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
       </div>,
     ];
   } else if (media0 < 30) {
-    alertaChuva = (
+    alertaChuva = [
       <div
+        key="div1"
         onClick={() => handleVerifiOpen()}
         className="alertBai alertPop"
         role="alert"
@@ -191,9 +195,12 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
             <p className="p_snow">{probabilidadeNeve}</p>
           </div>
         )}
+      </div>,
+      <div style={{ zIndex: "2001" }} key="div2">
+        {modalVerif && <div onClick={handleVerif} className="overlay"></div>}
         {conteinerModal()}
-      </div>
-    );
+      </div>,
+    ];
     return alertaChuva;
   }
 

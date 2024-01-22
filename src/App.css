@@ -20,7 +20,6 @@
   justify-content: center;
   margin-top: 0;
   margin-bottom: 10vh;
-  z-index: 10;
 }
 
 body {
@@ -67,6 +66,7 @@ body::-webkit-scrollbar-track {
   background-size: 300% 300%;
   animation: gradient-animation 25s ease infinite;
   overflow-x: hidden;
+  z-index: 2;
 }
 
 .Search {
@@ -865,7 +865,7 @@ form {
   }
   .formulario.searched {
     background-color: #ffffff29;
-    z-index: 0;
+    z-index: 1;
     padding: 2em;
     border-radius: 10px;
   }

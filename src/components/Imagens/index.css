@@ -3,7 +3,6 @@
   overflow-x: hidden;
   pointer-events: none;
   outline: none; /* Remove a borda de foco padrão ao clicar nos controles */
-  z-index: 0;
 }
 .imagem_paisagem::-webkit-media-controls {
   opacity: 0; /* Torna os controles transparentes */
