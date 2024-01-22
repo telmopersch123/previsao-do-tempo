@@ -20,6 +20,7 @@
   justify-content: center;
   margin-top: 0;
   margin-bottom: 10vh;
+  z-index: 10;
 }
 
 body {
@@ -151,7 +152,7 @@ body::-webkit-scrollbar-track {
   transition: 0.5s ease-in-out;
   color: white;
   cursor: auto;
-  z-index: 1;
+  z-index: 0;
 }
 .input-container {
   position: relative;
@@ -168,7 +169,7 @@ body::-webkit-scrollbar-track {
   height: auto;
   text-align: center;
   border-radius: 0px 0px 10px 10px;
-  z-index: 2;
+  z-index: 10;
 }
 .rodape_input_den {
   display: flex;
@@ -384,7 +385,7 @@ form {
   flex-direction: row;
   width: 100%;
   gap: 10px;
-  z-index: 5;
+  z-index: 0;
 }
 
 .icon-wrapper {
@@ -399,9 +400,11 @@ form {
   margin: 10px 0 10px 10px;
   transition: 0.5s ease-in-out;
   cursor: help;
-  z-index: 3;
+  z-index: 0;
 }
-
+.prox_div {
+  z-index: 0;
+}
 .icon-wrapper:hover {
   background-color: #dfdfdf40;
 }
@@ -441,7 +444,7 @@ form {
   border: none;
   cursor: pointer;
   transition: 0.5s ease-in-out;
-  z-index: 2;
+  z-index: 1;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -862,7 +865,7 @@ form {
   }
   .formulario.searched {
     background-color: #ffffff29;
-    z-index: 2;
+    z-index: 0;
     padding: 2em;
     border-radius: 10px;
   }
@@ -881,7 +884,6 @@ form {
     padding: 1em;
     width: auto;
     border-radius: 10px;
-    z-index: 3;
   }
   .align-items {
     align-self: center;

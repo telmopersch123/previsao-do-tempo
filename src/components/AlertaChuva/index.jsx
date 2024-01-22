@@ -79,66 +79,52 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
   const cor = media0 > 25 ? "alto" : "baixo";
   const conteinerModal = () => {
     return (
-      <div>
-        {/* Seu código anterior */}
-        <CSSTransition
-          nodeRef={transitionRef}
-          in={modalVerif}
-          timeout={500}
-          classNames="overlay"
-          unmountOnExit
-          onClick={handleVerif}
-        >
-          <div className="overlay"></div>
-        </CSSTransition>
-        <CSSTransition
-          nodeRef={transitionRef}
-          in={modalVerif}
-          timeout={500}
-          classNames="modal"
-          unmountOnExit
-        >
-          <div ref={transitionRef} className="modal">
-            <div className="alert_avo">
-              <span onClick={handleVerif} className="close">
-                &times;
-              </span>
-              <p className="alert_text0">Alerta do clima!</p>
-              <p className="alert_text1 p">
-                As chances de chuva são calculadas com base na previsão de até 5
-                dias da região pesquisada!
-              </p>
-              <p className={`alert_text2 ${cor}`}>
-                {media0}% de chances de chover
-              </p>
-              {media1 > 0 && (
-                <div>
-                  <p>Região com Neve!</p>
-                  <p className={`alert_text2 snow_text`}>
-                    {media1}% chances de nevar
-                  </p>
-                </div>
-              )}
-              <p className="alert_text3 p">
-                Com base nas possibilidades dos próximos dias&nbsp;
-                <strong onClick={handleVerifTwo} style={{ cursor: "pointer" }}>
-                  <a href={`#${idWind}`} className="text_chuva">
-                    (Você pode ver na sessão de gráficos da chuva)
-                  </a>
-                </strong>
-                &nbsp;é basicamente feito a média dos números obtidos
-              </p>
-            </div>
+      <CSSTransition
+        nodeRef={transitionRef}
+        in={modalVerif}
+        timeout={500}
+        classNames="modal"
+        unmountOnExit
+      >
+        <div ref={transitionRef} className="modal">
+          <div className="alert_avo">
+            <span onClick={handleVerif} className="close">
+              &times;
+            </span>
+            <p className="alert_text0">Alerta do clima!</p>
+            <p className="alert_text1 p">
+              As chances de chuva são calculadas com base na previsão de até 5
+              dias da região pesquisada!
+            </p>
+            <p className={`alert_text2 ${cor}`}>
+              {media0}% de chances de chover
+            </p>
+            {media1 > 0 && (
+              <div>
+                <p>Região com Neve!</p>
+                <p className={`alert_text2 snow_text`}>
+                  {media1}% chances de nevar
+                </p>
+              </div>
+            )}
+            <p className="alert_text3 p">
+              Com base nas possibilidades dos próximos dias&nbsp;
+              <strong onClick={handleVerifTwo} style={{ cursor: "pointer" }}>
+                <a href={`#${idWind}`} className="text_chuva">
+                  (Você pode ver na sessão de gráficos da chuva)
+                </a>
+              </strong>
+              &nbsp;é basicamente feito a média dos números obtidos
+            </p>
           </div>
-        </CSSTransition>
-
-        {/* Restante do seu componente */}
-      </div>
+        </div>
+      </CSSTransition>
     );
   };
   if (media0 > 50) {
-    alertaChuva = (
+    alertaChuva = [
       <div
+        key="div1"
         onClick={() => handleVerifiOpen()}
         className="alertAlt alertPop"
         role="alert"
@@ -156,11 +142,12 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           </div>
         )}
         {conteinerModal()}
-      </div>
-    );
+      </div>,
+    ];
   } else if (media0 >= 30 && media0 <= 50) {
-    alertaChuva = (
+    alertaChuva = [
       <div
+        key="div1"
         onClick={() => handleVerifiOpen()}
         className="alertMed alertPop"
         role="alert"
@@ -177,9 +164,13 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
             <p className="p_snow">{probabilidadeNeve}</p>
           </div>
         )}
+      </div>,
+
+      <div style={{ zIndex: "2001" }} key="div2">
+        {modalVerif && <div onClick={handleVerif} className="overlay"></div>}
         {conteinerModal()}
-      </div>
-    );
+      </div>,
+    ];
   } else if (media0 < 30) {
     alertaChuva = (
       <div
@@ -193,6 +184,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           <img className="chuviscos_gif" src={chuviscos} />
           <p>Chances baixas de chuva para os próximos dias!</p>
         </div>
+
         {probabilidadeNeve !== null && (
           <div className="div_neve" style={{ display: "flex" }}>
             <img className="neve_gif" src={neve} />
@@ -206,8 +198,9 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
   }
 
   return (
-    <div className="alert" role="alert">
+    <div role="alert">
       {alertaChuva}
+      {conteinerModal()}
     </div>
   );
 }

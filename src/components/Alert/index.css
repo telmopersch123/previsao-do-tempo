@@ -13,7 +13,7 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
   font-size: 25px;
   cursor: help;
-  z-index: 1;
+  z-index: 0;
 }
 .alertFrElevado {
   background-color: rgba(0, 208, 255, 0.5);

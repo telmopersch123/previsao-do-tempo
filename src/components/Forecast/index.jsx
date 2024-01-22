@@ -529,7 +529,13 @@ const Forecast = ({
           {textos[cliques]}
         </p>
       </div>
-      {modalVerif && <div onClick={handleVerifClose} className="overlay"></div>}
+      {modalVerif && (
+        <div
+          style={{ zIndex: "1001" }}
+          onClick={handleVerifClose}
+          className="overlay"
+        ></div>
+      )}
       <CSSTransition
         nodeRef={transitionRef}
         in={modalVerif}
@@ -537,7 +543,7 @@ const Forecast = ({
         classNames="modal"
         unmountOnExit
       >
-        <div ref={transitionRef} className="modal">
+        <div style={{ zIndex: "2001" }} ref={transitionRef} className="modal">
           <div className="alert_avo">
             <span onClick={handleVerifClose} className="close">
               &times;

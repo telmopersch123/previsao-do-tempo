@@ -1,22 +1,22 @@
+.alertPop {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
-.alertPop{
-  width: 50%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+  color: rgb(255, 255, 255);
+  margin: auto;
+  padding: 5px;
 
-    color: rgb(255, 255, 255);
-    margin: auto;
-    padding: 5px;
-
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
-    position: relative;
-    cursor: help;
-    font-size: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.273);
+  position: relative;
+  cursor: help;
+  font-size: 20px;
 }
-.o_div{
+.o_div {
+  width: 85%;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -24,40 +24,37 @@
   font-size: 20px;
 }
 
-.div_neve{
-display: flex;
-align-items: center;
-gap: 5px;
-width: auto;
-padding: 2px;
-border-radius: 10px;
-box-shadow: 0 0 5px rgba(0, 0, 0, 0.622);
-background-color: rgba(240, 255, 255, 0.324);
-text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
+.div_neve {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  padding: 2px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.622);
+  background-color: rgba(240, 255, 255, 0.324);
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
 }
-.neve_gif{
-    box-shadow: 0 0 5px;
-      border-radius: 100px;
+
+.neve_gif {
+  box-shadow: 0 0 5px;
+  border-radius: 100px;
   width: 50px;
-
-
 }
 .alertAlt {
   background-color: #4683b47e;
-    width: 100%;
-    padding: 5px
-
-}
-.alertMed{
-  background-color: #7EC8FFAA;
   width: 100%;
-  padding: 5px
+  padding: 5px;
 }
-.alertBai{
-  background-color: #AED6F1AA;
-
+.alertMed {
+  background-color: #7ec8ffaa;
+  width: 100%;
+  padding: 5px;
 }
-.chuviscos_gif{
+.alertBai {
+  background-color: #aed6f1aa;
+}
+.chuviscos_gif {
   box-shadow: 0 0 5px;
   width: 50px;
   border-radius: 100px;
@@ -65,7 +62,7 @@ text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
   left: 0;
   margin-left: 10px;
 }
-.snow_text{
+.snow_text {
   color: white;
 }
 .case_snow {
@@ -78,11 +75,13 @@ text-shadow: 0 0 5px rgba(0, 0, 0, 0.494);
   margin-bottom: 10px;
 }
 
-.modal{
-cursor: AUTO;
+.modal {
+  cursor: AUTO;
+  z-index: 2001;
 }
 .overlay {
   cursor: AUTO;
+  z-index: 1001;
 }
 
 .modal-enter {
@@ -100,77 +99,72 @@ cursor: AUTO;
 
 .modal-exit-active {
   transform: translateY(0%) scaleY(0);
-    transition: transform 100ms;
-
+  transition: transform 100ms;
 }
 
-
-
-.text_chuva{
+.text_chuva {
   color: rgb(136, 191, 246);
 }
-.alto{
-color: rgb(101, 143, 248);
+.alto {
+  color: rgb(101, 143, 248);
 }
-.alto:hover{
+.alto:hover {
   text-shadow: 0 0 5px black;
 }
-.baixo{
-color: rgba(198, 238, 253, 0.832);
+.baixo {
+  color: rgba(198, 238, 253, 0.832);
 }
 
 @media screen and (max-width: 1250px) {
-  .o_div{
+  .o_div {
     padding: 5px;
   }
   .chuviscos_gif {
     position: relative;
   }
-
 }
 @media screen and (max-width: 760px) {
   .chuviscos_gif {
-      position: relative;
-    }
+    position: relative;
+  }
   .alertPop {
     justify-content: flex-start;
     font-size: 2.5vw;
   }
-    .alertAlt {
-      padding: 5px
-    }
+  .alertAlt {
+    padding: 5px;
+  }
 
-    .alertMed {
-      padding: 5px
-    }
+  .alertMed {
+    padding: 5px;
+  }
 
-    .alertBai {
-      padding: 5px
-    }
-
+  .alertBai {
+    padding: 5px;
+  }
 }
 @media screen and (max-width: 500px) {
-.alertPop{
-width: 95%;
-font-size: 4vw;
-}
-.alertMed{
-  width: 100%;
-}
-.alertAlt{
-  width: 100%;
-}
-.o_div{
-  font-size: 16px;
-}
-}
-@media screen and (max-width: 300px) {
-  .alert_text0{
+  .alertPop {
+    width: 95%;
+    font-size: 4vw;
+  }
+  .alertMed {
+    width: 100%;
+  }
+  .alertAlt {
+    width: 100%;
+  }
+  .o_div {
     font-size: 16px;
   }
-    .o_div {
-      font-size: 16px;
-    }
+}
+@media screen and (max-width: 300px) {
+  .alert_text0 {
+    font-size: 16px;
+  }
+  .o_div {
+    font-size: 16px;
+  }
   .alertMed {
     font-size: 5vw;
   }

@@ -25,7 +25,7 @@ const DetailsWeather = ({
   const temperaturaMin = Celsius ? temp_min : convertorFahrenheit(temp_min);
 
   return (
-    <div className="div_parag">
+    <div style={{ zIndex: "0" }} className="div_parag">
       <h1 className="text_div_parag">Clima Agora!</h1>
       <div className="div_parag_filho">
         {feels_like !== undefined ? (
