@@ -531,11 +531,12 @@ const Forecast = ({
       </div>
       {modalVerif && (
         <div
-          style={{ zIndex: "1001" }}
+          style={{ zIndex: "2001" }}
           onClick={handleVerifClose}
           className="overlay"
         ></div>
       )}
+
       <CSSTransition
         nodeRef={transitionRef}
         in={modalVerif}

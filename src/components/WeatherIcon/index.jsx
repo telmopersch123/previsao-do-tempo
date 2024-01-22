@@ -305,7 +305,20 @@ function WeatherIcon({
       setClicked(false);
     }, 200);
   };
+  useEffect(() => {
+    // Função a ser executada quando houver rolagem
+    const handleScroll = () => {
+      handleModalClose();
+    };
 
+    // Adiciona um ouvinte de evento de rolagem ao objeto window
+    window.addEventListener("scroll", handleScroll);
+
+    // Remove o ouvinte de evento ao desmontar o componente
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // O s
   return (
     <div className="icon_temp">
       {mostrarModal && (
