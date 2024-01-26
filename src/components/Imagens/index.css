@@ -4,14 +4,6 @@
   pointer-events: none;
   outline: none; /* Remove a borda de foco padrão ao clicar nos controles */
 }
-.imagem_paisagem::-webkit-media-controls {
-  opacity: 0; /* Torna os controles transparentes */
-  transition: opacity 0.3s ease; /* Adiciona uma transição suave de opacidade */
-}
-
-.imagem_paisagem:hover::-webkit-media-controls {
-  opacity: 1; /* Torna os controles visíveis ao passar o mouse */
-}
 
 .video-conteiner {
   position: absolute;
@@ -88,7 +80,7 @@ body {
 @media screen and (max-width: 650px) {
   .video-conteiner {
     width: 100%;
-    margin-top: 90px;
+    margin-top: 0px;
     pointer-events: none;
   }
   body {

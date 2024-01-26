@@ -124,7 +124,6 @@ body::-webkit-scrollbar-track {
   padding: 10px 20px;
   border-radius: 50px;
   transition: 0.5s ease-in-out;
-  cursor: help;
   width: 50%;
 }
 
@@ -136,6 +135,7 @@ body::-webkit-scrollbar-track {
 .inputCidade.searched {
   text-align: center;
   cursor: pointer;
+  z-index: 1;
 }
 
 .inputCidade {
@@ -151,7 +151,7 @@ body::-webkit-scrollbar-track {
   outline: none;
   transition: 0.5s ease-in-out;
   color: white;
-  cursor: auto;
+  cursor: pointer;
   z-index: 0;
 }
 .input-container {
@@ -162,14 +162,14 @@ body::-webkit-scrollbar-track {
   gap: 50px;
 }
 .rodape_input {
-  width: 60vw;
+  width: 50vw;
   z-index: 0;
   background-color: rgba(63, 54, 79, 0.341);
   padding: 10px;
   height: auto;
   text-align: center;
   border-radius: 0px 0px 10px 10px;
-  z-index: 10;
+  z-index: 5;
 }
 .rodape_input_den {
   display: flex;
@@ -212,6 +212,10 @@ form {
 }
 .inputCidade::placeholder {
   color: #ffffff34;
+  transition: 0.3s ease-in-out;
+}
+.inputCidade:hover::placeholder {
+  color: rgba(255, 255, 255, 0.404);
 }
 
 .inputCidade:hover {
@@ -601,7 +605,7 @@ form {
   top: 0px;
   width: 100%;
   height: 40vh;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 .manha {
   display: flex;
@@ -618,7 +622,7 @@ form {
   top: 0px;
   width: 100%;
   height: 40vh;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .sun {
@@ -751,6 +755,114 @@ form {
   transform: translate3d(0, 0, 0);
   animation: moveWind 0.1s linear infinite;
 }
+
+.inputEstado {
+  width: 80%;
+  height: 5vh;
+  border-radius: 0px 0px 20px 20px;
+  border: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.303);
+  background-color: #3c325077;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  outline: none;
+  transition: 0.5s ease-in-out;
+  color: white;
+  z-index: 1;
+  cursor: pointer;
+  transition: 0.5s ease;
+  animation: animationInputsOpenEs 1s ease;
+  visibility: visible;
+}
+.inputEstado:hover {
+  background-color: #2e2f5294;
+}
+.inputEstado::placeholder {
+  text-align: center;
+  transition: 0.3s ease-in-out;
+}
+
+.inputEstado:hover::placeholder {
+  color: rgba(255, 255, 255, 0.404);
+}
+.inputEstado.hidden {
+  visibility: hidden;
+  height: 0;
+}
+.inputEstado.closed {
+  animation: animationInputsCloseEs 1s ease;
+}
+@keyframes animationInputsClosedEs {
+  0% {
+    height: 5vh;
+  }
+  100% {
+    height: 0vh;
+  }
+}
+@keyframes animationInputsOpenEs {
+  0% {
+    height: 0vh;
+  }
+  100% {
+    height: 5vh;
+  }
+}
+.inputPais {
+  width: 90%;
+  height: 5vh;
+  border-radius: 0px 0px 100px 100px;
+  border: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.303);
+  background-color: #3c325077;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  outline: none;
+  transition: 0.5s ease-in-out;
+  color: white;
+  z-index: 1;
+  cursor: pointer;
+  transition: 0.5s ease;
+  animation: animationInputsOpen 1s ease;
+  visibility: visible;
+}
+.inputPais.hidden {
+  visibility: hidden;
+  height: 0;
+}
+.inputPais.closed {
+  animation: animationInputsClose 1s ease;
+}
+.inputPais:hover {
+  background-color: #2e2f5294;
+}
+.inputPais::placeholder {
+  text-align: center;
+  transition: 0.3s ease-in-out;
+}
+
+.inputPais:hover::placeholder {
+  color: rgba(255, 255, 255, 0.404);
+}
+@keyframes animationInputsClosed {
+  0% {
+    height: 5vh;
+  }
+  100% {
+    height: 0vh;
+  }
+}
+@keyframes animationInputsOpen {
+  0% {
+    height: 0vh;
+  }
+  100% {
+    height: 5vh;
+  }
+}
+
 @keyframes shineStars {
   0% {
     box-shadow: 0 0 5px 5px rgba(255, 255, 0, 0.249);
@@ -824,7 +936,23 @@ form {
     transform: translateX(100vw);
   }
 }
-
+@media screen and (max-width: 1225px) {
+  .inputCidade.searched {
+    width: 95vw;
+  }
+}
+@media screen and (max-width: 1100px) {
+  .inputEstado {
+    border-radius: 0px 0px 100px 100px;
+    width: 75%;
+  }
+  .inputPais {
+    border-radius: 0px 0px 100px 100px;
+  }
+  .rodape_input {
+    width: 60%;
+  }
+}
 @media screen and (max-width: 1050px) {
   .icon-wrapper {
     width: auto;
@@ -859,15 +987,27 @@ form {
     color: #ffffff9d;
   }
 }
+@media screen and (max-width: 740px) {
+  .inputEstado {
+    width: 70%;
+  }
+  .rodape_input {
+    width: 50%;
+  }
+}
 @media screen and (max-width: 650px) {
   .icon-wrapper.icon2 {
     margin-left: 0px;
+  }
+  .inputCidade.searched {
+    width: 85vw;
   }
   .formulario.searched {
     background-color: #ffffff29;
     z-index: 1;
     padding: 2em;
     border-radius: 10px;
+    width: 90vw;
   }
   .title_master.searched {
     z-index: 2;
@@ -896,6 +1036,23 @@ form {
   }
 }
 @media screen and (max-width: 550px) {
+  .inputCidade.searched {
+    width: 90vw;
+  }
+  .inputCidade {
+    width: 90vw;
+  }
+  .inputEstado {
+    border-radius: 0px 0px 50px 50px;
+    width: 80%;
+  }
+  .inputPais {
+    width: 80%;
+    border-radius: 0px;
+  }
+  .rodape_input {
+    width: 60%;
+  }
   .rodape_found {
     display: flex;
     flex-direction: row;
@@ -976,7 +1133,7 @@ form {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 4;
+  z-index: 9;
 }
 .alert_error {
   margin: 10px;
@@ -984,7 +1141,7 @@ form {
   background-color: #333333;
   color: white;
   margin-bottom: 15px;
-  z-index: 5;
+  z-index: 10;
   width: auto;
   border-radius: 5px;
 }
@@ -1008,7 +1165,7 @@ form {
 .closebtn {
   position: absolute;
   left: 0;
-  margin-left: 15px;
+  margin-left: 10px;
   color: white;
   font-weight: bold;
   float: right;
@@ -1022,12 +1179,6 @@ form {
   color: black;
 }
 @media screen and (max-width: 400px) {
-  .parag_error {
-    padding: 20px;
-  }
-  .closebtn {
-    left: -10px;
-  }
   .svg_not_found {
     width: 70px;
     height: auto;

@@ -1,5 +1,5 @@
 .alertPop {
-  width: auto;
+  width: 50%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -16,12 +16,14 @@
   font-size: 20px;
 }
 .o_div {
-  width: 85%;
+  width: 90%;
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 20px;
   padding: 20px;
   font-size: 20px;
+  margin-left: 10px;
 }
 
 .div_neve {
@@ -43,13 +45,15 @@
 }
 .alertAlt {
   background-color: #4683b47e;
-  width: 100%;
+  width: 140%;
   padding: 5px;
+  margin-left: -90px;
 }
 .alertMed {
   background-color: #7ec8ffaa;
-  width: 100%;
+  width: 140%;
   padding: 5px;
+  margin-left: -90px;
 }
 .alertBai {
   background-color: #aed6f1aa;
@@ -132,11 +136,15 @@
     font-size: 2.5vw;
   }
   .alertAlt {
-    padding: 5px;
+    padding: 1px;
+    width: 100%;
+    margin-left: -0px;
   }
 
   .alertMed {
     padding: 5px;
+    width: 100%;
+    margin-left: 0px;
   }
 
   .alertBai {

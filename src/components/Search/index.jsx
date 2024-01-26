@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import unaccent from "unaccent";
 import debounce from "lodash.debounce";
 import axios from "axios";
-import { CSSTransition } from "react-transition-group";
 import WeahterIcon from "../WeatherIcon";
 import Button from "../Button";
 import Timeline from "../Timeline";
@@ -10,7 +10,6 @@ import Forecast from "../Forecast";
 import Graphic from "../Graphic";
 import Alert from "../Alert";
 import Flag from "../Flag";
-import regiao from "../../icones/paises.png";
 import Imagens from "../Imagens";
 
 function Search({ props }) {
@@ -47,6 +46,15 @@ function Search({ props }) {
   const [existing, setExisting] = useState([]);
   const [verifing, setVerifing] = useState(false);
   const [stringBack, setStringBack] = useState("");
+
+  const [inputPais, setInputPais] = useState("");
+  const [inputEstado, setInputEstado] = useState("");
+
+  const [controlPD, setcontrolPD] = useState(false);
+  const [isOpen, setisOpen] = useState(false);
+
+  const [controlED, setcontrolED] = useState(false);
+  const [isOpen0, setisOpen0] = useState(false);
 
   useEffect(() => {
     window.history.replaceState({}, document.title, window.location.pathname);
@@ -111,42 +119,247 @@ function Search({ props }) {
     input.style.color = isHovered;
   }
 
+  const inputValueRef = useRef("");
+  const inputEstadoRef = useRef("");
+  const inputPaisRef = useRef("");
+  const [nomePais, setNomePais] = useState("");
+  const [codigoPais, setCodigoPais] = useState("");
+  const [nomePaisTraduzido, setNomePaisTraduzido] = useState();
+  const currentCodigoPais = useRef(codigoPais);
+  const [nomeEstado, setNomeEstado] = useState("");
+
+  const obterCodigoPais = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `https://restcountries.com/v3.1/name/${nomePaisTraduzido}`,
+      );
+      const data = await response.json();
+      if (data.length > 0) {
+        const alphaCode = data[0].cca2;
+        setCodigoPais(alphaCode);
+      } else {
+        // setCodigoPais("");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar código do país:", error);
+    }
+  }, [nomePaisTraduzido, setCodigoPais]);
+  useEffect(() => {
+    obterCodigoPais();
+  }, [nomePaisTraduzido, obterCodigoPais]);
+
+  useEffect(() => {
+    fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=${encodeURIComponent(
+        nomePais,
+      )}`,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const traductionNewValue = data[0][0][0];
+        setNomePaisTraduzido(traductionNewValue);
+      })
+
+      .catch((error) => {
+        console.error("Erro ao traduzir:", error);
+      });
+  }, [nomePais]);
+
+  useEffect(() => {
+    currentCodigoPais.current = codigoPais;
+  }, [codigoPais]);
+
   const debouncedSearch = useRef(
-    debounce((value) => {
-      if (!inputValue.trim()) {
+    debounce((valueInp, valueEst, valuePais) => {
+      if (!valueInp.trim()) {
         setSearchResults([]);
       }
+
+      const currentCodigoPaisValue = currentCodigoPais.current;
+      console.log(valueEst);
+      console.log(currentCodigoPais.current);
       axios
         .get(
-          `https://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+          `http://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${valueEst},${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
         )
         .then((response) => {
-          const locations = response.data;
-          setExisting(response.data);
+          console.log(response.data);
+          let locations;
+          let valor = false;
+          if (inputValueRef.current !== "") {
+            locations = response.data;
+          } else {
+            locations = false;
+          }
 
           const filteredLocations = locations.reduce((acc, location) => {
-            if (!acc[location.state]) {
-              acc[location.state] = location;
+            if (location.state === undefined) {
+              if (!acc[location.state]) {
+                acc[location.state] = location;
+              }
+              valor = false;
+              return acc;
+            } else if (
+              unaccent(location.state).toLowerCase() ===
+              unaccent(inputEstadoRef.current).toLowerCase()
+            ) {
+              if (!acc[location.state]) {
+                acc[location.state] = location;
+              }
+              valor = false;
+              return acc;
+            } else if (unaccent(inputEstadoRef.current).toLowerCase() === "") {
+              if (!acc[location.state]) {
+                acc[location.state] = location;
+              }
+              valor = false;
+              return acc;
+            } else {
+              valor = true;
             }
-            return acc;
           }, {});
 
-          const filteredResults = Object.values(filteredLocations);
+          let filteredResults;
+          if (valor === true) {
+            filteredResults = Object.values(0);
+          } else {
+            filteredResults = Object.values(filteredLocations);
+          }
+          setExisting(filteredResults);
           setSearchResults(filteredResults);
         })
+
         .catch((error) => {
           console.error("Erro ao buscar localização:", error.message);
+          naoEncontrada();
         });
-    }, 300),
+    }, 500),
   ).current;
+  const naoEncontrada = () => {
+    return (
+      <div className="rodape_input">
+        <div className="rodape_input_den rodape_found">
+          <svg
+            className="svg_not_found"
+            xmlns="http://www.w3.org/2000/svg"
+            width="50px"
+            height="50px"
+            viewBox="0 0 40 40"
+          >
+            <path
+              fill="currentColor"
+              d="M20.001 2.683C10.452 2.683 2.684 10.451 2.684 20s7.769 17.317 17.317 17.317S37.316 29.548 37.316 20S29.549 2.683 20.001 2.683m0 33.134c-8.722 0-15.817-7.096-15.817-15.817S11.279 4.183 20.001 4.183c8.721 0 15.815 7.096 15.815 15.817s-7.094 15.817-15.815 15.817"
+            ></path>
+            <circle
+              cx="15.431"
+              cy="16.424"
+              r="1.044"
+              fill="currentColor"
+            ></circle>
+            <circle
+              cx="24.569"
+              cy="16.424"
+              r="1.044"
+              fill="currentColor"
+            ></circle>
+            <path
+              fill="currentColor"
+              d="M24.828 25.312h-9.656a.75.75 0 0 0 0 1.5h9.656a.75.75 0 0 0 0-1.5"
+            ></path>
+          </svg>
+          <p className="p_found">Cidade não encontrada!</p>
+        </div>
+      </div>
+    );
+  };
+  // useEffect(() => {
+  //   debouncedSearch(inputValue, nomePais);
+  // }, [inputValue, nomePais, debouncedSearch]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-    const value = e.target.value;
-    debouncedSearch(value);
-    setValorCorrente(value);
-    debouncedSearch(value);
-    // Other logic related to input change if needed
+    inputValueRef.current = e.target.value;
+    setValorCorrente(e.target.value);
+
+    debouncedSearch(
+      inputValueRef.current,
+      inputEstadoRef.current,
+      inputPaisRef.current,
+    );
+    if (e.target.value) {
+      setisOpen(true);
+      setcontrolPD(true);
+    } else {
+      inputPaisRef.current = "";
+      currentCodigoPais.current = "";
+      inputValueRef.current = "";
+      setisOpen(false);
+      setisOpen0(false);
+      setTimeout(() => setcontrolPD(false), 10);
+      setTimeout(() => setcontrolED(false), 10);
+    }
+  };
+
+  useEffect(() => {
+    if (!controlPD) {
+      setisOpen(false);
+      setInputPais("");
+      setInputEstado("");
+      setNomeEstado("");
+      inputPaisRef.current = "";
+      currentCodigoPais.current = "";
+      inputEstadoRef.current = "";
+    }
+  }, [controlPD]);
+  const handleInputPais = (e) => {
+    inputPaisRef.current = e.target.value;
+    debouncedSearch(
+      inputValueRef.current,
+      inputEstadoRef.current,
+      inputPaisRef.current,
+    );
+    if (e.target.value) {
+      const value = e.target.value;
+      const valueMinusculas = value.toLowerCase();
+
+      setInputPais(valueMinusculas);
+      setNomePais(valueMinusculas);
+      setisOpen0(true);
+      setcontrolED(true);
+    } else {
+      inputPaisRef.current = "";
+      currentCodigoPais.current = "";
+      inputEstadoRef.current = "";
+      setInputEstado("");
+      setInputPais("");
+      setNomePais("");
+      setNomeEstado("");
+      setisOpen0(false);
+      setTimeout(() => setcontrolED(false), 10);
+    }
+  };
+  const handleInputEstado = (e) => {
+    const value = unaccent(e.target.value);
+    const valueMinusculas = value.toLowerCase();
+    inputEstadoRef.current = valueMinusculas;
+    debouncedSearch(
+      inputValueRef.current,
+      inputEstadoRef.current,
+      inputPaisRef.current,
+    );
+    setInputEstado(valueMinusculas);
+    setNomeEstado(valueMinusculas);
+  };
+  useEffect(() => {
+    if (!controlED) {
+      setisOpen0(false);
+    }
+  }, [controlED]);
+  const onKeyPress = (e) => {
+    if (searched && e.key === "Enter") {
+      e.preventDefault();
+      searchInput(e);
+    }
   };
   let verificando = false;
   const handleResultClick = async (e, location) => {
@@ -168,6 +381,22 @@ function Search({ props }) {
     }
   };
 
+  const handleLimparEstado = () => {
+    setNomeEstado("");
+    inputEstadoRef.current = "";
+    setInputEstado("");
+  };
+  const LimparTudo = () => {
+    setNomeEstado("");
+    inputEstadoRef.current = "";
+    setInputEstado("");
+    setTimeout(() => setcontrolPD(false), 10);
+    setTimeout(() => setcontrolED(false), 10);
+    setInputPais("");
+    inputPaisRef.current = "";
+    setNomePais("");
+    setSearchResults([]);
+  };
   let apiUrl;
   const [erro, setErro] = useState(false);
   const handleError = (mensagem) => (
@@ -200,6 +429,7 @@ function Search({ props }) {
   };
   const searchInput = (e, location) => {
     setLoading(true);
+
     const valorCorrente = document.querySelector(".inputCidade").value;
     const inputValueMinusc = valorCorrente.toLowerCase();
     const capitalizedString =
@@ -258,6 +488,9 @@ function Search({ props }) {
                 setSearched(true);
                 setInputValue("");
                 setLoading(false);
+                setcontrolPD(false);
+                setcontrolED(false);
+
                 if (verificando === false) {
                   setVerifing(false);
                 }
@@ -265,9 +498,7 @@ function Search({ props }) {
               }
             });
         } else {
-          setErro(
-            handleError("Valor inserido é um continente ou um nome inválido!"),
-          );
+          setErro(handleError("Região buscada é inválido!"));
         }
       })
       .catch((error) => {
@@ -305,7 +536,7 @@ function Search({ props }) {
   const [maisPosition, setMaisPosition] = useState(0);
   const [fimdou, setFimdou] = useState(true);
   const [fimdou01, setFimdou01] = useState(true);
-  const [index, setIndex] = useState(true);
+  // const [index, setIndex] = useState(true);
 
   const getRandomPosition = useCallback(() => {
     if (fimdou) {
@@ -629,6 +860,7 @@ function Search({ props }) {
 
   const [pontos, setPontos] = useState("");
   const [segundosPassados, setSegundosPassados] = useState(0);
+
   useEffect(() => {
     if (loading) {
       const intervalId = setInterval(() => {
@@ -648,62 +880,30 @@ function Search({ props }) {
     }
   }, [segundosPassados, loading]);
 
+  useEffect(() => {
+    if (erro !== false) {
+      setLoading(false);
+    }
+  }, [erro, loading]);
   return (
     <div className={`searchWr ${searched ? "searched" : ""}`}>
+      {erro}
       {loading && (
         <div className="loading-spinner">
-          <p className="loading_text">Estamos trabalhando nisso{pontos}</p>
+          <p className="loading_text">Buscando região{pontos}</p>
           <span className="loader"></span>
         </div>
       )}
-
       <div className={`Search ${searched ? "searched" : ""}`}>
-        {erro}
-
-        {verifClicked && (
-          <div className="overlay" onClick={hlandeVerifiClose}></div>
-        )}
-        <CSSTransition
-          in={verifClicked}
-          timeout={500}
-          classNames="modal"
-          unmountOnExit
-        >
-          <div className="modal_regiao">
-            <span className="close_regiao" onClick={hlandeVerifiClose}>
-              &times;
-            </span>
-            <p className="title_regiao">Região Pesquisada</p>
-            <div>
-              <img className="foto_regiao" src={regiao} alt="regiao?" />
-            </div>
-
-            <span className="text_regiao">
-              Todas as regiões pesquisadas, tanto cidades quanto estados ou
-              Países podem possuir também cidades, estados ou países diferentes
-              com o mesmo nome em diferentes locais! Utilize o mapa para se
-              localizar, e caso não achou a sua cidade, perdoa-nos, a API que
-              foi utilizada é um serviço gratuito, graças a isso existe
-              limitações, então caso não achou, tente usar cidades mais próximas
-              da sua, ou o site da{" "}
-              <a
-                href="https://openweathermap.org"
-                rel="noreferrer"
-                target="_blank"
-              >
-                OpenWeaterMaps
-              </a>
-            </span>
-          </div>
-        </CSSTransition>
         <form
           className={`formulario ${searched ? "searched" : ""}`}
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (searched === true) {
-              searchInput(e);
-            }
-          }}
+          onKeyUp={onKeyPress}
+          // onSubmit={(e) => {
+          //   e.preventDefault();
+          //   if (searched === true) {
+          //     searchInput(e);
+          //   }
+          // }}
         >
           <h2
             onClick={searched ? hlandeVerifiOpen : () => {}}
@@ -714,14 +914,9 @@ function Search({ props }) {
                   verifing === false ? capitalizedValue : resultado.name
                 }`
               : "Escreva abaixo o nome da Cidade!"}
-            <p
-              className="era_essa"
-              style={{ display: searched ? "block" : "none" }}
-            >
-              era essa a região que você queria?
-            </p>
           </h2>
           <input
+            onFocus={LimparTudo}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
             placeholder={
@@ -730,10 +925,32 @@ function Search({ props }) {
             className={`inputCidade ${searched ? "searched" : ""}`}
             type="text"
             value={inputValue}
-            autoComplete="off"
+            autoComplete="new-password"
             onMouseOver={() => changePlaceholderColor(true)}
             onMouseOut={() => changePlaceholderColor(false)}
           />
+          <input
+            onFocus={handleLimparEstado}
+            value={inputPais}
+            onChange={handleInputPais}
+            placeholder={"Pais de origem da região"}
+            className={`inputPais ${isOpen ? "" : "closed"} ${
+              controlPD ? "" : "hidden"
+            }`}
+            type="text"
+            autoComplete="new-password"
+          />
+          <input
+            value={inputEstado}
+            onChange={handleInputEstado}
+            placeholder={"Estado de origem da região"}
+            className={`inputEstado ${isOpen0 ? "" : "closed"} ${
+              controlED ? "" : "hidden"
+            }`}
+            type="text"
+            autoComplete="new-password"
+          />
+
           {searchResults.length > 0 ? (
             <div className="rodape_input">
               <div className="rodape_input_den">
@@ -753,39 +970,7 @@ function Search({ props }) {
               </div>
             </div>
           ) : inputValue !== "" && existing.length === 0 ? (
-            <div className="rodape_input">
-              <div className="rodape_input_den rodape_found">
-                <svg
-                  className="svg_not_found"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="50px"
-                  height="50px"
-                  viewBox="0 0 40 40"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M20.001 2.683C10.452 2.683 2.684 10.451 2.684 20s7.769 17.317 17.317 17.317S37.316 29.548 37.316 20S29.549 2.683 20.001 2.683m0 33.134c-8.722 0-15.817-7.096-15.817-15.817S11.279 4.183 20.001 4.183c8.721 0 15.815 7.096 15.815 15.817s-7.094 15.817-15.815 15.817"
-                  ></path>
-                  <circle
-                    cx="15.431"
-                    cy="16.424"
-                    r="1.044"
-                    fill="currentColor"
-                  ></circle>
-                  <circle
-                    cx="24.569"
-                    cy="16.424"
-                    r="1.044"
-                    fill="currentColor"
-                  ></circle>
-                  <path
-                    fill="currentColor"
-                    d="M24.828 25.312h-9.656a.75.75 0 0 0 0 1.5h9.656a.75.75 0 0 0 0-1.5"
-                  ></path>
-                </svg>
-                <p className="p_found">Cidade não encontrada!</p>
-              </div>
-            </div>
+            naoEncontrada()
           ) : (
             <div></div>
           )}
