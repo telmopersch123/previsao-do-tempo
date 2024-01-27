@@ -14,7 +14,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/typescript": "^2.0.0",
-    "@babel/plugin-proposal-private-property-in-object": "^1.0.0",
     "assert": "^2.1.0",
     "axios": "^0.21.4",
     "axios-cache-adapter": "^2.7.2",
