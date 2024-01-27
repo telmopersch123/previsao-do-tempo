@@ -207,18 +207,25 @@ function Search({ props }) {
         setSearchResults([]);
       }
       const currentCodigoPaisValue = currentCodigoPais.current;
+      console.log(valueInp);
+      console.log(valueEst);
+      console.log(currentCodigoPaisValue);
       axios
         .get(
           `https://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${valueEst},${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
         )
         .then((response) => {
+          console.log(response.data);
+          console.log(inputValueRef.current);
           let locations;
           let valor = false;
 
           if (inputValueRef.current !== "") {
             locations = response.data;
+            console.log("aqui");
           } else {
             locations = false;
+            console.log("aqui");
           }
 
           const filteredLocations = locations.reduce((acc, location) => {
@@ -253,6 +260,7 @@ function Search({ props }) {
             filteredResults = Object.values(0);
           } else {
             filteredResults = Object.values(filteredLocations);
+            console.log(filteredResults);
             setExisting(filteredResults);
             setSearchResults(filteredResults);
           }
@@ -353,7 +361,6 @@ function Search({ props }) {
     setInputValue(e.target.value);
     inputValueRef.current = e.target.value;
     setValorCorrente(e.target.value);
-
     debouncedSearch(
       inputValueRef.current,
       inputEstadoRef.current,
@@ -430,12 +437,12 @@ function Search({ props }) {
       setisOpen0(false);
     }
   }, [controlED]);
-  const onKeyPress = (e) => {
-    if (searched && e.key === "Enter") {
-      e.preventDefault();
-      searchInput(e);
-    }
-  };
+  // const onKeyPress = (e) => {
+  //   if (searched && e.key === "Enter") {
+  //     e.preventDefault();
+  //     searchInput(e);
+  //   }
+  // };
   let verificando = false;
   const handleResultClick = async (e, location) => {
     if (location && location.lat !== undefined && location.lon !== undefined) {
@@ -462,15 +469,17 @@ function Search({ props }) {
     setInputEstado("");
   };
   const LimparTudo = () => {
-    setNomeEstado("");
-    inputEstadoRef.current = "";
-    setInputEstado("");
-    setTimeout(() => setcontrolPD(false), 10);
-    setTimeout(() => setcontrolED(false), 10);
-    setInputPais("");
-    inputPaisRef.current = "";
-    setNomePais("");
-    setSearchResults([]);
+    if (inputValue === "") {
+      setNomeEstado("");
+      inputEstadoRef.current = "";
+      setInputEstado("");
+      setTimeout(() => setcontrolPD(false), 10);
+      setTimeout(() => setcontrolED(false), 10);
+      setInputPais("");
+      inputPaisRef.current = "";
+      setNomePais("");
+      setSearchResults([]);
+    }
   };
   let apiUrl;
   const [erro, setErro] = useState(false);
@@ -565,7 +574,7 @@ function Search({ props }) {
                 setLoading(false);
                 setcontrolPD(false);
                 setcontrolED(false);
-                setSearchResults([]);
+                inputValueRef.current = "";
                 if (verificando === false) {
                   setVerifing(false);
                 }
