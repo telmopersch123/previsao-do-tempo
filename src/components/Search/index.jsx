@@ -973,7 +973,7 @@ function Search({ props }) {
       <div className={`Search ${searched ? "searched" : ""}`}>
         <form
           className={`formulario ${searched ? "searched" : ""}`}
-          onKeyUp={onKeyPress}
+          // onKeyUp={onKeyPress}
           // onSubmit={(e) => {
           //   e.preventDefault();
           //   if (searched === true) {
@@ -1058,9 +1058,9 @@ function Search({ props }) {
               e.preventDefault();
               searchInput(e);
             }}
-            style={{
-              display: searched ? "none" : "flex",
-            }}
+            // style={{
+            //   display: searched ? "none" : "flex",
+            // }}
           >
             Pesquisar por cidade!
           </button>
