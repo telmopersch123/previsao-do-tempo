@@ -60,36 +60,34 @@ function Search({ props }) {
     window.history.replaceState({}, document.title, window.location.pathname);
   }, []);
 
-  useEffect(() => {
-    if (inputValueRef !== "") {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            axios
-              .get(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
-              )
-              .then((response) => {
-                setEstaNublado(response.data.clouds?.all ?? 0);
-                setEstaChovendo(response.data.rain?.["1h"] ?? 0);
-              })
-              .catch((error) => {
-                console.error("Erro ao obter localização:", error.message);
-              });
-          },
-          (error) => {
-            console.error("Erro ao obter localização:", error.message);
-            setEstaNublado(0);
-            setEstaChovendo(0);
-          },
-        );
-      } else {
-        console.error("Geolocalização não é suportada neste navegador");
-      }
-    }
-  }, [estaChovendo, estaNublado, inputValueRef]);
+  // useEffect(() => {
+  //   if (inputValueRef !== "") {
+  //     if (navigator.geolocation) {
+  //       navigator.geolocation.getCurrentPosition(
+  //         (position) => {
+  //           const latitude = position.coords.latitude;
+  //           const longitude = position.coords.longitude;
+  //           axios
+  //             .get(
+  //               `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+  //             )
+  //             .then((response) => {
+  //               setEstaNublado(response.data.clouds?.all ?? 0);
+  //               setEstaChovendo(response.data.rain?.["1h"] ?? 0);
+  //             })
+  //             .catch((error) => {
+  //               console.error("Erro ao obter localização:", error.message);
+  //             });
+  //         },
+  //         (error) => {
+  //           console.error("Erro ao obter localização:", error.message);
+  //         },
+  //       );
+  //     } else {
+  //       console.error("Geolocalização não é suportada neste navegador");
+  //     }
+  //   }
+  // }, [estaChovendo, estaNublado, inputValueRef]);
   const handleVerifValueChange = () => {
     setVerifValue(false);
   };
