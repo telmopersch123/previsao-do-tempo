@@ -468,19 +468,19 @@ function Search({ props }) {
     inputEstadoRef.current = "";
     setInputEstado("");
   };
-  const LimparTudo = () => {
-    if (inputValue === "") {
-      setNomeEstado("");
-      inputEstadoRef.current = "";
-      setInputEstado("");
-      setTimeout(() => setcontrolPD(false), 10);
-      setTimeout(() => setcontrolED(false), 10);
-      setInputPais("");
-      inputPaisRef.current = "";
-      setNomePais("");
-      setSearchResults([]);
-    }
-  };
+  // const LimparTudo = () => {
+  //   if (inputValue === "") {
+  //     setNomeEstado("");
+  //     inputEstadoRef.current = "";
+  //     setInputEstado("");
+  //     setTimeout(() => setcontrolPD(false), 10);
+  //     setTimeout(() => setcontrolED(false), 10);
+  //     setInputPais("");
+  //     inputPaisRef.current = "";
+  //     setNomePais("");
+  //     setSearchResults([]);
+  //   }
+  // };
   let apiUrl;
   const [erro, setErro] = useState(false);
   const handleError = (mensagem) => (
@@ -1008,7 +1008,7 @@ function Search({ props }) {
               : "Escreva abaixo o nome da Cidade!"}
           </h2>
           <input
-            onFocus={LimparTudo}
+            // onFocus={LimparTudo}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
             placeholder={
