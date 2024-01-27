@@ -61,29 +61,31 @@ function Search({ props }) {
   }, []);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-          axios
-            .get(
-              `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
-            )
-            .then((response) => {
-              setEstaNublado(response.data.clouds?.all ?? 0);
-              setEstaChovendo(response.data.rain?.["1h"] ?? 0);
-            })
-            .catch((error) => {
-              console.error("Erro ao obter localização:", error.message);
-            });
-        },
-        (error) => {
-          console.error("Erro ao obter localização:", error.message);
-        },
-      );
-    } else {
-      console.error("Geolocalização não é suportada neste navegador");
+    if (inputValueRef !== "") {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            axios
+              .get(
+                `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+              )
+              .then((response) => {
+                setEstaNublado(response.data.clouds?.all ?? 0);
+                setEstaChovendo(response.data.rain?.["1h"] ?? 0);
+              })
+              .catch((error) => {
+                console.error("Erro ao obter localização:", error.message);
+              });
+          },
+          (error) => {
+            console.error("Erro ao obter localização:", error.message);
+          },
+        );
+      } else {
+        console.error("Geolocalização não é suportada neste navegador");
+      }
     }
   }, [estaChovendo, estaNublado]);
   const handleVerifValueChange = () => {
@@ -122,26 +124,56 @@ function Search({ props }) {
   const inputValueRef = useRef("");
   const inputEstadoRef = useRef("");
   const inputPaisRef = useRef("");
+
+  const currentCodigoEstado = useRef("");
   const [nomePais, setNomePais] = useState("");
   const [codigoPais, setCodigoPais] = useState("");
+  const [codigoEstado, setCodigoEstado] = useState("");
   const [nomePaisTraduzido, setNomePaisTraduzido] = useState();
   const currentCodigoPais = useRef(codigoPais);
   const [nomeEstado, setNomeEstado] = useState("");
 
-  const obterCodigoPais = useCallback(async () => {
+  const obterCodigoEstado = useCallback(async () => {
     try {
-      const response = await fetch(
-        `https://restcountries.com/v3.1/name/${nomePaisTraduzido}`,
+      const response = await axios.get(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados`,
       );
-      const data = await response.json();
-      if (data.length > 0) {
-        const alphaCode = data[0].cca2;
-        setCodigoPais(alphaCode);
-      } else {
-        // setCodigoPais("");
+      if (response.status === 200) {
+        const estados = response.data;
+        const estadoSelecionado = estados.find(
+          (estado) => unaccent(estado.nome).toLowerCase() === nomeEstado,
+        );
+        if (estadoSelecionado) {
+          setCodigoEstado(estadoSelecionado.sigla);
+        } else {
+          setCodigoEstado("");
+        }
       }
-    } catch (error) {
-      console.error("Erro ao buscar código do país:", error);
+    } catch (erro) {
+      console.error("Erro ao obter o código do estado", erro);
+    }
+  }, [nomeEstado]);
+
+  useEffect(() => {
+    obterCodigoEstado();
+    currentCodigoEstado.current = codigoEstado;
+  }, [nomeEstado, obterCodigoEstado, codigoEstado]);
+  const obterCodigoPais = useCallback(async () => {
+    if (inputValueRef !== "") {
+      try {
+        const response = await fetch(
+          `https://restcountries.com/v3.1/name/${nomePaisTraduzido}`,
+        );
+        const data = await response.json();
+        if (data.length > 0) {
+          const alphaCode = data[0].cca2;
+          setCodigoPais(alphaCode);
+        } else {
+          // setCodigoPais("");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar código do país:", error);
+      }
     }
   }, [nomePaisTraduzido, setCodigoPais]);
   useEffect(() => {
@@ -174,18 +206,15 @@ function Search({ props }) {
       if (!valueInp.trim()) {
         setSearchResults([]);
       }
-
       const currentCodigoPaisValue = currentCodigoPais.current;
-      console.log(valueEst);
-      console.log(currentCodigoPais.current);
       axios
         .get(
           `http://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${valueEst},${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
         )
         .then((response) => {
-          console.log(response.data);
           let locations;
           let valor = false;
+
           if (inputValueRef.current !== "") {
             locations = response.data;
           } else {
@@ -224,9 +253,54 @@ function Search({ props }) {
             filteredResults = Object.values(0);
           } else {
             filteredResults = Object.values(filteredLocations);
+            setExisting(filteredResults);
+            setSearchResults(filteredResults);
           }
-          setExisting(filteredResults);
-          setSearchResults(filteredResults);
+
+          if (filteredResults.length === 0) {
+            axios
+              .get(
+                `http://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${
+                  currentCodigoEstado.current
+                },${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+              )
+              .then((response) => {
+                const filteredOptionTwo = response.data.reduce(
+                  (acc, location) => {
+                    if (location.state === undefined) {
+                      // Tratamento quando location.state é undefined
+                      if (!acc.undefined) {
+                        acc.undefined = location;
+                      }
+                      return acc;
+                    } else if (
+                      unaccent(location.state).toLowerCase() ===
+                      unaccent(inputEstadoRef.current).toLowerCase()
+                    ) {
+                      // Tratamento quando location.state é definido e corresponde ao input
+                      if (!acc[location.state]) {
+                        acc[location.state] = location;
+                      }
+                      return acc;
+                    } else if (
+                      unaccent(inputEstadoRef.current).toLowerCase() === ""
+                    ) {
+                      // Tratamento quando inputEstadoRef.current está vazio
+                      if (!acc[location.state]) {
+                        acc[location.state] = location;
+                      }
+                      return acc;
+                    }
+
+                    return acc; // Adicionei esse retorno para casos em que nenhum dos casos anteriores é satisfeito
+                  },
+                  {},
+                );
+                const filteredTwo = Object.values(filteredOptionTwo);
+                setExisting(filteredTwo);
+                setSearchResults(filteredTwo);
+              });
+          }
         })
 
         .catch((error) => {
@@ -305,6 +379,7 @@ function Search({ props }) {
       setisOpen(false);
       setInputPais("");
       setInputEstado("");
+      setCodigoEstado("");
       setNomeEstado("");
       inputPaisRef.current = "";
       currentCodigoPais.current = "";
@@ -334,6 +409,7 @@ function Search({ props }) {
       setInputPais("");
       setNomePais("");
       setNomeEstado("");
+      setCodigoEstado("");
       setisOpen0(false);
       setTimeout(() => setcontrolED(false), 10);
     }
