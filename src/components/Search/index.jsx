@@ -61,7 +61,7 @@ function Search({ props }) {
   }, []);
 
   useEffect(() => {
-    if (inputValueRef.current !== "") {
+    if (inputValueRef !== "") {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
