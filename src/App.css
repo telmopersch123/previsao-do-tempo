@@ -1010,17 +1010,17 @@ form {
   .align-items {
     align-self: center;
   }
-  .inputCidade {
+  .inputCidade.searched {
     background-color: #ffffff29;
+  }
+  .inputCidade.searched {
+    width: 80vw;
   }
   .inputCidade.searched::placeholder {
     color: rgba(0, 0, 0, 0.267);
   }
 }
 @media screen and (max-width: 550px) {
-  .inputCidade.searched {
-    width: 90vw;
-  }
   .inputCidade {
     width: 90vw;
   }
