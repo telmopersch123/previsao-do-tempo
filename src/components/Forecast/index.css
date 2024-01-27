@@ -1,11 +1,15 @@
 .forecast {
   display: flex;
+  justify-content: center;
+}
+.forecast_filho {
+  display: flex;
   flex-direction: column;
   align-items: center;
   align-self: center;
   gap: 10px;
   margin-bottom: 10vh;
-  z-index: 1;
+
   overflow: hidden;
   background-color: #dfdfdf30;
   padding: 30px;
@@ -19,7 +23,7 @@
   align-items: center;
   align-self: center;
   gap: 10px;
-  z-index: -1;
+
   overflow: hidden;
   background-color: #dfdfdf30;
   padding: 30px;
@@ -27,6 +31,7 @@
   margin-bottom: -30px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.589);
   border-radius: 30px 30px 0px 0px;
+  z-index: 0;
 }
 .organized_chuvas {
   margin-top: -30px;
@@ -111,7 +116,6 @@
 }
 .carrosel {
   display: flex;
-  z-index: -1;
 
   padding: 10px;
 }
@@ -128,7 +132,6 @@
   order: 2;
   width: 100%;
   padding: 20px;
-  z-index: -1;
 }
 
 .forecast-day {
@@ -158,7 +161,6 @@
   padding: 40px 10px 20px 10px;
   margin-bottom: -10px;
   border-radius: 100% 100% 0% 0%;
-  z-index: 0;
 }
 .Div_seta > div {
   display: flex;
@@ -658,7 +660,6 @@
     gap: 20%;
     margin-left: 5px; */
     margin-left: 25%;
-    z-index: 0;
   }
   .weather_prev {
     /* position: absolute;

@@ -20,6 +20,7 @@
   justify-content: center;
   margin-top: 0;
   margin-bottom: 10vh;
+  z-index: 1;
 }
 
 body {
@@ -35,9 +36,6 @@ body::-webkit-scrollbar {
   display: none;
 }
 .searchWr {
-  /* background: linear-gradient(38deg, #181818, #0c0c0c, #1e1933, #000000, #443971);
-  background-size: 300% 300%;
-  animation: gradient-animation 25s ease infinite; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,7 +51,6 @@ body::-webkit-scrollbar {
   background-size: 300% 300%;
   animation: gradient-animation 25s ease infinite;
   overflow-x: hidden;
-  z-index: 2;
 }
 
 .Search {
@@ -122,7 +119,6 @@ body::-webkit-scrollbar {
 .inputCidade.searched {
   text-align: center;
   cursor: pointer;
-  z-index: 1;
 }
 
 .inputCidade {
@@ -139,7 +135,6 @@ body::-webkit-scrollbar {
   transition: 0.5s ease-in-out;
   color: white;
   cursor: pointer;
-  z-index: 0;
 }
 .input-container {
   position: relative;
@@ -150,13 +145,12 @@ body::-webkit-scrollbar {
 }
 .rodape_input {
   width: 50vw;
-  z-index: 0;
+
   background-color: rgba(63, 54, 79, 0.341);
   padding: 10px;
   height: auto;
   text-align: center;
   border-radius: 0px 0px 10px 10px;
-  z-index: 5;
 }
 .rodape_input_den {
   display: flex;
@@ -272,6 +266,7 @@ form {
   align-items: center;
   align-self: baseline;
   width: auto;
+  z-index: 1;
 }
 
 .align-text-icon {
@@ -371,14 +366,19 @@ form {
 }
 
 .icon_temp {
+  width: auto;
+}
+.icon_temp_filho {
   display: flex;
   align-items: center;
   flex-direction: row;
   width: 100%;
   gap: 10px;
-  z-index: 0;
+  /* z-index: 1; */
 }
-
+.prox_div {
+  /* z-index: 0; */
+}
 .icon-wrapper {
   display: flex;
   flex-direction: row;
@@ -391,11 +391,8 @@ form {
   margin: 10px 0 10px 10px;
   transition: 0.5s ease-in-out;
   cursor: help;
-  z-index: 0;
 }
-.prox_div {
-  z-index: 1;
-}
+
 .icon-wrapper:hover {
   background-color: #dfdfdf40;
 }
@@ -420,7 +417,7 @@ form {
 
 .far_cel_button {
   width: 100px;
-
+  z-index: 2;
   height: 100px;
   display: flex;
   justify-content: center;
@@ -435,7 +432,7 @@ form {
   border: none;
   cursor: pointer;
   transition: 0.5s ease-in-out;
-  z-index: 5;
+
   position: fixed;
   right: 0;
   bottom: 0;
@@ -451,6 +448,7 @@ form {
   opacity: 0.5;
 }
 .modal_regiao {
+  z-index: 2001;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -466,7 +464,6 @@ form {
   right: 0;
   width: 70vw;
   height: auto;
-  z-index: 1001;
 
   font-family: "Arial Narrow", Arial, sans-serif;
   color: rgba(255, 255, 255, 0.7);
@@ -520,12 +517,13 @@ form {
   position: absolute;
   height: 100px;
   color: #ffffff; /* Set text color */
-  z-index: 2001;
+
   background-color: #000000be;
   width: 100%;
   height: 150vh;
   display: flex;
   justify-content: center;
+  z-index: 2001;
 }
 .loading_text {
   font-size: 18px;
@@ -755,7 +753,7 @@ form {
   outline: none;
   transition: 0.5s ease-in-out;
   color: white;
-  z-index: 1;
+
   cursor: pointer;
   transition: 0.5s ease;
   animation: animationInputsOpenEs 1s ease;
@@ -808,7 +806,7 @@ form {
   outline: none;
   transition: 0.5s ease-in-out;
   color: white;
-  z-index: 1;
+
   cursor: pointer;
   transition: 0.5s ease;
   animation: animationInputsOpen 1s ease;
@@ -990,13 +988,11 @@ form {
   }
   .formulario.searched {
     background-color: #ffffff29;
-    z-index: 1;
     padding: 2em;
     border-radius: 10px;
     width: 90vw;
   }
   .title_master.searched {
-    z-index: 2;
     background-color: #ffffff29;
     color: rgba(255, 255, 255, 0.479);
     text-shadow: 0 0 7px rgba(0, 0, 0, 0.144);
@@ -1119,7 +1115,7 @@ form {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9;
+  z-index: 1001;
 }
 .alert_error {
   margin: 10px;
@@ -1127,7 +1123,7 @@ form {
   background-color: #333333;
   color: white;
   margin-bottom: 15px;
-  z-index: 10;
+  z-index: 2001;
   width: auto;
   border-radius: 5px;
 }

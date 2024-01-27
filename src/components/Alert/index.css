@@ -51,6 +51,7 @@
   gap: 10px;
   background-color: rgb(79, 80, 80);
   border-radius: 10px;
+  z-index: 2001;
 }
 .alert_text0 {
   text-align: center;

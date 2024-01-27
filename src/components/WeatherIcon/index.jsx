@@ -305,30 +305,25 @@ function WeatherIcon({
       setClicked(false);
     }, 200);
   };
-  useEffect(() => {
-    // Função a ser executada quando houver rolagem
-    const handleScroll = () => {
-      handleModalClose();
-    };
+  // useEffect(() => {
+  //   // Função a ser executada quando houver rolagem
+  //   const handleScroll = () => {
+  //     handleModalClose();
+  //   };
 
-    // Adiciona um ouvinte de evento de rolagem ao objeto window
-    window.addEventListener("scroll", handleScroll);
+  //   // Adiciona um ouvinte de evento de rolagem ao objeto window
+  //   window.addEventListener("scroll", handleScroll);
 
-    // Remove o ouvinte de evento ao desmontar o componente
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []); // O s
+  //   // Remove o ouvinte de evento ao desmontar o componente
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []); // O s
   return (
     <div className="icon_temp">
       {mostrarModal && (
-        <div
-          style={{ zIndex: "1001" }}
-          className="overlay"
-          onClick={handleModalClose}
-        ></div>
+        <div className="overlay" onClick={handleModalClose}></div>
       )}
-
       <CSSTransition
         nodeRef={transitionRef}
         in={mostrarModal}
@@ -336,7 +331,7 @@ function WeatherIcon({
         classNames="modal"
         unmountOnExit
       >
-        <div style={{ zIndex: "2001" }} ref={transitionRef} className="modal">
+        <div ref={transitionRef} className="modal">
           <div className="modal-content">
             <span className="close" onClick={handleSpanClick}>
               &times;
@@ -407,29 +402,31 @@ function WeatherIcon({
         </div>
       </CSSTransition>
 
-      {weather.description ? <PeriodoDoDia_icone /> : <div></div>}
-      {cloudsData.all >= 50 ? (
-        <div onClick={handleDivClick} className="icon-wrapper icon2">
-          <img className="icones" src={nublado} alt={weather.description} />
-          <div>
-            <Weather_situation />
+      <div className="icon_temp_filho">
+        {weather.description ? <PeriodoDoDia_icone /> : <div></div>}
+        {cloudsData.all >= 50 ? (
+          <div onClick={handleDivClick} className="icon-wrapper icon2">
+            <img className="icones" src={nublado} alt={weather.description} />
+            <div>
+              <Weather_situation />
+            </div>
           </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
-      {rainData || snowData ? (
-        <div onClick={handleDivClick} className="icon-wrapper icon2">
-          <img
-            className={`icones chuva`}
-            src={icon}
-            alt={weather.description}
-          />
-          <div>{<Wind_situation />}</div>
-        </div>
-      ) : (
-        <div></div>
-      )}
+        ) : (
+          <div></div>
+        )}
+        {rainData || snowData ? (
+          <div onClick={handleDivClick} className="icon-wrapper icon2">
+            <img
+              className={`icones chuva`}
+              src={icon}
+              alt={weather.description}
+            />
+            <div>{<Wind_situation />}</div>
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </div>
     </div>
   );
 }

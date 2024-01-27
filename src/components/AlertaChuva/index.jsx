@@ -142,8 +142,10 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           </div>
         )}
       </div>,
-      <div style={{ zIndex: "2001" }} key="div2">
-        {modalVerif && <div onClick={handleVerif} className="overlay"></div>}
+      <div key="div2">
+        {modalVerif && (
+          <div className="overlay" onClick={() => handleVerifiClose()}></div>
+        )}
         {conteinerModal()}
       </div>,
     ];
@@ -168,9 +170,10 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           </div>
         )}
       </div>,
-
-      <div style={{ zIndex: "2001" }} key="div2">
-        {modalVerif && <div onClick={handleVerif} className="overlay"></div>}
+      <div key="div2">
+        {modalVerif && (
+          <div className="overlay" onClick={() => handleVerifiClose()}></div>
+        )}
         {conteinerModal()}
       </div>,
     ];
@@ -196,20 +199,16 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
           </div>
         )}
       </div>,
-      <div style={{ zIndex: "2001" }} key="div2">
-        {modalVerif && <div onClick={handleVerif} className="overlay"></div>}
+      <div key="div2">
+        {modalVerif && (
+          <div className="overlay" onClick={() => handleVerifiClose()}></div>
+        )}
         {conteinerModal()}
       </div>,
     ];
     return alertaChuva;
   }
-
-  return (
-    <div role="alert">
-      {alertaChuva}
-      {conteinerModal()}
-    </div>
-  );
+  return <div role="alert">{alertaChuva}</div>;
 }
 
 export default AlertaChuva;

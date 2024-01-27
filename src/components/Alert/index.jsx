@@ -89,7 +89,7 @@ const Alert = forwardRef(({ daily, idProp }, ref) => {
         {icone()}
         <p>Alerta! Calor elevado para esta região.</p>
       </div>,
-      <div style={{ zIndex: "2001" }} key="div2">
+      <div key="div2">
         {modalVerif && (
           <div className="overlay" onClick={() => handleVerifiClose()}></div>
         )}
@@ -109,7 +109,7 @@ const Alert = forwardRef(({ daily, idProp }, ref) => {
           <p>Alerta! Calor moderado para esta região.</p>
         </div>,
 
-        <div style={{ zIndex: "2001" }} key="div2">
+        <div key="div2">
           {modalVerif && (
             <div className="overlay" onClick={() => handleVerifiClose()}></div>
           )}
@@ -129,7 +129,7 @@ const Alert = forwardRef(({ daily, idProp }, ref) => {
             <p>Alerta! Frio Moderado para esta região.</p>
           </div>,
 
-          <div style={{ zIndex: "2001" }} key="div2">
+          <div key="div2">
             {modalVerif && (
               <div
                 className="overlay"
@@ -152,7 +152,7 @@ const Alert = forwardRef(({ daily, idProp }, ref) => {
               <p>Alerta! Frio elevado para esta região.</p>
             </div>,
 
-            <div style={{ zIndex: "2001" }} key="div2">
+            <div key="div2">
               {modalVerif && (
                 <div
                   className="overlay"
@@ -171,7 +171,7 @@ const Alert = forwardRef(({ daily, idProp }, ref) => {
               className="alert"
               role="alert"
             ></div>,
-            <div style={{ zIndex: "2001" }} key="div2">
+            <div key="div2">
               {modalVerif && (
                 <div
                   className="overlay"
