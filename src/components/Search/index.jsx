@@ -612,17 +612,21 @@ function Search({ props }) {
   const [fimdou, setFimdou] = useState(true);
   const [fimdou01, setFimdou01] = useState(true);
   // const [index, setIndex] = useState(true);
-
   const getRandomPosition = useCallback(() => {
-    if (fimdou) {
-      let positionTop = Math.floor(Math.random() * -20) + 20;
-      let positionLeft = Math.floor(Math.random() * 500);
+    if (inputValue === "") {
+      if (fimdou) {
+        let positionTop = Math.floor(Math.random() * -20) + 20;
+        let positionLeft = Math.floor(Math.random() * 500);
 
-      return { top: positionTop, left: positionLeft };
+        return { top: positionTop, left: positionLeft };
+      } else {
+        return Math.floor(Math.random() * -20) + 20;
+      }
     } else {
       return Math.floor(Math.random() * -20) + 20;
     }
-  }, [fimdou]);
+  }, [fimdou, inputValue]);
+
   const getColors = useCallback(() => {
     if (estaNublado > 80) {
       return "#808080"; // Retorna a cor fixa para nuvens quando está nublado
