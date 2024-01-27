@@ -209,7 +209,7 @@ function Search({ props }) {
       const currentCodigoPaisValue = currentCodigoPais.current;
       axios
         .get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${valueEst},${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+          `https://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${valueEst},${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
         )
         .then((response) => {
           let locations;
@@ -260,7 +260,7 @@ function Search({ props }) {
           if (filteredResults.length === 0) {
             axios
               .get(
-                `http://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${
+                `https://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${
                   currentCodigoEstado.current
                 },${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
               )
