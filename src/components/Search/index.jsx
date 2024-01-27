@@ -132,52 +132,53 @@ function Search({ props }) {
   const currentCodigoPais = useRef(codigoPais);
   const [nomeEstado, setNomeEstado] = useState("");
 
-  const obterCodigoEstado = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `https://servicodados.ibge.gov.br/api/v1/localidades/estados`,
-      );
-      if (response.status === 200) {
-        const estados = response.data;
-        const estadoSelecionado = estados.find(
-          (estado) => unaccent(estado.nome).toLowerCase() === nomeEstado,
-        );
-        if (estadoSelecionado) {
-          setCodigoEstado(estadoSelecionado.sigla);
-        } else {
-          setCodigoEstado("");
-        }
-      }
-    } catch (erro) {
-      console.error("Erro ao obter o código do estado", erro);
-    }
-  }, [nomeEstado]);
+  // const obterCodigoEstado = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://servicodados.ibge.gov.br/api/v1/localidades/estados`,
+  //     );
+  //     if (response.status === 200) {
+  //       const estados = response.data;
+  //       const estadoSelecionado = estados.find(
+  //         (estado) => unaccent(estado.nome).toLowerCase() === nomeEstado,
+  //       );
+  //       if (estadoSelecionado) {
+  //         setCodigoEstado(estadoSelecionado.sigla);
+  //       } else {
+  //         setCodigoEstado("");
+  //       }
+  //     }
+  //   } catch (erro) {
+  //     console.error("Erro ao obter o código do estado", erro);
+  //   }
+  // }, [nomeEstado]);
 
-  useEffect(() => {
-    obterCodigoEstado();
-    currentCodigoEstado.current = codigoEstado;
-  }, [nomeEstado, obterCodigoEstado, codigoEstado]);
-  const obterCodigoPais = useCallback(async () => {
-    if (inputValueRef !== "") {
-      try {
-        const response = await fetch(
-          `https://restcountries.com/v3.1/name/${nomePaisTraduzido}`,
-        );
-        const data = await response.json();
-        if (data.length > 0) {
-          const alphaCode = data[0].cca2;
-          setCodigoPais(alphaCode);
-        } else {
-          // setCodigoPais("");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar código do país:", error);
-      }
-    }
-  }, [nomePaisTraduzido, setCodigoPais]);
-  useEffect(() => {
-    obterCodigoPais();
-  }, [nomePaisTraduzido, obterCodigoPais]);
+  // useEffect(() => {
+  //   obterCodigoEstado();
+  //   currentCodigoEstado.current = codigoEstado;
+  // }, [nomeEstado, obterCodigoEstado, codigoEstado]);
+
+  // const obterCodigoPais = useCallback(async () => {
+  //   if (inputValueRef !== "") {
+  //     try {
+  //       const response = await fetch(
+  //         `https://restcountries.com/v3.1/name/${nomePaisTraduzido}`,
+  //       );
+  //       const data = await response.json();
+  //       if (data.length > 0) {
+  //         const alphaCode = data[0].cca2;
+  //         setCodigoPais(alphaCode);
+  //       } else {
+  //         // setCodigoPais("");
+  //       }
+  //     } catch (error) {
+  //       console.error("Erro ao buscar código do país:", error);
+  //     }
+  //   }
+  // }, [nomePaisTraduzido, setCodigoPais]);
+  // useEffect(() => {
+  //   obterCodigoPais();
+  // }, [nomePaisTraduzido, obterCodigoPais]);
 
   useEffect(() => {
     fetch(
