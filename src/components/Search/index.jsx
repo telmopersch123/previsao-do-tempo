@@ -349,93 +349,93 @@ function Search({ props }) {
   //   debouncedSearch(inputValue, nomePais);
   // }, [inputValue, nomePais, debouncedSearch]);
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-    inputValueRef.current = e.target.value;
-    setValorCorrente(e.target.value);
+  // const handleInputChange = (e) => {
+  //   setInputValue(e.target.value);
+  //   inputValueRef.current = e.target.value;
+  //   setValorCorrente(e.target.value);
 
-    debouncedSearch(
-      inputValueRef.current,
-      inputEstadoRef.current,
-      inputPaisRef.current,
-    );
-    if (e.target.value) {
-      setisOpen(true);
-      setcontrolPD(true);
-    } else {
-      inputPaisRef.current = "";
-      currentCodigoPais.current = "";
-      inputValueRef.current = "";
-      setisOpen(false);
-      setisOpen0(false);
-      setTimeout(() => setcontrolPD(false), 10);
-      setTimeout(() => setcontrolED(false), 10);
-    }
-  };
+  //   debouncedSearch(
+  //     inputValueRef.current,
+  //     inputEstadoRef.current,
+  //     inputPaisRef.current,
+  //   );
+  //   if (e.target.value) {
+  //     setisOpen(true);
+  //     setcontrolPD(true);
+  //   } else {
+  //     inputPaisRef.current = "";
+  //     currentCodigoPais.current = "";
+  //     inputValueRef.current = "";
+  //     setisOpen(false);
+  //     setisOpen0(false);
+  //     setTimeout(() => setcontrolPD(false), 10);
+  //     setTimeout(() => setcontrolED(false), 10);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (!controlPD) {
-      setisOpen(false);
-      setInputPais("");
-      setInputEstado("");
-      setCodigoEstado("");
-      setNomeEstado("");
-      inputPaisRef.current = "";
-      currentCodigoPais.current = "";
-      inputEstadoRef.current = "";
-    }
-  }, [controlPD]);
-  const handleInputPais = (e) => {
-    inputPaisRef.current = e.target.value;
-    debouncedSearch(
-      inputValueRef.current,
-      inputEstadoRef.current,
-      inputPaisRef.current,
-    );
-    if (e.target.value) {
-      const value = e.target.value;
-      const valueMinusculas = value.toLowerCase();
+  // useEffect(() => {
+  //   if (!controlPD) {
+  //     setisOpen(false);
+  //     setInputPais("");
+  //     setInputEstado("");
+  //     setCodigoEstado("");
+  //     setNomeEstado("");
+  //     inputPaisRef.current = "";
+  //     currentCodigoPais.current = "";
+  //     inputEstadoRef.current = "";
+  //   }
+  // }, [controlPD]);
+  // const handleInputPais = (e) => {
+  //   inputPaisRef.current = e.target.value;
+  //   debouncedSearch(
+  //     inputValueRef.current,
+  //     inputEstadoRef.current,
+  //     inputPaisRef.current,
+  //   );
+  //   if (e.target.value) {
+  //     const value = e.target.value;
+  //     const valueMinusculas = value.toLowerCase();
 
-      setInputPais(valueMinusculas);
-      setNomePais(valueMinusculas);
-      setisOpen0(true);
-      setcontrolED(true);
-    } else {
-      inputPaisRef.current = "";
-      currentCodigoPais.current = "";
-      inputEstadoRef.current = "";
-      setInputEstado("");
-      setInputPais("");
-      setNomePais("");
-      setNomeEstado("");
-      setCodigoEstado("");
-      setisOpen0(false);
-      setTimeout(() => setcontrolED(false), 10);
-    }
-  };
-  const handleInputEstado = (e) => {
-    const value = unaccent(e.target.value);
-    const valueMinusculas = value.toLowerCase();
-    inputEstadoRef.current = valueMinusculas;
-    debouncedSearch(
-      inputValueRef.current,
-      inputEstadoRef.current,
-      inputPaisRef.current,
-    );
-    setInputEstado(valueMinusculas);
-    setNomeEstado(valueMinusculas);
-  };
-  useEffect(() => {
-    if (!controlED) {
-      setisOpen0(false);
-    }
-  }, [controlED]);
-  const onKeyPress = (e) => {
-    if (searched && e.key === "Enter") {
-      e.preventDefault();
-      searchInput(e);
-    }
-  };
+  //     setInputPais(valueMinusculas);
+  //     setNomePais(valueMinusculas);
+  //     setisOpen0(true);
+  //     setcontrolED(true);
+  //   } else {
+  //     inputPaisRef.current = "";
+  //     currentCodigoPais.current = "";
+  //     inputEstadoRef.current = "";
+  //     setInputEstado("");
+  //     setInputPais("");
+  //     setNomePais("");
+  //     setNomeEstado("");
+  //     setCodigoEstado("");
+  //     setisOpen0(false);
+  //     setTimeout(() => setcontrolED(false), 10);
+  //   }
+  // };
+  // const handleInputEstado = (e) => {
+  //   const value = unaccent(e.target.value);
+  //   const valueMinusculas = value.toLowerCase();
+  //   inputEstadoRef.current = valueMinusculas;
+  //   debouncedSearch(
+  //     inputValueRef.current,
+  //     inputEstadoRef.current,
+  //     inputPaisRef.current,
+  //   );
+  //   setInputEstado(valueMinusculas);
+  //   setNomeEstado(valueMinusculas);
+  // };
+  // useEffect(() => {
+  //   if (!controlED) {
+  //     setisOpen0(false);
+  //   }
+  // }, [controlED]);
+  // const onKeyPress = (e) => {
+  //   if (searched && e.key === "Enter") {
+  //     e.preventDefault();
+  //     searchInput(e);
+  //   }
+  // };
   let verificando = false;
   const handleResultClick = async (e, location) => {
     if (location && location.lat !== undefined && location.lon !== undefined) {
@@ -449,29 +449,29 @@ function Search({ props }) {
     }
   };
 
-  const handleInputBlur = () => {
-    // Quando o foco é perdido, se o valor do input for vazio, limpe os resultados
-    if (!inputValue.trim()) {
-      setSearchResults([]);
-    }
-  };
+  // const handleInputBlur = () => {
+  //   // Quando o foco é perdido, se o valor do input for vazio, limpe os resultados
+  //   if (!inputValue.trim()) {
+  //     setSearchResults([]);
+  //   }
+  // };
 
-  const handleLimparEstado = () => {
-    setNomeEstado("");
-    inputEstadoRef.current = "";
-    setInputEstado("");
-  };
-  const LimparTudo = () => {
-    setNomeEstado("");
-    inputEstadoRef.current = "";
-    setInputEstado("");
-    setTimeout(() => setcontrolPD(false), 10);
-    setTimeout(() => setcontrolED(false), 10);
-    setInputPais("");
-    inputPaisRef.current = "";
-    setNomePais("");
-    setSearchResults([]);
-  };
+  // const handleLimparEstado = () => {
+  //   setNomeEstado("");
+  //   inputEstadoRef.current = "";
+  //   setInputEstado("");
+  // };
+  // const LimparTudo = () => {
+  //   setNomeEstado("");
+  //   inputEstadoRef.current = "";
+  //   setInputEstado("");
+  //   setTimeout(() => setcontrolPD(false), 10);
+  //   setTimeout(() => setcontrolED(false), 10);
+  //   setInputPais("");
+  //   inputPaisRef.current = "";
+  //   setNomePais("");
+  //   setSearchResults([]);
+  // };
   let apiUrl;
   const [erro, setErro] = useState(false);
   const handleError = (mensagem) => (
@@ -986,9 +986,10 @@ function Search({ props }) {
               : "Escreva abaixo o nome da Cidade!"}
           </h2>
           <input
-            onFocus={LimparTudo}
-            onChange={handleInputChange}
-            onBlur={handleInputBlur}
+            // onFocus={LimparTudo}
+            // onChange={handleInputChange}
+            // onBlur={handleInputBlur}
+            onChange={(e) => setInputValue(e.target.value)}
             placeholder={
               searched ? `Pesquisar por mais!` : "Digite o nome da cidade aqui!"
             }
