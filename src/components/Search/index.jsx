@@ -46,7 +46,7 @@ function Search({ props }) {
   const [existing, setExisting] = useState([]);
   const [verifing, setVerifing] = useState(false);
   const [stringBack, setStringBack] = useState("");
-
+  const inputValueRef = useRef("");
   const [inputPais, setInputPais] = useState("");
   const [inputEstado, setInputEstado] = useState("");
 
@@ -61,7 +61,7 @@ function Search({ props }) {
   }, []);
 
   useEffect(() => {
-    if (inputValueRef !== "") {
+    if (inputValueRef.current !== "") {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -87,7 +87,7 @@ function Search({ props }) {
         console.error("Geolocalização não é suportada neste navegador");
       }
     }
-  }, [estaChovendo, estaNublado]);
+  }, [estaChovendo, estaNublado, inputValueRef]);
   const handleVerifValueChange = () => {
     setVerifValue(false);
   };
@@ -121,7 +121,6 @@ function Search({ props }) {
     input.style.color = isHovered;
   }
 
-  const inputValueRef = useRef("");
   const inputEstadoRef = useRef("");
   const inputPaisRef = useRef("");
 
