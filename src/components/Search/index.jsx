@@ -715,16 +715,25 @@ function Search({ props }) {
   }, [fimdou01, estaNublado]);
 
   const getPositionMais = useCallback(() => {
-    if (fimdou01) {
-      let posTop = Math.floor(Math.random() * -150) + 150;
-      let posLeft = Math.floor(Math.random() * 600);
-      let windTop = Math.floor(Math.random() * 10);
-      let camada = Math.floor(Math.random() * 2);
-      return { top: posTop, left: posLeft, windTop: windTop, camadaZ: camada };
+    if (inputValue === "") {
+      if (fimdou01) {
+        let posTop = Math.floor(Math.random() * -150) + 150;
+        let posLeft = Math.floor(Math.random() * 600);
+        let windTop = Math.floor(Math.random() * 10);
+        let camada = Math.floor(Math.random() * 2);
+        return {
+          top: posTop,
+          left: posLeft,
+          windTop: windTop,
+          camadaZ: camada,
+        };
+      } else {
+        return {};
+      }
     } else {
       return {};
     }
-  }, [fimdou01]);
+  }, [fimdou01, inputValue]);
 
   useEffect(() => {
     function restartAnimationMais() {
