@@ -81,6 +81,8 @@ function Search({ props }) {
           },
           (error) => {
             console.error("Erro ao obter localização:", error.message);
+            setEstaNublado(0);
+            setEstaChovendo(0);
           },
         );
       } else {
