@@ -74,6 +74,7 @@ function Search({ props }) {
               .then((response) => {
                 setEstaNublado(response.data.clouds?.all ?? 0);
                 setEstaChovendo(response.data.rain?.["1h"] ?? 0);
+                console.log(response.data.rain);
               })
               .catch((error) => {
                 console.error("Erro ao obter localização:", error.message);
