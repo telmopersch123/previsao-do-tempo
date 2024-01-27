@@ -180,134 +180,134 @@ function Search({ props }) {
   //   obterCodigoPais();
   // }, [nomePaisTraduzido, obterCodigoPais]);
 
-  useEffect(() => {
-    fetch(
-      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=${encodeURIComponent(
-        nomePais,
-      )}`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const traductionNewValue = data[0][0][0];
-        setNomePaisTraduzido(traductionNewValue);
-      })
+  // useEffect(() => {
+  //   fetch(
+  //     `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=${encodeURIComponent(
+  //       nomePais,
+  //     )}`,
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       const traductionNewValue = data[0][0][0];
+  //       setNomePaisTraduzido(traductionNewValue);
+  //     })
 
-      .catch((error) => {
-        console.error("Erro ao traduzir:", error);
-      });
-  }, [nomePais]);
+  //     .catch((error) => {
+  //       console.error("Erro ao traduzir:", error);
+  //     });
+  // }, [nomePais]);
 
-  useEffect(() => {
-    currentCodigoPais.current = codigoPais;
-  }, [codigoPais]);
+  // useEffect(() => {
+  //   currentCodigoPais.current = codigoPais;
+  // }, [codigoPais]);
 
-  const debouncedSearch = useRef(
-    debounce((valueInp, valueEst, valuePais) => {
-      if (!valueInp.trim()) {
-        setSearchResults([]);
-      }
-      const currentCodigoPaisValue = currentCodigoPais.current;
-      axios
-        .get(
-          `https://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${valueEst},${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
-        )
-        .then((response) => {
-          let locations;
-          let valor = false;
+  // const debouncedSearch = useRef(
+  //   debounce((valueInp, valueEst, valuePais) => {
+  //     if (!valueInp.trim()) {
+  //       setSearchResults([]);
+  //     }
+  //     const currentCodigoPaisValue = currentCodigoPais.current;
+  //     axios
+  //       .get(
+  //         `https://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${valueEst},${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+  //       )
+  //       .then((response) => {
+  //         let locations;
+  //         let valor = false;
 
-          if (inputValueRef.current !== "") {
-            locations = response.data;
-          } else {
-            locations = false;
-          }
+  //         if (inputValueRef.current !== "") {
+  //           locations = response.data;
+  //         } else {
+  //           locations = false;
+  //         }
 
-          const filteredLocations = locations.reduce((acc, location) => {
-            if (location.state === undefined) {
-              if (!acc[location.state]) {
-                acc[location.state] = location;
-              }
-              valor = false;
-              return acc;
-            } else if (
-              unaccent(location.state).toLowerCase() ===
-              unaccent(inputEstadoRef.current).toLowerCase()
-            ) {
-              if (!acc[location.state]) {
-                acc[location.state] = location;
-              }
-              valor = false;
-              return acc;
-            } else if (unaccent(inputEstadoRef.current).toLowerCase() === "") {
-              if (!acc[location.state]) {
-                acc[location.state] = location;
-              }
-              valor = false;
-              return acc;
-            } else {
-              valor = true;
-            }
-          }, {});
+  //         const filteredLocations = locations.reduce((acc, location) => {
+  //           if (location.state === undefined) {
+  //             if (!acc[location.state]) {
+  //               acc[location.state] = location;
+  //             }
+  //             valor = false;
+  //             return acc;
+  //           } else if (
+  //             unaccent(location.state).toLowerCase() ===
+  //             unaccent(inputEstadoRef.current).toLowerCase()
+  //           ) {
+  //             if (!acc[location.state]) {
+  //               acc[location.state] = location;
+  //             }
+  //             valor = false;
+  //             return acc;
+  //           } else if (unaccent(inputEstadoRef.current).toLowerCase() === "") {
+  //             if (!acc[location.state]) {
+  //               acc[location.state] = location;
+  //             }
+  //             valor = false;
+  //             return acc;
+  //           } else {
+  //             valor = true;
+  //           }
+  //         }, {});
 
-          let filteredResults;
-          if (valor === true) {
-            filteredResults = Object.values(0);
-          } else {
-            filteredResults = Object.values(filteredLocations);
-            setExisting(filteredResults);
-            setSearchResults(filteredResults);
-          }
+  //         let filteredResults;
+  //         if (valor === true) {
+  //           filteredResults = Object.values(0);
+  //         } else {
+  //           filteredResults = Object.values(filteredLocations);
+  //           setExisting(filteredResults);
+  //           setSearchResults(filteredResults);
+  //         }
 
-          if (filteredResults.length === 0) {
-            axios
-              .get(
-                `https://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${
-                  currentCodigoEstado.current
-                },${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
-              )
-              .then((response) => {
-                const filteredOptionTwo = response.data.reduce(
-                  (acc, location) => {
-                    if (location.state === undefined) {
-                      // Tratamento quando location.state é undefined
-                      if (!acc.undefined) {
-                        acc.undefined = location;
-                      }
-                      return acc;
-                    } else if (
-                      unaccent(location.state).toLowerCase() ===
-                      unaccent(inputEstadoRef.current).toLowerCase()
-                    ) {
-                      // Tratamento quando location.state é definido e corresponde ao input
-                      if (!acc[location.state]) {
-                        acc[location.state] = location;
-                      }
-                      return acc;
-                    } else if (
-                      unaccent(inputEstadoRef.current).toLowerCase() === ""
-                    ) {
-                      // Tratamento quando inputEstadoRef.current está vazio
-                      if (!acc[location.state]) {
-                        acc[location.state] = location;
-                      }
-                      return acc;
-                    }
+  //         if (filteredResults.length === 0) {
+  //           axios
+  //             .get(
+  //               `https://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${
+  //                 currentCodigoEstado.current
+  //               },${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
+  //             )
+  //             .then((response) => {
+  //               const filteredOptionTwo = response.data.reduce(
+  //                 (acc, location) => {
+  //                   if (location.state === undefined) {
+  //                     // Tratamento quando location.state é undefined
+  //                     if (!acc.undefined) {
+  //                       acc.undefined = location;
+  //                     }
+  //                     return acc;
+  //                   } else if (
+  //                     unaccent(location.state).toLowerCase() ===
+  //                     unaccent(inputEstadoRef.current).toLowerCase()
+  //                   ) {
+  //                     // Tratamento quando location.state é definido e corresponde ao input
+  //                     if (!acc[location.state]) {
+  //                       acc[location.state] = location;
+  //                     }
+  //                     return acc;
+  //                   } else if (
+  //                     unaccent(inputEstadoRef.current).toLowerCase() === ""
+  //                   ) {
+  //                     // Tratamento quando inputEstadoRef.current está vazio
+  //                     if (!acc[location.state]) {
+  //                       acc[location.state] = location;
+  //                     }
+  //                     return acc;
+  //                   }
 
-                    return acc; // Adicionei esse retorno para casos em que nenhum dos casos anteriores é satisfeito
-                  },
-                  {},
-                );
-                const filteredTwo = Object.values(filteredOptionTwo);
-                setExisting(filteredTwo);
-                setSearchResults(filteredTwo);
-              });
-          }
-        })
+  //                   return acc; // Adicionei esse retorno para casos em que nenhum dos casos anteriores é satisfeito
+  //                 },
+  //                 {},
+  //               );
+  //               const filteredTwo = Object.values(filteredOptionTwo);
+  //               setExisting(filteredTwo);
+  //               setSearchResults(filteredTwo);
+  //             });
+  //         }
+  //       })
 
-        .catch((error) => {
-          console.error("Erro ao buscar localização:", error.message);
-        });
-    }, 500),
-  ).current;
+  //       .catch((error) => {
+  //         console.error("Erro ao buscar localização:", error.message);
+  //       });
+  //   }, 500),
+  // ).current;
   const naoEncontrada = () => {
     return (
       <div className="rodape_input">
