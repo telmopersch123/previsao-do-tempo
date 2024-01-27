@@ -305,7 +305,6 @@ function Search({ props }) {
 
         .catch((error) => {
           console.error("Erro ao buscar localização:", error.message);
-          naoEncontrada();
         });
     }, 500),
   ).current;
@@ -961,6 +960,7 @@ function Search({ props }) {
       setLoading(false);
     }
   }, [erro, loading]);
+
   return (
     <div className={`searchWr ${searched ? "searched" : ""}`}>
       {erro}
@@ -972,14 +972,8 @@ function Search({ props }) {
       )}
       <div className={`Search ${searched ? "searched" : ""}`}>
         <form
+          onSubmit={(event) => event.preventDefault()}
           className={`formulario ${searched ? "searched" : ""}`}
-          // onKeyUp={onKeyPress}
-          // onSubmit={(e) => {
-          //   e.preventDefault();
-          //   if (searched === true) {
-          //     searchInput(e);
-          //   }
-          // }}
         >
           <h2
             onClick={searched ? hlandeVerifiOpen : () => {}}
@@ -1005,7 +999,7 @@ function Search({ props }) {
             onMouseOver={() => changePlaceholderColor(true)}
             onMouseOut={() => changePlaceholderColor(false)}
           />
-          <input
+          {/* <input
             onFocus={handleLimparEstado}
             value={inputPais}
             onChange={handleInputPais}
@@ -1015,8 +1009,8 @@ function Search({ props }) {
             }`}
             type="text"
             autoComplete="new-password"
-          />
-          <input
+          /> */}
+          {/* <input
             value={inputEstado}
             onChange={handleInputEstado}
             placeholder={"Estado de origem da região"}
@@ -1025,9 +1019,9 @@ function Search({ props }) {
             }`}
             type="text"
             autoComplete="new-password"
-          />
+          /> */}
 
-          {searchResults.length > 0 ? (
+          {/* {searchResults.length > 0 ? (
             <div className="rodape_input">
               <div className="rodape_input_den">
                 {searchResults.map((location, index) => (
@@ -1049,7 +1043,7 @@ function Search({ props }) {
             naoEncontrada()
           ) : (
             <div></div>
-          )}
+          )} */}
 
           <button
             className="input_Pesquisar"
