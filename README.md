@@ -17,8 +17,7 @@ Este repositório contém um aplicativo desenvolvido em React para fornecer prev
 
 - **React**: Biblioteca JavaScript para construir interfaces de usuário.
 - **OpenWeatherMap API**: API para obter dados meteorológicos.
-- **Google Maps API** (opcional): Para exibir a localização das regiões em um mapa.
-- **CSS Animations**: Técnicas de animação em CSS para melhorar a experiência do usuário.
+- **CSS Animations**: Técnicas de animação em CSS junto com React para melhorar a experiência do usuário.
 
 ## Para acessar o site de previsão do tempo, clique no link abaixo!
 LINK: [Previsões Simples](https://previsoes-simples.netlify.app/).
