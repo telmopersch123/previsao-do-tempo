@@ -101,9 +101,9 @@ function Search({ props }) {
   const handleDailyDataChange = (newDailyData) => {
     setDailyData(newDailyData);
   };
-  const hlandeAlertaChuva = (newDaily) => {
+  const hlandeAlertaChuva = useCallback((newDaily) => {
     setDaily(newDaily);
-  };
+  }, []);
 
   const handleMoment = (newMomentDay) => {
     setNewMomentDay(newMomentDay);

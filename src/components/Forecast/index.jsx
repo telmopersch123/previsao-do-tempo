@@ -32,7 +32,7 @@ const Forecast = ({
   const [newMomentDay, setNewMomentDay] = useState([]);
   const [modalVerif, setModalVerif] = useState(false);
 
-  const textos = useMemo(() => ["Manhã", "Tarde", "Noite"]);
+  const textos = useMemo(() => ["Manhã", "Tarde", "Noite"], []);
   const [cliques, setCliques] = useState(0);
   let dados_manha = null;
   let dados_tarde = null;
@@ -262,7 +262,7 @@ const Forecast = ({
           const daily = response.data.list;
           setDaily(daily);
           setDailyData(response.data.list);
-          onAlertTemp(response.data.list);
+           onAlertTemp(response.data.list);
           const filteredForecast = dailyData.reduce((result, item) => {
             const date = moment(item.dt_txt).format("YYYY-MM-DD");
             if (!result[date]) {
@@ -292,7 +292,7 @@ const Forecast = ({
         console.error("Erro ao buscar dados de previsão:", error);
       });
    
-  }, [lat, lon, currentHoutd]);
+  }, [lat, lon, currentHoutd,onAlertTemp]);
 
   useEffect(() => {
     let novoForecastSlice;
