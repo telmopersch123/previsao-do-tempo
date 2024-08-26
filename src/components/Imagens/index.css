@@ -2,7 +2,8 @@
   width: 100%;
   overflow-x: hidden;
   pointer-events: none;
-  outline: none; /* Remove a borda de foco padrão ao clicar nos controles */
+  outline: none; 
+ 
 }
 
 .video-conteiner {
@@ -14,6 +15,7 @@
   top: 17.5em;
   overflow-x: hidden;
   pointer-events: none;
+ 
 }
 .liner-top {
   background: linear-gradient(
@@ -27,12 +29,14 @@
     #1e1933bd 75%,
     #1e19335e 90%,
     #1e193300 100%
+    
   );
   position: absolute;
   width: 101%;
   height: 150px;
-  margin-top: -80px;
-  margin-left: -1px;
+  margin-top: -50px;
+
+ 
 }
 .liner-bottom {
   background: linear-gradient(
@@ -48,10 +52,10 @@
     #1e193300 100%
   );
   position: relative;
-  width: 101%;
+  width: 100%;
   height: 100px;
-  margin-top: -50px;
-  margin-left: -1px;
+  margin-top: -70px;
+
 }
 body {
   overflow-x: hidden;

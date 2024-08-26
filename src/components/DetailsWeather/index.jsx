@@ -1,6 +1,10 @@
 import FeatherIcon from "feather-icons-react";
-import { convertorFahrenheit } from "../Conv";
+import { TiWeatherWindyCloudy } from "react-icons/ti";
+
+
+import { WiHumidity, WiStrongWind, WiThermometer } from 'react-icons/wi';
 import "../../App.css";
+import { convertorFahrenheit } from "../Conv";
 
 const DetailsWeather = ({
   wind,
@@ -29,10 +33,17 @@ const DetailsWeather = ({
       <h1 className="text_div_parag">Clima Agora!</h1>
       <div className="div_parag_filho">
         {feels_like !== undefined ? (
+           
           <p className={feels_like !== undefined ? "" : "dados_ind"}>
+            <span className="Icon-Details"> 
+                <WiThermometer size={30} />
+            </span>
+            <span className="text_details"> 
             {`Sensação de ${feelsLikeDisplay.toFixed(0)}`}{" "}
-            {Celsius ? "°C" : "°F"}
+              {Celsius ? "°C" : "°F"}
+            </span>
           </p>
+          
         ) : (
           <p>
             Sensação de:
@@ -45,7 +56,7 @@ const DetailsWeather = ({
         )}
         {temp_max !== undefined || temp_min !== undefined ? (
           <p
-            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            style={{ display: "flex", flexDirection: "column", gap: "0px" }}
             className={
               temp_max !== undefined || temp_min !== undefined
                 ? ""
@@ -54,23 +65,33 @@ const DetailsWeather = ({
           >
             <span>
               {" "}
-              {`Temperatura Máxima de`}{" "}
+               <span className="Icon-Details"> 
+                 <WiThermometer color="rgba(255, 102, 102)" size={30} style={{ marginBottom: '-10px' }} />
+              </span>
+                <span className="text_details"> 
+                {`Temperatura Máxima de `}{" "}
               <span
                 style={{ borderBottom: "2px solid  rgba(255, 102, 102, 0.6)" }}
               >
                 {(temperaturaMax + 2).toFixed(0)}
                 {Celsius ? "°C" : "°F"}
-              </span>{" "}
+                </span>{" "}
+                </span>
             </span>
             <span>
               {" "}
-              {`Temperatura Minima de`}{" "}
+                <span className="Icon-Details"> 
+                 <WiThermometer color="rgba(102, 102, 255)" size={30} style={{ marginBottom: '-10px' }} />
+              </span>
+                <span className="text_details"> 
+                {`Temperatura Minima de `}{" "}
               <span
                 style={{ borderBottom: "2px solid rgba(102, 102, 255, 0.6)" }}
               >
                 {temperaturaMin.toFixed(0)}
                 {Celsius ? "°C" : "°F"}
-              </span>{" "}
+                </span>{" "}
+                </span>
             </span>
           </p>
         ) : (
@@ -87,7 +108,12 @@ const DetailsWeather = ({
         )}
         {wind !== undefined ? (
           <p className={wind !== undefined ? "" : "dados_ind"}>
-            {`Velocidade do vento: ${convertToKmh(wind).toFixed(0)} km/h`}
+            <span className="Icon-Details"> 
+            <WiStrongWind size={30} />
+            </span>
+               <span className="text_details"> 
+              {`Velocidade do vento: ${convertToKmh(wind).toFixed(0)} km/h`}
+          </span>
           </p>
         ) : (
           <p>
@@ -99,7 +125,12 @@ const DetailsWeather = ({
         )}
         {gust !== undefined ? (
           <p className={gust !== undefined ? "" : "dados_ind"}>
-            {`Rajada de: ${convertToKmh(gust).toFixed(0)} km/h`}
+            <span className="Icon-Details"> 
+            <WiStrongWind size={30}/>
+            </span>
+               <span className="text_details"> 
+              {`Rajada de: ${convertToKmh(gust).toFixed(0)} km/h`}
+              </span>
           </p>
         ) : (
           <p>
@@ -116,7 +147,13 @@ const DetailsWeather = ({
               weatherData.main.sea_level !== undefined ? "" : "dados_ind"
             }
           >
-            {`Pressão atmosférica: ${weatherData.main.sea_level}hPa`}
+            <span className="Icon-Details"> 
+              <TiWeatherWindyCloudy  size={30}/>
+
+            </span>
+               <span className="text_details"> 
+              {`Pressão atmosférica: ${weatherData.main.sea_level}hPa`}
+              </span>
           </p>
         ) : (
           <p>
@@ -139,7 +176,12 @@ const DetailsWeather = ({
               weatherData.main.humidity !== undefined ? "" : "dados_ind"
             }
           >
-            {`Umidade: ${weatherData.main.humidity}%`}
+            <span className="Icon-Details"> 
+              <WiHumidity size={30}  />
+            </span>
+               <span className="text_details"> 
+              {`Umidade: ${weatherData.main.humidity}%`}
+              </span>
           </p>
         ) : (
           <p>

@@ -1,23 +1,19 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import moment from "moment";
-import _ from "lodash";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 
-import { convertorFahrenheit } from "../Conv";
-import "./index.css";
-import Snowflakes from "./Snow";
+import relogioEfeito from "../../icones/espere.gif";
+import { default as iconeLua, default as luaEfeito } from "../../icones/lua_noite.gif";
+import seta from "../../icones/seta-para-a-direita.png";
+import { default as iconeManha, default as solMaEfeito } from "../../icones/sol_manha.gif";
+import { default as iconeTarde, default as solTarEfeito } from "../../icones/sol_tarde.gif";
 import temperAlta from "../../icones/temperatura-alta.png";
 import temperBaixa from "../../icones/temperatura-baixa.png";
-import iconeManha from "../../icones/sol_manha.gif";
-import iconeTarde from "../../icones/sol_tarde.gif";
-import iconeLua from "../../icones/lua_noite.gif";
 import AlertaChuva from "../AlertaChuva";
-import solMaEfeito from "../../icones/sol_manha.gif";
-import solTarEfeito from "../../icones/sol_tarde.gif";
-import luaEfeito from "../../icones/lua_noite.gif";
-import relogioEfeito from "../../icones/espere.gif";
-import seta from "../../icones/seta-para-a-direita.png";
+import { convertorFahrenheit } from "../Conv";
+import Snowflakes from "./Snow";
+import "./index.css";
 const Forecast = ({
   lat,
   lon,
@@ -79,13 +75,13 @@ const Forecast = ({
     let icone = "";
     let period = newMomentDay === "noite" ? "n" : "d";
     useEffect(() => {
-      // Verifica se a descrição já está traduzida no cache local
+     
       const cachedTranslation = localStorage.getItem(description);
 
       if (cachedTranslation && cachedTranslation !== translatedDescription) {
         setTranslatedDescription(cachedTranslation);
       } else {
-        // Se não estiver no cache, realiza a tradução
+       
         fetch(
           `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodeURIComponent(
             description,
@@ -94,17 +90,16 @@ const Forecast = ({
           .then((response) => response.json())
           .then((data) => {
             const newTranslatedDescription = data[0][0][0];
-            // Verifica se a nova tradução é diferente da atual
+      
             if (newTranslatedDescription !== translatedDescription) {
               setTranslatedDescription(newTranslatedDescription);
-              // setNuevo(newTranslatedDescription);
-              // Armazena a tradução no cache local
+       
               localStorage.setItem(description, newTranslatedDescription);
             }
           })
           .catch((error) => {
             console.error("Erro ao traduzir:", error);
-            setTranslatedDescription(description); // Retorna a descrição original em caso de erro
+            setTranslatedDescription(description); 
           });
       }
     }, [description, translatedDescription]);
@@ -296,7 +291,7 @@ const Forecast = ({
       .catch((error) => {
         console.error("Erro ao buscar dados de previsão:", error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [lat, lon, currentHoutd]);
 
   useEffect(() => {
@@ -306,20 +301,20 @@ const Forecast = ({
         if (newMomentDay != "noite") {
           novoForecastSlice = dailyForecastArray.slice(0, 5);
         } else {
-          novoForecastSlice = dailyForecastArray.slice(0, 6);
+          novoForecastSlice = dailyForecastArray.slice(0, 5);
         }
       } else {
         if (newMomentDay != "noite") {
           novoForecastSlice = dailyForecastArray.slice(0, 5);
         } else {
-          novoForecastSlice = dailyForecastArray.slice(0, 6);
+          novoForecastSlice = dailyForecastArray.slice(0, 5);
         }
       }
     } else {
       if (newMomentDay != "noite") {
         novoForecastSlice = dailyForecastArray.slice(0, 5);
       } else {
-        novoForecastSlice = dailyForecastArray.slice(0, 6);
+        novoForecastSlice = dailyForecastArray.slice(0, 5);
       }
     }
 

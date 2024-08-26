@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 
-import limpo_dia from "./videos_site/limpo_rend.mp4";
+import chuva_rend from "./videos_site/chuva_rend.mp4";
 import limpo_noite from "./videos_site/limpo_n_rend.mp4";
+import limpo_dia from "./videos_site/limpo_rend.mp4";
+import neve_red from "./videos_site/neve_rend.mp4";
+import nublado_rend from "./videos_site/nublado_rend.mp4";
+import disperso_noite from "./videos_site/nuvensdis_n_rend.mp4";
+import disperso_dia from "./videos_site/nuvensdisp_rend.mp4";
 import quebrado_dia from "./videos_site/nuvensque_rend.mp4";
 import quebrado_noite from "./videos_site/quebradas_n_rend.mp4";
-import disperso_dia from "./videos_site/nuvensdisp_rend.mp4";
-import disperso_noite from "./videos_site/nuvensdis_n_rend.mp4";
-import nublado_rend from "./videos_site/nublado_rend.mp4";
-import neve_red from "./videos_site/neve_rend.mp4";
-import chuva_rend from "./videos_site/chuva_rend.mp4";
 
 const Imagens = ({ stringBack }) => {
   const [key, setKey] = useState(0);
@@ -38,7 +38,7 @@ const Imagens = ({ stringBack }) => {
                   <source src={limpo_dia} type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div className="liner-bottom"></div>
+              <div className="liner-bottom"></div>
               </div>
             );
           case "quebradas_dia":

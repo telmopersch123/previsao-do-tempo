@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 
-import { useSpring, animated } from "react-spring";
+import axios from "axios";
 import moment from "moment";
+import { FaCloudRain, FaTachometerAlt, FaTemperatureHigh } from 'react-icons/fa';
+
+import { WiCloud, WiStrongWind } from 'react-icons/wi';
+import { animated, useSpring } from "react-spring";
 import { convertorFahrenheit } from "../Conv";
 import "./index.css";
-import axios from "axios";
 
 import Flag from "../Flag";
 
@@ -274,30 +277,35 @@ const Timeline = ({
                   onClick={() => changeMapLayer("temp")}
                   className={mapLayer === "temp" ? "active" : ""}
                 >
-                  Temperatura
+                  <FaTemperatureHigh />Temperatura
                 </button>
+                 
                 <button
                   onClick={() => changeMapLayer("pressure")}
                   className={mapLayer === "pressure" ? "active" : ""}
                 >
-                  Pressão atmosférica
+                  <FaTachometerAlt   />
+                 Pressão atmosférica
                 </button>
                 <button
                   onClick={() => changeMapLayer("wind")}
                   className={mapLayer === "wind" ? "active" : ""}
                 >
+                   <WiStrongWind />
                   Velocidade do vento
                 </button>
                 <button
                   onClick={() => changeMapLayer("clouds")}
                   className={mapLayer === "clouds" ? "active" : ""}
                 >
+                    <WiCloud  />
                   Nuvens
                 </button>
                 <button
                   onClick={() => changeMapLayer("precipitation")}
                   className={mapLayer === "precipitation" ? "active" : ""}
                 >
+                    <FaCloudRain />
                   Precipitação
                 </button>
               </div>

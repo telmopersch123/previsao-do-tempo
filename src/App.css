@@ -291,10 +291,8 @@ form {
 .div_parag {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
   align-self: center;
-  justify-content: center;
+  text-align: center;
   background-color: #dfdfdf30;
 
   padding: 10px;
@@ -305,18 +303,12 @@ form {
   z-index: 1;
 }
 .div_parag_filho {
-  margin-top: 1em;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
   gap: 30px;
-  align-self: center;
-  justify-content: center;
   background-color: #dfdfdf30;
-
   padding: 10px;
-  width: 95%;
-
+  width: 100%;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.531);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: white;
@@ -324,20 +316,36 @@ form {
   font-weight: bold;
   border-radius: 10px;
 }
+
+.Icon-Details{
+float: left;
+background-color: #dfdfdf50;
+justify-content: center;
+padding: 20px;
+
+}
+
+.text_details{
+ display: flex;
+ justify-content: center;
+ margin-top: 25px;
+ gap: 5px;
+ margin-right: 70px;
+}
+
 .text_div_parag {
   font-size: 25px;
   color: #ffffff9d;
 }
 .div_parag > div > p {
-  margin-top: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-radius: 5px;
   background-color: #ffffff29;
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0);
-  flex-direction: row;
-  padding: 20px;
-  text-align: justify;
+  box-shadow: 3px 3px 3px rgba(252, 21, 21, 0);
+
+  text-align: center;
+
 }
 
 .icones {
@@ -692,15 +700,6 @@ form {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.528);
   animation: moveCloudMais 30s linear infinite;
 }
-/* .wind{
-                                  width: 2px;
-                                  height: 10px;
-                                  background-color: #fff;
-                                  animation: rainAnimation linear infinite;
-                                  animation-duration: 8s;
-
-                                  position: relative;
-                                } */
 .div_avo {
   position: absolute;
   width: auto;
@@ -1094,10 +1093,6 @@ form {
     font-size: 4vw;
     color: #ffffff9d;
   }
-  .div_parag > div > p {
-    width: 100%;
-    font-size: 4vw;
-  }
 
   .div_wind {
     width: 100%;
@@ -1188,13 +1183,16 @@ form {
     flex-wrap: wrap;
     gap: 10px;
   }
-  .div_parag > div > p {
-    font-size: 5vw;
-  }
+
   .div_wind {
     width: 100%;
     font-size: 5vw;
   }
+     @media screen and (max-width: 350px) {
+      .text_details{
+        margin-right: 30px;
+      }
+     }
   @media screen and (max-width: 310px) {
     .title_error {
       justify-content: flex-start;
