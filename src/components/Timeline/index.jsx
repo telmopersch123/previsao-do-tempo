@@ -118,8 +118,7 @@ const scaleDetailsMap = {
 const Timeline = ({
   timeUpdate1,
   sys,
-  // weather,
-  // name,
+
   temp,
   Celsius,
   lat,
@@ -155,7 +154,7 @@ const Timeline = ({
     fetchData();
   }, [lat, lon]);
   const ScaleDetails = ({ mapLayer }) => {
-    // Use a variável scaleDetailsMap definida no escopo mais amplo
+  
     return <div className="info legend">{scaleDetailsMap[mapLayer]}</div>;
   };
   const updateFormattedTime = (time) =>
@@ -185,15 +184,15 @@ const Timeline = ({
     }
   }, [Celsius, temp]);
 
-  const [mapLayer, setMapLayer] = useState("temp"); // Inicialmente, exibe a camada de temperatura
+  const [mapLayer, setMapLayer] = useState("temp");
   const [temperatureDisplay, setTemperatureDisplay] = useState(temp);
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
-  //Inicialmente, exibe os detalhes de temperatura
+  
   const [scaleDetailsContent, setScaleDetailsContent] = useState(
     scaleDetailsMap["temp"],
   );
-  const [currentSituation, setCurrentSituation] = useState("temp"); // Comece com "temp" como padrão
+  const [currentSituation, setCurrentSituation] = useState("temp"); 
   const [showLayerButtons, setShowLayerButtons] = useState(false);
   const toggleLayerButtons = () => {
     setShowLayerButtons(!showLayerButtons);
@@ -204,21 +203,21 @@ const Timeline = ({
     setCurrentSituation(newLayer);
   };
   useEffect(() => {
-    // Verifica se o mapa já foi inicializado
+   
     if (mapRef.current) {
-      // Destrói a instância do mapa existente
+     
       if (mapInstance.current) {
         mapInstance.current.remove();
       }
       const maxBounds = [
-        [-90, -180], // Limites máximos do mundo
+        [-90, -180], 
         [90, 180],
       ];
-      // Cria e inicializa um novo mapa na div
+     
       const map = L.map(mapRef.current, {
-        maxBounds: maxBounds, // Defina os limites máximos
-        maxBoundsViscosity: 1.0, // Isso ajuda a manter o mapa dentro dos limites
-      }).setView([lat, lon], 10); // Defina o zoom inicial
+        maxBounds: maxBounds, 
+        maxBoundsViscosity: 1.0, 
+      }).setView([lat, lon], 10); 
       const weatherLayer = L.tileLayer(
         `https://tile.openweathermap.org/map/${mapLayer}_new/{z}/{x}/{y}.png?appid=4d8fb5b93d4af21d66a2948710284366`,
         {
@@ -270,7 +269,7 @@ const Timeline = ({
           >
             Escolher Camada
           </button>
-          {showLayerButtons && ( // Renderizar os botões de layer se showLayerButtons for verdadeiro
+          {showLayerButtons && (
             <>
               <div className="layers-escolha">
                 <button

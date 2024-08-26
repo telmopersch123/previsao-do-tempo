@@ -32,7 +32,7 @@ const MuiLineChart = (prop) => {
   };
   const extractHumidityData = (period) => {
     const dayPeriod = mapDayPeriod(period);
-    const days = Object.keys(prop.dailyData).map(Number); // Converta chaves para números
+    const days = Object.keys(prop.dailyData).map(Number); 
     const minDay = Math.min(...days);
 
     return Array.from({ length: 5 }, (_, i) => {
@@ -96,24 +96,24 @@ const MuiLineChart = (prop) => {
       return { arrow: "➜", direction };
     } else if (deg >= 135 && deg < 225) {
       direction = "Sul";
-      return { arrow: "↓", direction }; // Corrigido para uma seta apontando para baixo
+      return { arrow: "↓", direction }; 
     } else if (deg >= 225 && deg < 315) {
       direction = "Oeste";
       return { arrow: "↖", direction };
     } else if (deg >= 315 && deg < 360) {
       direction = "Norte";
-      return { arrow: "↑", direction }; // Corrigido para uma seta apontando para cima
+      return { arrow: "↑", direction }; 
     } else {
       direction = "Desconhecida";
-      return { arrow: "➜", direction }; // Valor padrão se não houver correspondência
+      return { arrow: "➜", direction }; 
     }
   };
   const CustomTooltip = ({ active, payload, label }) => {
     const currentDeg = valData.map((data) => data.deg);
     const arrowCharacters = currentDeg.map((deg) => getArrowCharacter(deg));
-    const speedColor = "#82ca9d"; // Cor correspondente à velocidade do vento
+    const speedColor = "#82ca9d"; 
     const gustColor = "#ffc658";
-    const dayIndex = parseInt(label - 1); // dayIndex começa em 1
+    const dayIndex = parseInt(label - 1); 
     const selectedData = prop.dailyData[dayIndex];
     const formattedDate = selectedData
       ? formatCustomDate(selectedData.date)

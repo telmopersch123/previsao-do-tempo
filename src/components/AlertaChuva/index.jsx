@@ -12,7 +12,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
   }
 
   const arrayAlert = () => {
-    const days = Object.keys(daily).map(Number); // Converta chaves para números
+    const days = Object.keys(daily).map(Number); 
     const minDay = Math.min(...days);
     return Array.from({ length: 5 }, (_, i) => {
       const day = minDay + i;
@@ -53,7 +53,7 @@ function AlertaChuva({ daily, idWind, onVerifChange }) {
     } else if (media1 >= 10) {
       return "Probabilidades baixas de Nevar nessa região!";
     } else {
-      // Se media1 for menor que 10, não retorna nada
+     
       return null;
     }
   }

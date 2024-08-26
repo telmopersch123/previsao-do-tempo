@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import unaccent from "unaccent";
-import debounce from "lodash.debounce";
 import axios from "axios";
-import WeahterIcon from "../WeatherIcon";
+import debounce from "lodash.debounce";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import unaccent from "unaccent";
+import Alert from "../Alert";
 import Button from "../Button";
-import Timeline from "../Timeline";
 import DetailsWeather from "../DetailsWeather";
+import Flag from "../Flag";
 import Forecast from "../Forecast";
 import Graphic from "../Graphic";
-import Alert from "../Alert";
-import Flag from "../Flag";
 import Imagens from "../Imagens";
+import Timeline from "../Timeline";
+import WeahterIcon from "../WeatherIcon";
 
 function Search({ props }) {
   const [loading, setLoading] = useState(false);
@@ -74,11 +74,8 @@ function Search({ props }) {
               .then((response) => {
                 setEstaNublado(response.data.clouds?.all ?? 0);
                 setEstaChovendo(response.data.rain?.["1h"] ?? 0);
-                console.log(response.data.rain);
+        
               })
-              .catch((error) => {
-                console.error("Erro ao obter localização:", error.message);
-              });
           },
           (error) => {
             console.error("Erro ao obter localização:", error.message);
@@ -150,7 +147,7 @@ function Search({ props }) {
         }
       }
     } catch (erro) {
-      console.error("Erro ao obter o código do estado", erro);
+     // console.error("Erro ao obter o código do estado", erro);
     }
   }, [nomeEstado]);
 
@@ -160,8 +157,10 @@ function Search({ props }) {
   }, [nomeEstado, obterCodigoEstado, codigoEstado]);
 
   const obterCodigoPais = useCallback(async () => {
-    if (inputValueRef !== "") {
+    if (inputValueRef !== "" && nomePaisTraduzido && nomePaisTraduzido.trim() !== "") {
+      
       try {
+        console.clear()
         const response = await fetch(
           `https://restcountries.com/v3.1/name/${nomePaisTraduzido}`,
         );
@@ -173,7 +172,7 @@ function Search({ props }) {
           // setCodigoPais("");
         }
       } catch (error) {
-        console.error("Erro ao buscar código do país:", error);
+        // console.error("Erro ao buscar código do país:", error);
       }
     }
   }, [nomePaisTraduzido, setCodigoPais]);
@@ -194,7 +193,7 @@ function Search({ props }) {
       })
 
       .catch((error) => {
-        console.error("Erro ao traduzir:", error);
+       // console.error("Erro ao traduzir:", error);
       });
   }, [nomePais]);
 
@@ -208,25 +207,22 @@ function Search({ props }) {
         setSearchResults([]);
       }
       const currentCodigoPaisValue = currentCodigoPais.current;
-      console.log(valueInp);
-      console.log(valueEst);
-      console.log(currentCodigoPaisValue);
+if(valueInp.trim() !== ""){
       axios
         .get(
           `https://api.openweathermap.org/geo/1.0/direct?q=${valueInp},${valueEst},${currentCodigoPaisValue}&limit=${5}&appid=6e7169fc97f97c75ccd396e1ec444ca0`,
         )
         .then((response) => {
-          console.log(response.data);
-          console.log(inputValueRef.current);
+
           let locations;
           let valor = false;
 
           if (inputValueRef.current !== "") {
             locations = response.data;
-            console.log("aqui");
+        
           } else {
             locations = false;
-            console.log("aqui");
+      
           }
 
           const filteredLocations = locations.reduce((acc, location) => {
@@ -261,7 +257,7 @@ function Search({ props }) {
             filteredResults = Object.values(0);
           } else {
             filteredResults = Object.values(filteredLocations);
-            console.log(filteredResults);
+     
             setExisting(filteredResults);
             setSearchResults(filteredResults);
           }
@@ -277,7 +273,7 @@ function Search({ props }) {
                 const filteredOptionTwo = response.data.reduce(
                   (acc, location) => {
                     if (location.state === undefined) {
-                      // Tratamento quando location.state é undefined
+                 
                       if (!acc.undefined) {
                         acc.undefined = location;
                       }
@@ -286,7 +282,7 @@ function Search({ props }) {
                       unaccent(location.state).toLowerCase() ===
                       unaccent(inputEstadoRef.current).toLowerCase()
                     ) {
-                      // Tratamento quando location.state é definido e corresponde ao input
+                    
                       if (!acc[location.state]) {
                         acc[location.state] = location;
                       }
@@ -294,14 +290,14 @@ function Search({ props }) {
                     } else if (
                       unaccent(inputEstadoRef.current).toLowerCase() === ""
                     ) {
-                      // Tratamento quando inputEstadoRef.current está vazio
+                    
                       if (!acc[location.state]) {
                         acc[location.state] = location;
                       }
                       return acc;
                     }
 
-                    return acc; // Adicionei esse retorno para casos em que nenhum dos casos anteriores é satisfeito
+                    return acc; 
                   },
                   {},
                 );
@@ -313,9 +309,11 @@ function Search({ props }) {
         })
 
         .catch((error) => {
-          console.error("Erro ao buscar localização:", error.message);
+          //  console.error("Erro ao buscar localização:", error.message);
         });
+     }
     }, 500),
+    
   ).current;
   const naoEncontrada = () => {
     return (
@@ -438,12 +436,7 @@ function Search({ props }) {
       setisOpen0(false);
     }
   }, [controlED]);
-  // const onKeyPress = (e) => {
-  //   if (searched && e.key === "Enter") {
-  //     e.preventDefault();
-  //     searchInput(e);
-  //   }
-  // };
+
   let verificando = false;
   const handleResultClick = async (e, location) => {
     if (location && location.lat !== undefined && location.lon !== undefined) {
@@ -458,7 +451,7 @@ function Search({ props }) {
   };
 
   const handleInputBlur = () => {
-    // Quando o foco é perdido, se o valor do input for vazio, limpe os resultados
+  
     if (!inputValue.trim()) {
       setSearchResults([]);
     }
@@ -469,19 +462,7 @@ function Search({ props }) {
     inputEstadoRef.current = "";
     setInputEstado("");
   };
-  // const LimparTudo = () => {
-  //   if (inputValue === "") {
-  //     setNomeEstado("");
-  //     inputEstadoRef.current = "";
-  //     setInputEstado("");
-  //     setTimeout(() => setcontrolPD(false), 10);
-  //     setTimeout(() => setcontrolED(false), 10);
-  //     setInputPais("");
-  //     inputPaisRef.current = "";
-  //     setNomePais("");
-  //     setSearchResults([]);
-  //   }
-  // };
+
   let apiUrl;
   const [erro, setErro] = useState(false);
   const handleError = (mensagem) => (
@@ -621,7 +602,7 @@ function Search({ props }) {
   const [maisPosition, setMaisPosition] = useState(0);
   const [fimdou, setFimdou] = useState(true);
   const [fimdou01, setFimdou01] = useState(true);
-  // const [index, setIndex] = useState(true);
+  
   const getRandomPosition = useCallback(() => {
     if (inputValue === "") {
       if (fimdou) {
@@ -639,7 +620,7 @@ function Search({ props }) {
 
   const getColors = useCallback(() => {
     if (estaNublado > 80) {
-      return "#808080"; // Retorna a cor fixa para nuvens quando está nublado
+      return "#808080"; 
     }
 
     let shadesOfGray = [
@@ -655,7 +636,7 @@ function Search({ props }) {
       const randomIndex = Math.floor(Math.random() * shadesOfGray.length);
       return shadesOfGray[randomIndex];
     } else {
-      // Retorna uma cor padrão quando fimdou não for verdadeiro
+     
       return Math.floor(Math.random() * shadesOfGray.length);
     }
   }, [fimdou, estaNublado]);
@@ -719,7 +700,7 @@ function Search({ props }) {
       const randomIndex = Math.floor(Math.random() * shadesOfGray.length);
       return shadesOfGray[randomIndex];
     } else {
-      // Retorna uma cor padrão quando fimdou não for verdadeiro
+     
       return Math.floor(Math.random() * shadesOfGray.length);
     }
   }, [fimdou01, estaNublado]);
@@ -1009,7 +990,7 @@ function Search({ props }) {
               : "Escreva abaixo o nome da Cidade!"}
           </h2>
           <input
-            // onFocus={LimparTudo}
+           
             onChange={handleInputChange}
             onBlur={handleInputBlur}
             placeholder={
@@ -1070,14 +1051,12 @@ function Search({ props }) {
 
           <button
             className="input_Pesquisar"
-            type="button" // Defina o tipo como 'button' para evitar a submissão automática
+            type="button" 
             onClick={(e) => {
               e.preventDefault();
               searchInput(e);
             }}
-            // style={{
-            //   display: searched ? "none" : "flex",
-            // }}
+           
           >
             Pesquisar por cidade!
           </button>

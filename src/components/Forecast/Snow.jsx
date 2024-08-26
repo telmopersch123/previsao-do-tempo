@@ -2,7 +2,7 @@ import React from "react";
 import "./snow.css";
 
 const Snowflakes = ({ visibleSn, calcularValorDinamico }) => {
-  // const generateRandomLeft = () => `${Math.random() * 250}px`;
+ 
   return (
     <div
       className="anima_snow"

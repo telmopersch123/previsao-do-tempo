@@ -77,7 +77,7 @@ const Graphic = ({
 
   const generateTemperatureData = useCallback(
     (temperatureData, period, offset) => {
-      const days = Object.keys(temperatureData).map(Number); // Converta chaves para números
+      const days = Object.keys(temperatureData).map(Number); 
       const minDay = Math.min(...days);
       return Array.from({ length: 5 }, (_, i) => {
         const day = minDay + i;
@@ -117,7 +117,7 @@ const Graphic = ({
     return `${day} - ${month} - ${year}`;
   };
   const CustomTooltipContent = ({ payload, label }) => {
-    const dayIndex = parseInt(label - 1); // dayIndex começa em 1
+    const dayIndex = parseInt(label - 1); 
     const selectedData = dailyData[dayIndex];
     const formattedDate = selectedData
       ? formatCustomDate(selectedData.date)
@@ -300,7 +300,7 @@ const Graphic = ({
 
   const extractHumidityData = (period) => {
     const dayPeriod = mapDayPeriod(period);
-    const days = Object.keys(dailyData).map(Number); // Converta chaves para números
+    const days = Object.keys(dailyData).map(Number);
     const minDay = Math.min(...days);
     return Array.from({ length: 5 }, (_, i) => {
       const day = minDay + i;

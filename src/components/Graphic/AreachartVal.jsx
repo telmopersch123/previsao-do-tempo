@@ -29,7 +29,7 @@ const AreaChartVal = ({ dailyData, newMomentDay }) => {
   };
   const extractHumidityData = (period) => {
     const dayPeriod = mapDayPeriod(period);
-    const days = Object.keys(dailyData).map(Number); // Converta chaves para números
+    const days = Object.keys(dailyData).map(Number); 
     const minDay = Math.min(...days);
 
     return Array.from({ length: 5 }, (_, i) => {
@@ -88,7 +88,7 @@ const AreaChartVal = ({ dailyData, newMomentDay }) => {
     return `${day} - ${month} - ${year}`;
   };
   const CustomTooltip = ({ active, payload, label }) => {
-    const dayIndex = parseInt(label - 1); // dayIndex começa em 1
+    const dayIndex = parseInt(label - 1);
     const selectedData = dailyData[dayIndex];
     const formattedDate = selectedData
       ? formatCustomDate(selectedData.date)

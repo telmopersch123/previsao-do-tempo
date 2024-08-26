@@ -10,7 +10,7 @@ const Alert = forwardRef(({ daily, idProp }, ref) => {
   }
 
   const arrayAlert = () => {
-    const days = Object.keys(daily).map(Number); // Converta chaves para números
+    const days = Object.keys(daily).map(Number);
     const minDay = Math.min(...days);
     return Array.from({ length: 5 }, (_, i) => {
       const day = minDay + i;

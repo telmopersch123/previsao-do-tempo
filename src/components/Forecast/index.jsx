@@ -31,7 +31,7 @@ const Forecast = ({
   const [dailyData00, setDailyData] = useState([]);
   const [newMomentDay, setNewMomentDay] = useState([]);
   const [modalVerif, setModalVerif] = useState(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   const textos = useMemo(() => ["Manhã", "Tarde", "Noite"]);
   const [cliques, setCliques] = useState(0);
   let dados_manha = null;
@@ -397,7 +397,7 @@ const Forecast = ({
       setIsSmallScreen(window.innerWidth <= 500);
     };
     window.addEventListener("resize", handleResize);
-    // Limpa o evento de redimensionamento ao desmontar o componente
+   
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -448,23 +448,23 @@ const Forecast = ({
     isDragging = false;
     const deltaX = e.pageX - startX;
 
-    // Define um limite para o movimento
+   
     const threshold = 50;
 
     if (deltaX > threshold) {
-      // Arrastou para a direita, vá para o próximo
+     
       setCurrentIndex((prevIndex) =>
         prevIndex === 0 - 2 ? dailyForecast.length + 1 : prevIndex - 2,
       );
       carrosselRef.current.style.transform = "translateX(0)";
     } else if (deltaX < -threshold) {
-      // Arrastou para a esquerda, vá para o anterior
+     
       setCurrentIndex((prevIndex) =>
         prevIndex === dailyForecast.length + 1 ? 0 - 2 : prevIndex + 2,
       );
       carrosselRef.current.style.transform = "translateX(0)";
     } else {
-      // Se o deslocamento for pequeno, apenas resete a transformação
+     
       carrosselRef.current.style.transform = "translateX(0)";
     }
   };
@@ -486,7 +486,7 @@ const Forecast = ({
     isDragging = false;
     const deltaX = e.changedTouches[0].pageX - startX;
 
-    // Define um limite para o movimento
+
     const threshold = 50;
 
     if (deltaX > threshold) {
@@ -629,7 +629,7 @@ const Forecast = ({
                     style={{
                       transform: `translateX(${(index - currentIndex) * 100}%)`,
                       transition: "transform 0.5s ease-in-out",
-                      ...fundoManha, // Aplica os estilos condicionais
+                      ...fundoManha, 
                       ...fundoNoite,
                       ...fundoTarde,
                     }}
