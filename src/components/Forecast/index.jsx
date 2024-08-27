@@ -250,7 +250,8 @@ const Forecast = ({
 
   const [dailyForecastArray, setDailyForecastArray] = useState([]);
   const forecastSliceRef = useRef();
-  const currentHoutd = new Date().getHours();
+  let currentHoutd = new Date().getHours();
+ 
   useEffect(() => {
     axios
       .get(
@@ -264,6 +265,7 @@ const Forecast = ({
           setDailyData(response.data.list);
            onAlertTemp(response.data.list);
           const filteredForecast = dailyData.reduce((result, item) => {
+ 
             const date = moment(item.dt_txt).format("YYYY-MM-DD");
             if (!result[date]) {
               result[date] = {
@@ -296,16 +298,19 @@ const Forecast = ({
 
   useEffect(() => {
     let novoForecastSlice;
+
     if (currentHoutd >= 7 && currentHoutd < 18) {
       if (currentHoutd >= 17) {
+      
         if (newMomentDay != "noite") {
-          novoForecastSlice = dailyForecastArray.slice(0, 5);
+          novoForecastSlice = dailyForecastArray.slice(1, 6);
         } else {
           novoForecastSlice = dailyForecastArray.slice(0, 5);
         }
       } else {
+      
         if (newMomentDay != "noite") {
-          novoForecastSlice = dailyForecastArray.slice(0, 5);
+          novoForecastSlice = dailyForecastArray.slice(1, 6);
         } else {
           novoForecastSlice = dailyForecastArray.slice(0, 5);
         }
@@ -317,7 +322,6 @@ const Forecast = ({
         novoForecastSlice = dailyForecastArray.slice(0, 5);
       }
     }
-
     if (!arraysSaoIguais(novoForecastSlice, forecastSliceRef.current)) {
       forecastSliceRef.current = novoForecastSlice;
       setDailyForecast(novoForecastSlice);
@@ -662,16 +666,28 @@ const Forecast = ({
                       {Array.isArray(day.morning) && day.morning.length > 0 ? (
                         day.morning.map((item, i) => (
                           <div key={i} className="temp_forecast">
+                            
                             <div className="temp_forecast_true">
+                                 
+                              {item.main.temp_max !== undefined ? (
                               <p className="temp_forecast_max">
+                                
                                 <img
                                   className="icone_temp"
                                   src={temperAlta}
                                   alt="Temperatura Alta"
                                 />
+                            
+
                                 {getTemperature(item.main.temp_max, Celsius)}°
                                 {Celsius ? "C" : "F"}
+
+                             
                               </p>
+                              ) : (
+                               <p className="temp_forecast_max">Sem Dados</p>
+                              )}
+                                {item.main.temp_min !== undefined ? (
                               <p className="temp_forecast_min">
                                 <img
                                   className="icone_temp"
@@ -679,14 +695,19 @@ const Forecast = ({
                                   alt="Temperatura Baixa"
                                 />
                                 {getTemperature(
-                                  item.main.temp_min - 2,
+                                  item.main.temp_min - 2 ,
                                   Celsius,
                                 )}
                                 °{Celsius ? "C" : "F"}
-                              </p>
+                                  </p>
+                              ) : (
+                               <p className="temp_forecast_min">Sem Dados</p>
+                              )}
+                                
                             </div>
                             <div className="componentes_prev">
-                              <p className="humidade_prev">
+                              {item.main.humidity !== undefined ? (
+                                <p className="humidade_prev">
                                 <img
                                   className="icone_prox humi"
                                   src={
@@ -696,9 +717,29 @@ const Forecast = ({
                                 />
                                 <span>{item.main.humidity}% de umidade</span>
                               </p>
-                              <WeatherDescription
+                              ) : (
+                                  <p className="humidade_prev">
+                                       <img
+                                  className="icone_prox humi"
+                                  src={
+                                    "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                                  }
+                                  alt="Velocidade do vento"
+                                />
+                                    <span>Sem Dados</span>
+                                  </p>
+                              )}
+                            
+
+                              {item.weather[0].description !== undefined ? (
+                                  <WeatherDescription
                                 description={item.weather[0].description}
                               />
+                              ): (
+                                  <p className="humidade_prev">Sem dados</p>
+                              )}
+                            
+                              {item.main.feels_like !== undefined ? (
                               <p className="humidade_prev">
                                 <img
                                   className="icone_prox sensasao"
@@ -707,6 +748,7 @@ const Forecast = ({
                                   }
                                   alt="Velocidade do vento"
                                 />
+
                                 <span
                                   style={{
                                     display: "flex",
@@ -723,6 +765,19 @@ const Forecast = ({
                                   </span>
                                 </span>
                               </p>
+                              ) : (
+                                <p className="humidade_prev">
+                                <img
+                                  className="icone_prox sensasao"
+                                  src={
+                                    "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                                  }
+                                  alt="Velocidade do vento"
+                                    />
+                                    <span>Sem Dados</span>
+                                    </p>
+                              )}
+                             
                             </div>
                           </div>
                         ))
@@ -745,15 +800,30 @@ const Forecast = ({
                         day.afternoon.map((item, i) => (
                           <div key={i} className="temp_forecast">
                             <div className="temp_forecast_true">
+
+
+                              {item.main.temp_max !== undefined ? (
                               <p className="temp_forecast_max">
+                                
                                 <img
                                   className="icone_temp"
                                   src={temperAlta}
                                   alt="Temperatura Alta"
                                 />
+                            
+
                                 {getTemperature(item.main.temp_max, Celsius)}°
                                 {Celsius ? "C" : "F"}
+
+                             
                               </p>
+                              ) : (
+                               <p className="temp_forecast_max">Sem Dados</p>
+                              )}
+
+
+
+                               {item.main.temp_min !== undefined ? (
                               <p className="temp_forecast_min">
                                 <img
                                   className="icone_temp"
@@ -761,14 +831,21 @@ const Forecast = ({
                                   alt="Temperatura Baixa"
                                 />
                                 {getTemperature(
-                                  item.main.temp_min - 5,
+                                  item.main.temp_min - 2 ,
                                   Celsius,
                                 )}
                                 °{Celsius ? "C" : "F"}
-                              </p>
+                                  </p>
+                              ) : (
+                               <p className="temp_forecast_min">Sem Dados</p>
+                              )}            
                             </div>
+
+
+
                             <div className="componentes_prev">
-                              <p className="humidade_prev">
+                              {item.main.humidity !== undefined ? (
+                                <p className="humidade_prev">
                                 <img
                                   className="icone_prox humi"
                                   src={
@@ -778,9 +855,31 @@ const Forecast = ({
                                 />
                                 <span>{item.main.humidity}% de umidade</span>
                               </p>
-                              <WeatherDescription
+                              ) : (
+                                  <p className="humidade_prev">
+                                       <img
+                                  className="icone_prox humi"
+                                  src={
+                                    "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                                  }
+                                  alt="Velocidade do vento"
+                                />
+                                    <span>Sem Dados</span>
+                                  </p>
+                              )}
+
+
+                              {item.weather[0].description !== undefined ? (
+                                  <WeatherDescription
                                 description={item.weather[0].description}
                               />
+                              ): (
+                                  <p className="humidade_prev">Sem dados</p>
+                              )}
+
+
+
+                               {item.main.feels_like !== undefined ? (
                               <p className="humidade_prev">
                                 <img
                                   className="icone_prox sensasao"
@@ -789,6 +888,7 @@ const Forecast = ({
                                   }
                                   alt="Velocidade do vento"
                                 />
+
                                 <span
                                   style={{
                                     display: "flex",
@@ -805,6 +905,20 @@ const Forecast = ({
                                   </span>
                                 </span>
                               </p>
+                              ) : (
+                                <p className="humidade_prev">
+                                <img
+                                  className="icone_prox sensasao"
+                                  src={
+                                    "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                                  }
+                                  alt="Velocidade do vento"
+                                    />
+                                    <span>Sem Dados</span>
+                                    </p>
+                              )}
+
+
                             </div>
                           </div>
                         ))
@@ -823,15 +937,25 @@ const Forecast = ({
                         day.night.map((item, i) => (
                           <div key={i} className="temp_forecast">
                             <div className="temp_forecast_true">
+                             {item.main.temp_max !== undefined ? (
                               <p className="temp_forecast_max">
+                                
                                 <img
                                   className="icone_temp"
                                   src={temperAlta}
                                   alt="Temperatura Alta"
                                 />
+                            
+
                                 {getTemperature(item.main.temp_max, Celsius)}°
                                 {Celsius ? "C" : "F"}
+
+                             
                               </p>
+                              ) : (
+                               <p className="temp_forecast_max">Sem Dados</p>
+                              )}
+                              {item.main.temp_min !== undefined ? (
                               <p className="temp_forecast_min">
                                 <img
                                   className="icone_temp"
@@ -839,14 +963,18 @@ const Forecast = ({
                                   alt="Temperatura Baixa"
                                 />
                                 {getTemperature(
-                                  item.main.temp_min - 5,
+                                  item.main.temp_min - 2 ,
                                   Celsius,
                                 )}
                                 °{Celsius ? "C" : "F"}
-                              </p>
+                                  </p>
+                              ) : (
+                               <p className="temp_forecast_min">Sem Dados</p>
+                              )}      
                             </div>
                             <div className="componentes_prev">
-                              <p className="humidade_prev">
+                               {item.main.humidity !== undefined ? (
+                                <p className="humidade_prev">
                                 <img
                                   className="icone_prox humi"
                                   src={
@@ -856,9 +984,26 @@ const Forecast = ({
                                 />
                                 <span>{item.main.humidity}% de umidade</span>
                               </p>
-                              <WeatherDescription
+                              ) : (
+                                  <p className="humidade_prev">
+                                       <img
+                                  className="icone_prox humi"
+                                  src={
+                                    "https://cdn-icons-png.flaticon.com/512/2828/2828802.png"
+                                  }
+                                  alt="Velocidade do vento"
+                                />
+                                    <span>Sem Dados</span>
+                                  </p>
+                              )}
+                             {item.weather[0].description !== undefined ? (
+                                  <WeatherDescription
                                 description={item.weather[0].description}
                               />
+                              ): (
+                                  <p className="humidade_prev">Sem dados</p>
+                              )}
+                              {item.main.feels_like !== undefined ? (
                               <p className="humidade_prev">
                                 <img
                                   className="icone_prox sensasao"
@@ -867,6 +1012,7 @@ const Forecast = ({
                                   }
                                   alt="Velocidade do vento"
                                 />
+
                                 <span
                                   style={{
                                     display: "flex",
@@ -883,6 +1029,18 @@ const Forecast = ({
                                   </span>
                                 </span>
                               </p>
+                              ) : (
+                                <p className="humidade_prev">
+                                <img
+                                  className="icone_prox sensasao"
+                                  src={
+                                    "https://cdn-icons-png.flaticon.com/512/3653/3653255.png"
+                                  }
+                                  alt="Velocidade do vento"
+                                    />
+                                    <span>Sem Dados</span>
+                                    </p>
+                              )}
                             </div>
                           </div>
                         ))

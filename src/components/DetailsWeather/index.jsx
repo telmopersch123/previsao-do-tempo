@@ -54,19 +54,17 @@ const DetailsWeather = ({
             </span>
           </p>
         )}
-        {temp_max !== undefined || temp_min !== undefined ? (
+        {temp_max !== undefined  ? (
           <p
-            style={{ display: "flex", flexDirection: "column", gap: "0px" }}
             className={
-              temp_max !== undefined || temp_min !== undefined
+              temp_max !== undefined
                 ? ""
                 : "dados_ind"
             }
           >
-            <span>
-              {" "}
+
                <span className="Icon-Details"> 
-                 <WiThermometer color="rgba(255, 102, 102)" size={30} style={{ marginBottom: '-10px' }} />
+                 <WiThermometer color="rgba(255, 102, 102)" size={30} />
               </span>
                 <span className="text_details"> 
                 {`Temperatura Máxima de `}{" "}
@@ -77,11 +75,20 @@ const DetailsWeather = ({
                 {Celsius ? "°C" : "°F"}
                 </span>{" "}
                 </span>
+          </p>
+        ) : (
+          <p>
+            Temperatura máxima de:
+            <span className={temp_max !== undefined ? "" : "dados_ind"}>
+              {temp_max !== undefined ? temp_max : "Indisponivel nessa região"}
             </span>
-            <span>
-              {" "}
+          </p>
+        )}
+          {temp_min !== undefined  ? (
+        <p className={temp_min !== undefined ? "": "dados_ind" }
+        >
                 <span className="Icon-Details"> 
-                 <WiThermometer color="rgba(102, 102, 255)" size={30} style={{ marginBottom: '-10px' }} />
+                 <WiThermometer color="rgba(102, 102, 255)" size={30} />
               </span>
                 <span className="text_details"> 
                 {`Temperatura Minima de `}{" "}
@@ -92,20 +99,15 @@ const DetailsWeather = ({
                 {Celsius ? "°C" : "°F"}
                 </span>{" "}
                 </span>
-            </span>
           </p>
         ) : (
-          <p>
-            Temperatura máxima de:
-            <span className={temp_max !== undefined ? "" : "dados_ind"}>
-              {temp_max !== undefined ? temp_max : "Indisponivel nessa região"}
-            </span>
-            Temperatura miníma de:{" "}
+            <p>
+                  Temperatura miníma de:{" "}
             <span className={temp_min !== undefined ? "" : "dados_ind"}>
               {temp_min !== undefined ? temp_min : "Indisponivel nessa região"}
             </span>
-          </p>
-        )}
+            </p>
+          )}
         {wind !== undefined ? (
           <p className={wind !== undefined ? "" : "dados_ind"}>
             <span className="Icon-Details"> 

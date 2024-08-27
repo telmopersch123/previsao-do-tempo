@@ -321,14 +321,15 @@ form {
 float: left;
 background-color: #dfdfdf50;
 justify-content: center;
-padding: 20px;
+padding: 10px;
 
+border-radius: 10px;
 }
 
 .text_details{
  display: flex;
  justify-content: center;
- margin-top: 25px;
+
  gap: 5px;
  margin-right: 70px;
 }
@@ -343,9 +344,10 @@ padding: 20px;
   border-radius: 5px;
   background-color: #ffffff29;
   box-shadow: 3px 3px 3px rgba(252, 21, 21, 0);
-
-  text-align: center;
-
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .icones {
