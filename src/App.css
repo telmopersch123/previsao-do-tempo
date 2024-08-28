@@ -320,9 +320,8 @@ form {
 .Icon-Details{
 float: left;
 background-color: #dfdfdf50;
-justify-content: center;
+display: flex;
 padding: 10px;
-
 border-radius: 10px;
 }
 

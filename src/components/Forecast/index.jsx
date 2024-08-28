@@ -299,22 +299,12 @@ const Forecast = ({
   useEffect(() => {
     let novoForecastSlice;
 
-    if (currentHoutd >= 7 && currentHoutd < 18) {
-      if (currentHoutd >= 17) {
-      
+    if (currentHoutd >= 6 && currentHoutd < 17) {
         if (newMomentDay != "noite") {
           novoForecastSlice = dailyForecastArray.slice(1, 6);
         } else {
           novoForecastSlice = dailyForecastArray.slice(0, 5);
         }
-      } else {
-      
-        if (newMomentDay != "noite") {
-          novoForecastSlice = dailyForecastArray.slice(1, 6);
-        } else {
-          novoForecastSlice = dailyForecastArray.slice(0, 5);
-        }
-      }
     } else {
       if (newMomentDay != "noite") {
         novoForecastSlice = dailyForecastArray.slice(0, 5);
