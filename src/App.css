@@ -826,6 +826,14 @@ border-radius: 10px;
 .inputPais:hover::placeholder {
   color: rgba(255, 255, 255, 0.404);
 }
+
+.DevDesenvolvedor{
+  color: rgba(255, 255, 255, 0.537);
+  position: absolute;
+  right:0;
+  bottom: 0; 
+  margin: 0px 5px;     
+}
 @keyframes animationInputsClosed {
   0% {
     height: 5vh;

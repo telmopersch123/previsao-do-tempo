@@ -1090,8 +1090,9 @@ if(valueInp.trim() !== ""){
           {clouds()}
           {wind()}
         </div>
+      
       </div>
-
+  <p className="DevDesenvolvedor">Desenvolvido por TelmoPersch</p>
       {weatherData ? (
         <div className="objects">
           <div className="align-items">

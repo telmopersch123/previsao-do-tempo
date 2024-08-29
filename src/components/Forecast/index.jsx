@@ -99,7 +99,7 @@ const Forecast = ({
           })
           .catch((error) => {
             console.error("Erro ao traduzir:", error);
-            setTranslatedDescription(description); 
+            setTranslatedDescription(description);
           });
       }
     }, [description, translatedDescription]);
@@ -263,7 +263,7 @@ const Forecast = ({
           const daily = response.data.list;
           setDaily(daily);
           setDailyData(response.data.list);
-           onAlertTemp(response.data.list);
+          onAlertTemp(response.data.list);
           const filteredForecast = dailyData.reduce((result, item) => {
  
             const date = moment(item.dt_txt).format("YYYY-MM-DD");
@@ -286,31 +286,25 @@ const Forecast = ({
             return result;
           }, {});
           setDailyForecastArray(Object.values(filteredForecast));
-        } else {
-          alert("Ops!, algo deu errado!");
         }
       })
       .catch((error) => {
         console.error("Erro ao buscar dados de previsão:", error);
       });
    
-  }, [lat, lon, currentHoutd,onAlertTemp]);
+  }, [lat, lon, currentHoutd, onAlertTemp]);
 
   useEffect(() => {
     let novoForecastSlice;
 
     if (currentHoutd >= 6 && currentHoutd < 17) {
-        if (newMomentDay != "noite") {
-          novoForecastSlice = dailyForecastArray.slice(1, 6);
-        } else {
-          novoForecastSlice = dailyForecastArray.slice(0, 5);
-        }
+      if (newMomentDay == "manha" || newMomentDay == "noite") {
+        novoForecastSlice = dailyForecastArray.slice(0, 5);
+        }   if (newMomentDay == "tarde") {
+           novoForecastSlice = dailyForecastArray.slice(1, 6);
+        } 
     } else {
-      if (newMomentDay != "noite") {
-        novoForecastSlice = dailyForecastArray.slice(0, 5);
-      } else {
-        novoForecastSlice = dailyForecastArray.slice(0, 5);
-      }
+       novoForecastSlice = dailyForecastArray.slice(0, 5);
     }
     if (!arraysSaoIguais(novoForecastSlice, forecastSliceRef.current)) {
       forecastSliceRef.current = novoForecastSlice;
