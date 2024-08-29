@@ -1092,7 +1092,7 @@ if(valueInp.trim() !== ""){
         </div>
       
       </div>
-  <p className="DevDesenvolvedor">Desenvolvido por TelmoPersch</p>
+        < p className={`DevDesenvolvedor ${searched ? "DevDesenvolvedorSearched" : ""}`}>Desenvolvido por TelmoPersch</p>
       {weatherData ? (
         <div className="objects">
           <div className="align-items">

@@ -828,11 +828,15 @@ border-radius: 10px;
 }
 
 .DevDesenvolvedor{
+  display: block;
   color: rgba(255, 255, 255, 0.537);
   position: absolute;
   right:0;
   bottom: 0; 
   margin: 0px 5px;     
+}
+.DevDesenvolvedor.DevDesenvolvedorSearched{
+  display: none;
 }
 @keyframes animationInputsClosed {
   0% {
