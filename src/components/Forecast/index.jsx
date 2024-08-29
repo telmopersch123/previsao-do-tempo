@@ -298,11 +298,15 @@ const Forecast = ({
     let novoForecastSlice;
 
     if (currentHoutd >= 6 && currentHoutd < 17) {
-      if (newMomentDay == "manha" || newMomentDay == "noite") {
-        novoForecastSlice = dailyForecastArray.slice(0, 5);
-        }   if (newMomentDay == "tarde") {
-           novoForecastSlice = dailyForecastArray.slice(1, 6);
-        } 
+      if (currentHoutd == 6) {
+        if (newMomentDay == "tarde" || newMomentDay == "noite") {
+          novoForecastSlice = dailyForecastArray.slice(0, 5);
+        } else {
+          novoForecastSlice = dailyForecastArray.slice(1,6);
+        }     
+      } else {
+         novoForecastSlice = dailyForecastArray.slice(0, 5);
+      }
     } else {
        novoForecastSlice = dailyForecastArray.slice(0, 5);
     }
