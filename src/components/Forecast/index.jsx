@@ -302,10 +302,14 @@ const Forecast = ({
         if (newMomentDay == "tarde" || newMomentDay == "noite") {
           novoForecastSlice = dailyForecastArray.slice(0, 5);
         } else {
-          novoForecastSlice = dailyForecastArray.slice(1,6);
-        }     
+          novoForecastSlice = dailyForecastArray.slice(1, 6);
+        }
       } else {
-         novoForecastSlice = dailyForecastArray.slice(0, 5);
+        if (newMomentDay == "tarde" || newMomentDay == "manha") {
+          novoForecastSlice = dailyForecastArray.slice(1, 6);
+        } else {
+            novoForecastSlice = dailyForecastArray.slice(0, 5);
+        } 
       }
     } else {
        novoForecastSlice = dailyForecastArray.slice(0, 5);
